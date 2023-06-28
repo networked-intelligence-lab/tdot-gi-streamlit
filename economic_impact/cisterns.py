@@ -1,6 +1,4 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
 
 st.title('Cisterns Cost Tool')
 
@@ -29,11 +27,5 @@ potable_resup = st.number_input('Potable Re-Supply', value=0)
 st.write(f"System base cost: {sum([tank_costs_gallon[material] * tank_size, install_cost, pump_cost, potable_resup])}")
 
 system_design_cost = st.number_input('System Design Cost', value=1387)
-
 st.write(f"Total facility cost: {sum([tank_costs_gallon[material] * tank_size, install_cost, pump_cost, potable_resup, system_design_cost])}")
-
-
-
-
-
 
