@@ -1,6 +1,13 @@
 import streamlit as st
+from streamlit_js_eval import streamlit_js_eval, get_geolocation
+import pandas as pd
 
 st.title('TDoT GI Home')
+loc = get_geolocation()
+loc_df = pd.DataFrame([[loc["coords"]["latitude"], loc["coords"]["longitude"]]], columns=["lat", "lon"])
+st.header("User Location")
+
+st.map(data=loc_df)
 
 # st.header('Design and Maintenance Options')
 # st.subheader("Storage Requirements")
