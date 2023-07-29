@@ -1,6 +1,9 @@
 import streamlit as st
 from streamlit_js_eval import streamlit_js_eval, get_geolocation
+from streamlit_extras.app_logo import add_logo
 import pandas as pd
+
+add_logo("media/logo.png", height=150)
 
 st.title('TDoT GI Home')
 loc = get_geolocation()
