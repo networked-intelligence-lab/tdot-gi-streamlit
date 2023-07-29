@@ -1,6 +1,4 @@
 def swales_tab(tab_object):
-    tab_object.title('Swale')
-
     tab_object.header('Design and Maintenance Options')
     tab_object.subheader('Watershed Characteristics')
     drainage_area = tab_object.number_input('Drainage Area (ac)', value=2, step=1)
