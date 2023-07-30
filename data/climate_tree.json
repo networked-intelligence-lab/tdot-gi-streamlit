@@ -1,0 +1,546 @@
+{
+    "Coastal Southern California": {
+        "Annual Interception": {
+            "Small Tree": 1583,
+            "Medium Tree": 1396,
+            "Large Tree": 2120
+        },
+        "Pollutant Uptake": {
+            "O3": {
+                "Small Tree": 0.2,
+                "Medium Tree": 0.48,
+                "Large Tree": 0.89
+            },
+            "NO2": {
+                "Small Tree": 0.05,
+                "Medium Tree": 0.12,
+                "Large Tree": 0.48
+            },
+            "SO2": {
+                "Small Tree": 0.13,
+                "Medium Tree": 0.21,
+                "Large Tree": 0.42
+            },
+            "PM10": {
+                "Small Tree": 0.33,
+                "Medium Tree": 0.79,
+                "Large Tree": 1.49
+            }
+        },
+        "Energy Saved": {
+            "Small Tree": 123.0,
+            "Medium Tree": 315.0,
+            "Large Tree": 628.0
+        }
+    },
+    "Desert Southwest": {
+        "Annual Interception": {
+            "Small Tree": 570,
+            "Medium Tree": 1818,
+            "Large Tree": 930
+        },
+        "Pollutant Uptake": {
+            "O3": {
+                "Small Tree": 0.21,
+                "Medium Tree": 0.47,
+                "Large Tree": 0.21
+            },
+            "NO2": {
+                "Small Tree": 0.31,
+                "Medium Tree": 0.74,
+                "Large Tree": 0.42
+            },
+            "SO2": {
+                "Small Tree": 0.19,
+                "Medium Tree": 0.46,
+                "Large Tree": 0.28
+            },
+            "PM10": {
+                "Small Tree": 0.25,
+                "Medium Tree": 0.64,
+                "Large Tree": 0.46
+            }
+        },
+        "Energy Saved": {
+            "Small Tree": 743.0,
+            "Medium Tree": 1860.0,
+            "Large Tree": 1007.0
+        }
+    },
+    "Inland Empire": {
+        "Annual Interception": {
+            "Small Tree": 107,
+            "Medium Tree": 1925,
+            "Large Tree": 2238
+        },
+        "Pollutant Uptake": {
+            "O3": {
+                "Small Tree": 0.26,
+                "Medium Tree": 0.48,
+                "Large Tree": 0.92
+            },
+            "NO2": {
+                "Small Tree": 0.46,
+                "Medium Tree": 0.84,
+                "Large Tree": 1.51
+            },
+            "SO2": {
+                "Small Tree": 0.37,
+                "Medium Tree": 0.68,
+                "Large Tree": 1.22
+            },
+            "PM10": {
+                "Small Tree": 0.2,
+                "Medium Tree": 0.43,
+                "Large Tree": 0.67
+            }
+        },
+        "Energy Saved": {
+            "Small Tree": 113.0,
+            "Medium Tree": 294.0,
+            "Large Tree": 628.0
+        }
+    },
+    "Interior West": {
+        "Annual Interception": {
+            "Small Tree": 281,
+            "Medium Tree": 573,
+            "Large Tree": 1245
+        },
+        "Pollutant Uptake": {
+            "O3": {
+                "Small Tree": 0.16,
+                "Medium Tree": 0.16,
+                "Large Tree": 0.26
+            },
+            "NO2": {
+                "Small Tree": 0.12,
+                "Medium Tree": 0.12,
+                "Large Tree": 0.2
+            },
+            "SO2": {
+                "Small Tree": 0.03,
+                "Medium Tree": 0.03,
+                "Large Tree": 0.04
+            },
+            "PM10": {
+                "Small Tree": 0.35,
+                "Medium Tree": 0.16,
+                "Large Tree": 0.36
+            }
+        },
+        "Energy Saved": {
+            "Small Tree": 825.0,
+            "Medium Tree": 363.0,
+            "Large Tree": 628.0
+        }
+    },
+    "Northern California Coast": {
+        "Annual Interception": {
+            "Small Tree": 420,
+            "Medium Tree": 369,
+            "Large Tree": 673
+        },
+        "Pollutant Uptake": {
+            "O3": {
+                "Small Tree": 0.32,
+                "Medium Tree": 0.36,
+                "Large Tree": 0.43
+            },
+            "NO2": {
+                "Small Tree": 0.19,
+                "Medium Tree": 0.32,
+                "Large Tree": 0.43
+            },
+            "SO2": {
+                "Small Tree": 0.2,
+                "Medium Tree": 0.34,
+                "Large Tree": 0.46
+            },
+            "PM10": {
+                "Small Tree": 0.1,
+                "Medium Tree": 0.13,
+                "Large Tree": 0.16
+            }
+        },
+        "Energy Saved": {
+            "Small Tree": 940.0,
+            "Medium Tree": 1080.0,
+            "Large Tree": 1729.0
+        }
+    },
+    "Northern Mountain and Prairie": {
+        "Annual Interception": {
+            "Small Tree": 549,
+            "Medium Tree": 948,
+            "Large Tree": 1209
+        },
+        "Pollutant Uptake": {
+            "O3": {
+                "Small Tree": 0.16,
+                "Medium Tree": 1.46,
+                "Large Tree": 2.71
+            },
+            "NO2": {
+                "Small Tree": 0.16,
+                "Medium Tree": 0.8,
+                "Large Tree": 1.56
+            },
+            "SO2": {
+                "Small Tree": "--",
+                "Medium Tree": "--",
+                "Large Tree": "--"
+            },
+            "PM10": {
+                "Small Tree": 0.14,
+                "Medium Tree": 1.15,
+                "Large Tree": 2.17
+            }
+        },
+        "Energy Saved": {
+            "Small Tree": 104.0,
+            "Medium Tree": 299.0,
+            "Large Tree": 597.0
+        }
+    },
+    "San Joaquin Valley": {
+        "Annual Interception": {
+            "Small Tree": 49,
+            "Medium Tree": 350,
+            "Large Tree": 552
+        },
+        "Pollutant Uptake": {
+            "O3": {
+                "Small Tree": 0.2,
+                "Medium Tree": 0.31,
+                "Large Tree": 0.7
+            },
+            "NO2": {
+                "Small Tree": 0.33,
+                "Medium Tree": 0.52,
+                "Large Tree": 0.69
+            },
+            "SO2": {
+                "Small Tree": 0.66,
+                "Medium Tree": 1.13,
+                "Large Tree": 1.39
+            },
+            "PM10": {
+                "Small Tree": 0.17,
+                "Medium Tree": 0.27,
+                "Large Tree": 0.59
+            }
+        },
+        "Energy Saved": {
+            "Small Tree": 156.32,
+            "Medium Tree": 404.39,
+            "Large Tree": 897.81
+        }
+    },
+    "Temperate Interior West": {
+        "Annual Interception": {
+            "Small Tree": 161,
+            "Medium Tree": 893,
+            "Large Tree": 1111
+        },
+        "Pollutant Uptake": {
+            "O3": {
+                "Small Tree": 0.16,
+                "Medium Tree": 0.31,
+                "Large Tree": 0.6
+            },
+            "NO2": {
+                "Small Tree": 0.45,
+                "Medium Tree": 1.03,
+                "Large Tree": 1.18
+            },
+            "SO2": {
+                "Small Tree": 0.39,
+                "Medium Tree": 0.91,
+                "Large Tree": 1.03
+            },
+            "PM10": {
+                "Small Tree": 0.25,
+                "Medium Tree": 0.51,
+                "Large Tree": 0.73
+            }
+        },
+        "Energy Saved": {
+            "Small Tree": 303.0,
+            "Medium Tree": 313.0,
+            "Large Tree": 358.0
+        }
+    },
+    "Tropical": {
+        "Annual Interception": {
+            "Small Tree": 605,
+            "Medium Tree": 1237,
+            "Large Tree": 2108
+        },
+        "Pollutant Uptake": {
+            "O3": {
+                "Small Tree": 0.39,
+                "Medium Tree": 0.92,
+                "Large Tree": 1.99
+            },
+            "NO2": {
+                "Small Tree": 0.18,
+                "Medium Tree": 0.42,
+                "Large Tree": 0.81
+            },
+            "SO2": {
+                "Small Tree": 0.12,
+                "Medium Tree": 0.29,
+                "Large Tree": 0.55
+            },
+            "PM10": {
+                "Small Tree": 0.17,
+                "Medium Tree": 0.46,
+                "Large Tree": 0.84
+            }
+        },
+        "Energy Saved": {
+            "Small Tree": 37.0,
+            "Medium Tree": 78.0,
+            "Large Tree": 162.0
+        }
+    },
+    "Central Florida": {
+        "Annual Interception": {
+            "Small Tree": 1573,
+            "Medium Tree": 6191,
+            "Large Tree": 12641
+        },
+        "Pollutant Uptake": {
+            "O3": {
+                "Small Tree": 0.17,
+                "Medium Tree": 0.29,
+                "Large Tree": 0.88
+            },
+            "NO2": {
+                "Small Tree": 0.22,
+                "Medium Tree": 0.33,
+                "Large Tree": 0.93
+            },
+            "SO2": {
+                "Small Tree": 0.63,
+                "Medium Tree": 0.93,
+                "Large Tree": 2.55
+            },
+            "PM10": {
+                "Small Tree": 0.14,
+                "Medium Tree": 0.31,
+                "Large Tree": 0.63
+            }
+        },
+        "Energy Saved": {
+            "Small Tree": 230.0,
+            "Medium Tree": 457.0,
+            "Large Tree": 1012.0
+        }
+    },
+    "Coastal Plain": {
+        "Annual Interception": {
+            "Small Tree": 723,
+            "Medium Tree": 1962,
+            "Large Tree": 5699
+        },
+        "Pollutant Uptake": {
+            "O3": {
+                "Small Tree": 0.2,
+                "Medium Tree": 0.32,
+                "Large Tree": 0.68
+            },
+            "NO2": {
+                "Small Tree": 0.16,
+                "Medium Tree": 0.27,
+                "Large Tree": 0.57
+            },
+            "SO2": {
+                "Small Tree": 0.53,
+                "Medium Tree": 0.89,
+                "Large Tree": 1.86
+            },
+            "PM10": {
+                "Small Tree": 0.15,
+                "Medium Tree": 0.27,
+                "Large Tree": 0.45
+            }
+        },
+        "Energy Saved": {
+            "Small Tree": 649.0,
+            "Medium Tree": 800.0,
+            "Large Tree": 2373.0
+        }
+    },
+    "Lower Midwest": {
+        "Annual Interception": {
+            "Small Tree": 1116,
+            "Medium Tree": 1870,
+            "Large Tree": 4808
+        },
+        "Pollutant Uptake": {
+            "O3": {
+                "Small Tree": 0.15,
+                "Medium Tree": 0.2,
+                "Large Tree": 0.28
+            },
+            "NO2": {
+                "Small Tree": 0.39,
+                "Medium Tree": 0.63,
+                "Large Tree": 1.11
+            },
+            "SO2": {
+                "Small Tree": 0.23,
+                "Medium Tree": 0.42,
+                "Large Tree": 0.69
+            },
+            "PM10": {
+                "Small Tree": 0.17,
+                "Medium Tree": 0.26,
+                "Large Tree": 0.35
+            }
+        },
+        "Energy Saved": {
+            "Small Tree": 436.0,
+            "Medium Tree": 676.0,
+            "Large Tree": 1405.0
+        }
+    },
+    "Midwest": {
+        "Annual Interception": {
+            "Small Tree": 292,
+            "Medium Tree": 1129,
+            "Large Tree": 2162
+        },
+        "Pollutant Uptake": {
+            "O3": {
+                "Small Tree": 0.14,
+                "Medium Tree": 0.29,
+                "Large Tree": 0.54
+            },
+            "NO2": {
+                "Small Tree": 0.18,
+                "Medium Tree": 0.37,
+                "Large Tree": 0.7
+            },
+            "SO2": {
+                "Small Tree": 0.15,
+                "Medium Tree": 0.4,
+                "Large Tree": 0.85
+            },
+            "PM10": {
+                "Small Tree": 0.13,
+                "Medium Tree": 0.33,
+                "Large Tree": 0.45
+            }
+        },
+        "Energy Saved": {
+            "Small Tree": 2010.0,
+            "Medium Tree": 2764.0,
+            "Large Tree": 4789.0
+        }
+    },
+    "Northeast": {
+        "Annual Interception": {
+            "Small Tree": 358,
+            "Medium Tree": 1156,
+            "Large Tree": 1909
+        },
+        "Pollutant Uptake": {
+            "O3": {
+                "Small Tree": 0.14,
+                "Medium Tree": 0.35,
+                "Large Tree": 0.21
+            },
+            "NO2": {
+                "Small Tree": 0.22,
+                "Medium Tree": 0.33,
+                "Large Tree": 0.41
+            },
+            "SO2": {
+                "Small Tree": 0.42,
+                "Medium Tree": 0.6,
+                "Large Tree": 0.82
+            },
+            "PM10": {
+                "Small Tree": 0.17,
+                "Medium Tree": 0.56,
+                "Large Tree": 0.31
+            }
+        },
+        "Energy Saved": {
+            "Small Tree": 995.0,
+            "Medium Tree": 1954.0,
+            "Large Tree": 3795.0
+        }
+    },
+    "Piedmont": {
+        "Annual Interception": {
+            "Small Tree": 1265,
+            "Medium Tree": 2566,
+            "Large Tree": 4778
+        },
+        "Pollutant Uptake": {
+            "O3": {
+                "Small Tree": 0.14,
+                "Medium Tree": 0.27,
+                "Large Tree": 0.43
+            },
+            "NO2": {
+                "Small Tree": 0.08,
+                "Medium Tree": 0.17,
+                "Large Tree": 0.28
+            },
+            "SO2": {
+                "Small Tree": 0.03,
+                "Medium Tree": 0.07,
+                "Large Tree": 0.1
+            },
+            "PM10": {
+                "Small Tree": 0.15,
+                "Medium Tree": 0.29,
+                "Large Tree": 0.45
+            }
+        },
+        "Energy Saved": {
+            "Small Tree": 721.0,
+            "Medium Tree": 823.0,
+            "Large Tree": 1303.0
+        }
+    },
+    "Western Washington and Oregon": {
+        "Annual Interception": {
+            "Small Tree": 182,
+            "Medium Tree": 346,
+            "Large Tree": 549
+        },
+        "Pollutant Uptake": {
+            "O3": {
+                "Small Tree": 0.25,
+                "Medium Tree": 0.78,
+                "Large Tree": 1.36
+            },
+            "NO2": {
+                "Small Tree": 0.2,
+                "Medium Tree": 0.72,
+                "Large Tree": 1.08
+            },
+            "SO2": {
+                "Small Tree": 0.05,
+                "Medium Tree": 0.14,
+                "Large Tree": 0.19
+            },
+            "PM10": {
+                "Small Tree": 0.16,
+                "Medium Tree": 0.61,
+                "Large Tree": 0.9
+            }
+        },
+        "Energy Saved": {
+            "Small Tree": 171.0,
+            "Medium Tree": 443.0,
+            "Large Tree": 949.0
+        }
+    }
+}
