@@ -1,5 +1,8 @@
 import streamlit as st
 from pages.ct_scripts import *
+from streamlit_extras.app_logo import add_logo
+
+add_logo("media/logo.png", height=150)
 
 st.title('Cost Tool')
 (
