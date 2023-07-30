@@ -6,7 +6,6 @@ def green_roof_tab(tab_object):
     building_height = tab_object.number_input('Building Height (stories)', value=4,
                                              step=1)
 
-
     """
     Primary Roof Function ("P"; Promotional or Aesthetics and social environment enhancement.)
     """
