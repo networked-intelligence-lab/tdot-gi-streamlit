@@ -7,11 +7,13 @@ st.title('Cost Tool')
  ed_basin_st,
  green_roof_st,
  icpv_st,
+ perm_pavements_st,
  swales_st) = st.tabs(["Cistern",
                        "Bioretention",
                        "Extended Detention Basin",
                        "Green Roof",
                        "In-Curb Planter Vault",
+                       "Permeable Pavement",
                        "Swales"])
 
 cisterns_tab(cistern_st)
@@ -20,3 +22,4 @@ ed_basin_tab(ed_basin_st)
 bioretention_tab(bioretention_st)
 green_roof_tab(green_roof_st)
 icpv_tab(icpv_st)
+perm_pavements_tab(perm_pavements_st)
