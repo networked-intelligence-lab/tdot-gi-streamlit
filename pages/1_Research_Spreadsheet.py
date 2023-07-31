@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 from collections import defaultdict
-import numpy as np
 
 st.title('Research Spreadsheet')
 spreadsheet_t = st.tabs(["Spreadsheet Tool"])
