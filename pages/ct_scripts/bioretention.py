@@ -6,7 +6,7 @@ def bioretention_tab(tab_object):
     underdrain_to_conventional = tab_object.selectbox('Underdrain to Conventional Storm Drain?', ('Yes', 'No'))
 
     tab_object.subheader("Design and Maintenance Options")
-    level_of_maintenance = tab_object.selectbox("Choose Level of Maintenance", ("High", "Medium", "Low"))
+    level_of_maintenance = tab_object.selectbox("Choose Level of Maintenance", ("High", "Medium", "Low"), key="bioret_lom")
     retro_vs_new = tab_object.selectbox("Retrofit vs. New Construction", ("Retrofit", "New Construction"))
     tank_costs_gallon = {
         'Steel': 2.51,
@@ -15,7 +15,7 @@ def bioretention_tab(tab_object):
         'HDPE': 1.43}
 
     tab_object.subheader("Whole Life Cost Options")
-    discount_rate = tab_object.number_input('Discount Rate', value=5.50)
+    discount_rate = tab_object.number_input('Discount Rate', value=5.50, key="bioret_discount_rate")
 
     tab_object.header('Capital Costs')
     cc_method_selects = {'a': "Method A: Simple Cost Based on Drainage Area",

@@ -7,7 +7,7 @@ def perm_pavements_tab(tab_object):
     watershed_land_use_type = tab_object.selectbox('Watershed Land Use Type', ('Residential',
                                                                                'Commercial',
                                                                                'Industrial',
-                                                                               'Roads'))
+                                                                               'Roads'), key="perm_pavements_wlut")
 
     tab_object.subheader("Design and Maintenance Options")
     pavement_type = tab_object.selectbox("Choose a Pavement Type", ("Asphalt",
