@@ -1,3 +1,4 @@
+from modules.helpers import superscript
 def retention_pond_tab(tab_object):
     tab_object.header('Design and Maintenance Options')
     tab_object.subheader("Watershed Characteristics")
@@ -7,7 +8,7 @@ def retention_pond_tab(tab_object):
                                                                                'Commercial',
                                                                                'Industrial',
                                                                                'Roads'), key="ret_pond_wlut")
-    tab_object.write("* Included since frequently used to calculate storage volume.")
+    superscript(tab_object, "* Included since frequently used to calculate storage volume.")
 
     tab_object.subheader("Facility Storage Volume")
     water_quality_volume = tab_object.number_input('Water Quality Volume (WQV; ft. cubed)*', value=drainage_area*0.5/12*43560)
@@ -16,9 +17,9 @@ def retention_pond_tab(tab_object):
     flood_det_att_vol = tab_object.number_input('Flood Detention/Attenuation Volume (ft. cubed)', value=0)
     channel_prot_eros_ctrl_vol = tab_object.number_input('Channel Protection/Erosion Control Volume (ft. cubed)***', value=0)
     other_volume = tab_object.number_input('Other Volume (e.g., Recharge Volume)', value=0, key="ret_pond_other_volume")
-    tab_object.write("* Model default is 1/2-inch of capture over drainage area; actual volume will depend on regional regulatory requirements and site-specific characteristics, etc.")
-    tab_object.write("** Model default ratio = 1.0 (i.e., permanent pool volume EQUALS the water quality volume).")
-    tab_object.write("*** For example, 24-hour extended detention storage.")
+    superscript(tab_object, "* Model default is 1/2-inch of capture over drainage area; actual volume will depend on regional regulatory requirements and site-specific characteristics, etc.")
+    superscript(tab_object, "** Model default ratio = 1.0 (i.e., permanent pool volume EQUALS the water quality volume).")
+    superscript(tab_object, "*** For example, 24-hour extended detention storage.")
     tab_object.write(f"Total Facility Storage Volume: {water_quality_volume + perm_pool_vol + flood_det_att_vol + channel_prot_eros_ctrl_vol + other_volume}")
 
 
@@ -32,8 +33,8 @@ def retention_pond_tab(tab_object):
     pct_full_sed_rem = tab_object.number_input('Pct. Full when sediment removed from Forebay/Main Pool (percent)**', value=25) / 100
     quantity_sed_removed_forebay = tab_object.number_input('Quantity of Sediment Removed from Forebay (yd. cubed)', value=forbay_vol * pct_full_sed_rem)
     quantity_sed_removed_mainpool = tab_object.number_input('Quantity of Sediment Removed from Main Pool (yd. cubed)', value=main_pool_vol * pct_full_sed_rem)
-    tab_object.write("* Model default is no separate maintenance of the forebay.")
-    tab_object.write("** Can adjust to be higher if expect heavy soils/sediment deposition to basin.")
+    superscript(tab_object, "* Model default is no separate maintenance of the forebay.")
+    superscript(tab_object, "** Can adjust to be higher if expect heavy soils/sediment deposition to basin.")
 
     tab_object.subheader("Whole Life Cost Options")
     discount_rate = tab_object.number_input('Discount Rate', value=5.50, key="rp_discount_rate")
