@@ -8,6 +8,9 @@ st.set_page_config(layout="wide")
 add_logo("media/logo.png", height=150)
 
 st.title('TDoT GI Home')
+st.header("Profile")
+st.selectbox("Select a profile", ["TDoT", "Nashville", "Knoxville", "Memphis", "Chattanooga", "Other"])
+
 loc = get_geolocation()
 if loc:
     loc_df = pd.DataFrame([[loc["coords"]["latitude"], loc["coords"]["longitude"]]], columns=["lat", "lon"])
