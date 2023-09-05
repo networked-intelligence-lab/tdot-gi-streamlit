@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from collections import defaultdict
+from helpers.helpers import filter_nested_dict
 
 col1, col2 = st.columns(2)
 
@@ -8,6 +9,7 @@ option_df = pd.read_excel("data/ResearchProjectSpreadsheet.xlsx", sheet_name="De
 categories_df = option_df[["Unnamed: 0", "Subcategory"]][3:]
 category_dict = defaultdict(dict)
 curr_category = None
+dict_of_vals = {}
 for index, row in categories_df.iterrows():
     category = row["Unnamed: 0"]
     subcategory = row["Subcategory"]
@@ -19,10 +21,22 @@ for index, row in categories_df.iterrows():
     else:
         category_dict[curr_category][category] = index
 
-with col1:
-    st.title('Research Spreadsheet')
-    spreadsheet_t = st.tabs(["Spreadsheet Tool"])
+def determine_logic():
+    global category_dict, col2
+    if st.session_state["<h4>Cross-sectional & Side Slope Restrictions</h4>_input"] == "Per Device":
+        category_dict = filter_nested_dict(category_dict, 25)
+    with col2:
+        st.subheader("Possible Green Infrastructure")
+        for major_category in category_dict.keys():
+            if len(category_dict[major_category]) > 0:
+                sub_dict = category_dict[major_category]
+                st.multiselect(major_category, [k for k in sub_dict.keys()], [k for k in sub_dict.keys()])
+    st.write(category_dict)
 
+
+with col1:
+    st.title('Determine GI')
+    spreadsheet_t = st.tabs(["Tool Options"])
     for col in option_df.columns[2:]:
         col_header = [v for v in option_df[col][:3] if str(v) != "nan"]
         headers = []
@@ -39,14 +53,12 @@ with col1:
         options = list(set([str(v) for v in option_df[col][3:] if str(v) != "nan"]))
         options.insert(0, "")
         options.sort()
-        st.selectbox(options_text, options)
+        col_name = ''.join(headers)
+        if col_name != '':
+            dict_of_vals[f"{col_name}_input"] = st.selectbox(options_text, options, key=f"{col_name}_input")
+    st.write(dict_of_vals)
 
-with col2:
-    st.subheader("Possible Green Infrastructure")
-    for major_category in category_dict.keys():
-        sub_dict = category_dict[major_category]
-        st.multiselect(major_category, [k for k in sub_dict.keys()], [k for k in sub_dict.keys()])
-
+determine_logic()
 # categories_df = option_df[["Unnamed: 0", "Subcategory"]][3:]
 #
 # category_dict = defaultdict(dict)
