@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from collections import defaultdict
-from helpers.helpers import filter_nested_dict, get_leaf_values, count_leaf_values
+from helpers.helpers import filter_nested_dict, get_leaf_values, count_leaf_values, is_float
 
 col1, col2 = st.columns(2)
 
@@ -34,22 +34,45 @@ def determine_logic():
     """
     global category_dict, col2
     valid_options = get_leaf_values(category_dict)
-    print(valid_options)
+    # print(_type)
     for option_header in options_dict.keys():
-        default_filters = [st.session_state[option_header] != ""]
+        _type = st.session_state[f"{option_header.replace('_input', '')}_type"]
+        print(_type)
+        if _type != '':
+            option_session_key = f"{option_header}@{_type}"
+        else:
+            option_session_key = option_header
+        default_filters = [st.session_state[option_session_key] != ""]
         st.write(option_header)
-        if "Maximum" in option_header:
-            try:
-                user_value = float(st.session_state[option_header])
-            except (ValueError, TypeError) as e:
-                print(e)
+        if "Max" in option_header:
+            if _type == "Numeric":
+                try:
+                    user_value = float(st.session_state[option_session_key])
+                except (ValueError, TypeError) as e:
+                    pass
+                else:
+                    for gi_index, option_max in options_dict[option_header]["options"].items():
+                        try:
+                            option_max = float(option_max)
+                        except (ValueError, TypeError):
+                            try:
+                                valid_options.remove(gi_index)
+                            except ValueError:
+                                pass
+                        else:
+                            st.write(f"{user_value}, {option_max}")
+                            if all([user_value > option_max] + default_filters):
+                                try:
+                                    valid_options.remove(gi_index)
+                                except ValueError:
+                                    pass
             else:
                 for gi_index, option_max in options_dict[option_header]["options"].items():
-                    print(user_value, option_max)
-                    option_max = float(option_max)
-                    st.write(f"{user_value}, {option_max}")
-                    if all([user_value > option_max] + default_filters):
-                        valid_options.remove(gi_index)
+                    if all([st.session_state[option_session_key] > option_max] + default_filters):
+                        try:
+                            valid_options.remove(gi_index)
+                        except ValueError:
+                            pass
 
     # if st.session_state["<h4>Cross-sectional & Side Slope Restrictions</h4>_input"] == "Per Device":
     #     category_dict = filter_nested_dict(category_dict, 25)
@@ -91,10 +114,48 @@ with col1:
 
         st.write("".join(headers), unsafe_allow_html=True)
         options = list(set([str(v) for v in option_df[col][3:] if str(v) != "nan"]))
+
+        types_of_options = []
+        for option in options:
+            option = option.strip()
+            if is_float(option):
+                types_of_options.append("Numeric")
+            elif ":" in option:
+                types_of_options.append("Ratio")
+            elif any(["Range" in option, '-' in option]):
+                types_of_options.append("Range")
+            elif all([str(option) != 'nan', option != ""]):
+                print(option)
+                types_of_options.append("Other")
+        types_of_options = list(set(types_of_options))
         options.insert(0, "")
         options.sort()
-        if col_name != '':
-            dict_of_vals[f"{col_name}_input"] = st.selectbox(options_text, options, key=f"{col_name}_input")
+        # print(col_name, types_of_options)
+        if len(types_of_options) > 1:
+            type_col, opt_col = st.columns(2)
+            # st.session_state[f"{col_name}_type"] = types_of_options[0]
+            with type_col:
+                types_of_options.sort()
+                dict_of_vals[f"{col_name}_type"] = st.selectbox("Type", types_of_options, key=f"{col_name}_type")
+
+            with opt_col:
+                _type = st.session_state[f"{col_name}_type"]
+                if st.session_state[f"{col_name}_type"] == "Range":
+                    st.selectbox("Range", [o for o in options if any(["Range" in o, "-" in o, o == ''])], key=f"{col_name}_input@{_type}")
+                elif st.session_state[f"{col_name}_type"] == "Ratio":
+                    st.selectbox(options_text, [o for o in options if any([":" in o, o == ''])], key=f"{col_name}_input@{_type}")
+                elif st.session_state[f"{col_name}_type"] == "Numeric":
+                    st.selectbox(options_text, [o for o in options if any([is_float(o), o == ''])], key=f"{col_name}_input@{_type}")
+                elif st.session_state[f"{col_name}_type"] == "Other":
+                    st.selectbox(options_text,
+                                 [o for o in options if not any(["Range" in o, "-" in o,
+                                                                 ":" in o,
+                                                                 o.isnumeric()])],
+                                 key=f"{col_name}_input@{_type}")
+        else:
+            st.session_state[f"{col_name}_type"] = ''
+            if col_name != '':
+                dict_of_vals[f"{col_name}_input"] = st.selectbox(options_text, options, key=f"{col_name}_input")
     st.write(st.session_state)
 
 determine_logic()
