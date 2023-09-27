@@ -7,8 +7,10 @@ import pprint
 import json
 import geopy.distance
 
-with open("tokens/tokens") as tokens_file:
-    tokens = json.load(tokens_file)
+# with open("tokens/tokens") as tokens_file:
+#     tokens = json.load(tokens_file)
+
+tokens = st.secrets
 
 add_logo("media/logo.png", height=150)
 st.title("Social Impact")
