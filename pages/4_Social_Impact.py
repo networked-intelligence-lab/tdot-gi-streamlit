@@ -6,8 +6,6 @@ import googlemaps
 import pprint
 import json
 import geopy.distance
-
-<<<<<<< HEAD
 import warnings
 
 # Suppress all warnings
@@ -15,12 +13,8 @@ warnings.simplefilter("ignore")
 
 with open("tokens/tokens") as tokens_file:
     tokens = json.load(tokens_file)
-=======
 # with open("tokens/tokens") as tokens_file:
 #     tokens = json.load(tokens_file)
-
-tokens = st.secrets
->>>>>>> 8700d474ee44179b6a2ae255d1600359ed405547
 
 add_logo("media/logo.png", height=150)
 st.title("Social Impact")
