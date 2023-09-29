@@ -7,3 +7,4 @@ streamlit_extras
 streamlit_js_eval
 st-pages
 openpyxl
+seaborn
