@@ -9,3 +9,5 @@ try:
 except FileNotFoundError:
     data = json.load(open("profiles/Default.json"))
     user_profile = "profiles/Default.json"
+
+col_data = [{}, {}, {}]

@@ -1,5 +1,9 @@
 import streamlit as st
 from modules.helpers import subsubheader
+from streamlit_extras.app_logo import add_logo
+import json
+
+add_logo("media/logo.png", height=150)
 
 st.title('Documentation')
 st.subheader('Technical Documentation')
@@ -11,7 +15,7 @@ st.markdown('''
 4. Code Structure''')
 
 subsubheader(st, 'Introduction')
-st.write('The tool is developed using Python and the Streamlit library. The tool is hosted on Streamlit Sharing, which is a free service provided by Streamlit. The tool is available at https://share.streamlit.io/andrew-chen-ut/cval-tool/main/app.py. The tool is developed primarily through the following libraries:')
+st.write('The tool is developed using Python and the Streamlit library. The tool is developed primarily through the following libraries:')
 st.markdown('''
 1. Streamlit
 2. Pandas
@@ -34,6 +38,3 @@ st.markdown('''
 5. Collated equations data from research
     - For calculations such as total stormwater runoff, etc.
 ''')
-
-
-st.subheader('User Documentation')

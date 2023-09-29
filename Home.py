@@ -8,6 +8,8 @@ from registry.registry import *
 import os
 import json
 import shutil
+from st_pages import show_pages_from_config, add_page_title
+import time
 
 st.set_page_config(layout="wide")
 add_logo("media/logo.png", height=150)
@@ -22,6 +24,7 @@ try:
     profile_list.insert(0, last_selected_profile)
 except ValueError:
     pass
+
 user_profile = st.selectbox("Select a profile", profile_list, key="user_profile")
 update_registry(registry, "last_selected_profile", user_profile)
 with st.expander("Create new profile"):
@@ -32,6 +35,7 @@ with st.expander("Create new profile"):
             shutil.copyfile(profile_template, f"profiles/{new_profile_name}.json")
         user_profile = f"profiles/{new_profile_name}.json"
         update_registry(registry, "last_selected_profile", user_profile)
+        st.experimental_rerun()
 
 with st.expander("Delete profile"):
     selected_profile = st.selectbox("Select a profile to delete", profile_list)
@@ -39,20 +43,21 @@ with st.expander("Delete profile"):
         os.remove(selected_profile)
         profile_list = list(glob("profiles/*.json"))
         registry["user_profile"] = glob("profiles/*.json")[0]
+        st.experimental_rerun()
 
 st.write(f"Selected profile: {user_profile}")
-
 
 st.header("Configuration")
 num_cols = st.number_input("Select number of GI points of interest", min_value=1, max_value=3, value=1, step=1)
 cols = st.columns(num_cols)
-
+loc = get_geolocation()
 for idx, col in enumerate(cols):
-    loc = get_geolocation(component_key=f"loc{idx}")
     if num_cols > 1:
         col.header(f"Location {idx + 1}")
     else:
         col.header("Location")
+
+    time.sleep(2)
     if loc:
         loc_df = pd.DataFrame([[loc["coords"]["latitude"], loc["coords"]["longitude"]]], columns=["lat", "lon"])
         loc_input = col.text_input("Enter latitude and longitude", value=f"{loc['coords']['latitude']}, {loc['coords']['longitude']}", key=f"loc_input{idx}")
@@ -60,4 +65,4 @@ for idx, col in enumerate(cols):
         loc_input = col.text_input("Enter latitude and longitude", value="36.1627, -86.7816", key=f"loc_input{idx}")
         loc_df = pd.DataFrame([[float(loc_input.split(",")[0]), float(loc_input.split(",")[1])]], columns=["lat", "lon"])
     col.write("Enter latitude and longitude in the format: 36.1627, -86.7816")
-    col.map(data=loc_df)
+    col.map(data=pd.DataFrame([[float(loc_input.split(',')[0].strip()), float(loc_input.split(',')[1].strip())]], columns=["lat", "lon"]))

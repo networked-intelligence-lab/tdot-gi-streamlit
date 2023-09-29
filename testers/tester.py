@@ -1,4 +1,12 @@
-import streamlit as st
 
-st.text_input("test", key="test", value="test")
-print(st.session_state["test"])
+class Person():
+    def __init__(self, name, age):
+        self.name = name
+        if age > 100:
+            raise Exception("Age is too high")
+        else:
+            self.age = age
+
+    def birthday(self):
+        self.age += 1
+        return self.age

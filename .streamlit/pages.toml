@@ -1,0 +1,9 @@
+[[pages]]
+path = "Home.py"
+name = "Home"
+icon = "🏠"
+
+[[pages]]
+path = "pages/1_Research_Spreadsheet.py"
+name = "Determine GI"
+icon = ":books:"

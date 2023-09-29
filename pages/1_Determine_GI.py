@@ -13,6 +13,7 @@ valid_headers = []
 col_to_option = {}
 curr_category = None
 dict_of_vals = {}
+
 for index, row in categories_df.iterrows():
     category = row["Unnamed: 0"]
     subcategory = row["Subcategory"]
@@ -23,6 +24,7 @@ for index, row in categories_df.iterrows():
         category_dict[curr_category][subcategory] = index
     else:
         category_dict[curr_category][category] = index
+
 
 def determine_logic():
     """

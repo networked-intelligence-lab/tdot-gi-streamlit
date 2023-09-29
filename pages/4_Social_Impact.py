@@ -7,6 +7,11 @@ import pprint
 import json
 import geopy.distance
 
+import warnings
+
+# Suppress all warnings
+warnings.simplefilter("ignore")
+
 with open("tokens/tokens") as tokens_file:
     tokens = json.load(tokens_file)
 
@@ -16,12 +21,10 @@ st.title("Social Impact")
 loc = get_geolocation()
 if loc:
     loc_input = st.text_input("Enter latitude and longitude", value=f"{loc['coords']['latitude']}, {loc['coords']['longitude']}")
-    print(loc_input)
     loc_df = pd.DataFrame([[float(loc_input.split(", ")[0]), float(loc_input.split(", ")[1]), "#FF000090"]],
                           columns=["lat", "lon", "color"])
 else:
     loc_input = st.text_input("Enter latitude and longitude", value="36.1627, -86.7816")
-    print(loc_input)
     loc_df = pd.DataFrame([[float(loc_input.split(",")[0]), float(loc_input.split(",")[1]), "#FF000090"]], columns=["lat", "lon", "color"])
 st.write("Enter latitude and longitude in the format: 36.1627, -86.7816")
 
@@ -36,15 +39,18 @@ nearby_result = gmaps.places_nearby(
 
 pp = pprint.PrettyPrinter(indent=1)
 parks_list = []
+loc_df_list = []
 for place_result in nearby_result["results"]:
     place_loc = (place_result["geometry"]["location"]["lat"], place_result["geometry"]["location"]["lng"])
-    loc_df = loc_df.append({"lat": place_loc[0], "lon": place_loc[1], "color": "#0000FF90"}, ignore_index=True)
+    # result_df = pd.DataFrame([[place_loc[0], place_loc[1], "#0000FF90"]], columns=["lat", "lon", "color"])
+    # loc_df = loc_df.append({"lat": place_loc[0], "lon": place_loc[1], "color": "#0000FF90"}, ignore_index=True)
+    loc_df_list.append({"lat": place_loc[0], "lon": place_loc[1], "color": "#0000FF90"})
     parks_list.append({"Distance Away (straight-line; in miles)": geopy.distance.distance(user_loc, place_loc).miles, "Park Name": place_result["name"]})
+loc_df = loc_df.from_dict(loc_df_list)
 parks_df = pd.DataFrame.from_dict(parks_list).sort_values(by="Distance Away (straight-line; in miles)", ascending=True)
 st.dataframe(parks_df, hide_index=True)
-
 st.header("User Location")
-st.map(loc_df, latitude="lat", longitude="lon", color="color", size=20)
+st.map(loc_df, latitude="lat", longitude="lon", size=20)
 
 st.header("Enhanced Property Value")
 median_prop_val = st.number_input("Median of the property value for that area and anticipated enhancement in value", value=0)
