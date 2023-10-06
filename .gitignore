@@ -4,3 +4,4 @@
 *__pycache__*
 
 tokens/*
+.streamlit/secrets.toml
