@@ -5,9 +5,21 @@ import json
 climate_zones_data = json.load(open("data/climate_tree.json"))
 add_logo("media/logo.png", height=150)
 
+if any([f"{pollutant}_acp" not in st.session_state for pollutant in climate_zones_data[list(climate_zones_data.keys())[0]]["Pollutant Uptake"].keys()]):
+    st.session_state["O3_acp"] = 3.34
+    st.session_state["NO2_acp"] = 3.34
+    st.session_state["SO2_acp"] = 2.06
+    st.session_state["PM10_acp"] = 2.84
+
 st.title("Environmental Impact")
-st.header("Climate Zone")
+st.header("Options")
 climate_zone = st.selectbox("Select STRATUM Climate Zone", climate_zones_data.keys())
+num_small_trees = st.number_input("Number of Small Trees", value=0) * \
+                  climate_zones_data[climate_zone]["Annual Interception"]["Small Tree"]
+num_medium_trees = st.number_input("Number of Medium Trees", value=0) * \
+                   climate_zones_data[climate_zone]["Annual Interception"]["Medium Tree"]
+num_large_trees = st.number_input("Number of Large Trees", value=0) * \
+                  climate_zones_data[climate_zone]["Annual Interception"]["Large Tree"]
 
 st.header("Reduced Stormwater Runoff")
 """
@@ -23,9 +35,7 @@ Where,
 Q_(TP) (gallons)=Number of Trees×i_t
 """
 st.subheader("Tree Plantation")
-num_small_trees = st.number_input("Number of Small Trees", value=0) * climate_zones_data[climate_zone]["Annual Interception"]["Small Tree"]
-num_medium_trees = st.number_input("Number of Medium Trees", value=0) * climate_zones_data[climate_zone]["Annual Interception"]["Medium Tree"]
-num_large_trees = st.number_input("Number of Large Trees", value=0) * climate_zones_data[climate_zone]["Annual Interception"]["Large Tree"]
+
 q_tp = num_small_trees + num_medium_trees + num_large_trees
 st.write(f"Runoff amount reduced by tree plantation: {q_tp} gallons/year")
 
@@ -65,3 +75,20 @@ st.subheader("Benefit Monetization")
 conversion_factor = st.number_input("Conversion Factor from 2009 to current USD", value=1.42)
 st.write(f"Monetary Gain from Avoided Stormwater Treatment: {q_t * 0.01 * conversion_factor} USD/year")
 
+st.header("Reduced Air Pollutants")
+lb_reduc_per_pollutant = {}
+for pollutant in climate_zones_data[climate_zone]["Pollutant Uptake"].keys():
+    small_tree_pollutant_amt = num_small_trees * climate_zones_data[climate_zone]["Pollutant Uptake"][pollutant]["Small Tree"]
+    medium_tree_pollutant_amt = num_medium_trees * climate_zones_data[climate_zone]["Pollutant Uptake"][pollutant]["Medium Tree"]
+    large_tree_pollutant_amt = num_large_trees * climate_zones_data[climate_zone]["Pollutant Uptake"][pollutant]["Large Tree"]
+    lb_reduc_per_pollutant[pollutant] = small_tree_pollutant_amt + medium_tree_pollutant_amt + large_tree_pollutant_amt
+st.write("Total annual air pollutant reduction (lbs):", sum(lb_reduc_per_pollutant.values()))
+st.write("Total value of pollutant reduction ($):", sum([st.session_state[f"{pollutant}_acp"] * lb_reduc_per_pollutant[pollutant] for pollutant in lb_reduc_per_pollutant.keys()]))
+
+st.header("Reduced Energy Use")
+k_es = sum([num_small_trees * climate_zones_data[climate_zone]["Energy Saved"]["Small Tree"],
+            num_medium_trees * climate_zones_data[climate_zone]["Energy Saved"]["Medium Tree"],
+            num_large_trees * climate_zones_data[climate_zone]["Energy Saved"]["Large Tree"]])
+
+st.write("40 Year Average of Energy Saved (kWh/tree per year):", k_es)
+st.write("Value of Energy Saved ($):", k_es * (11.88 / 100))
