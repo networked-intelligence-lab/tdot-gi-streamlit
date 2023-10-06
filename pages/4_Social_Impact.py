@@ -63,3 +63,5 @@ total_ant_veg_area = st.number_input("Total anticipated vegetation area", value=
 total_parklot_veg_area = st.number_input("Total anticipated parking lot area to be vegetated", value=0)
 total_green_roof = st.number_input("Total anticipated green roof area", value=0)
 st.write(f"Total anticipated vegetated area for recreational use: {total_ant_veg_area + total_parklot_veg_area + total_green_roof} sq. ft.")
+
+st.header("Heat Reduction")

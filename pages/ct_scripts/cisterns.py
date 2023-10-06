@@ -1,33 +1,30 @@
 def cisterns_tab(tab_object):
-    tab_object.header('Design and Maintenance Options')
-    tab_object.subheader("Storage Requirements")
-    tank_size = tab_object.number_input('Tank Size (gallons)', value=6300, step=1)
-    impervious_area = tab_object.number_input('Impervious Drainage Area, DA (often roof area; sq.ft)', value=5000,
-                                             step=1)
-    rainfall_event = tab_object.number_input('Max Design Rainfall Event (inches)', value=2)
+    """
 
-    tab_object.write(f"Total storage needed: {(impervious_area * (rainfall_event / 12)) * 7.48}")
+    :param tab_object:
+    :type tab_object: streamlit.tab.Tab
+    :return:
+    """
 
-    tab_object.subheader("System Characteristics")
-    material = tab_object.selectbox('Type of Tank Desired', ('Steel', 'Fiberglass', 'Concrete', 'HDPE'))
-    tank_costs_gallon = {
-        'Steel': 2.51,
-        'Fiberglass': 1.33,
-        'Concrete': 1.66,
-        'HDPE': 1.43}
+    tab_object.subheader("Capital Cost")
+    impervious_area = tab_object.number_input("Impervious Area (ft^2)", value=0)
+    rainfall_event = tab_object.number_input("Max Design Rainfall Event (in)", value=2)
+    precip_volume_gen = (impervious_area * (rainfall_event / 12)) * 7.48
+    material = tab_object.selectbox("Material", options=["Steel", "Fiberglass", "Concrete", "HDPE"])
+    total_storage_needed = tab_object.number_input("Total Storage Needed (gal)", value=precip_volume_gen)
+    material_costs = {"Steel": 1.33, "Fiberglass": 2.51, "Concrete": 1.43, "HDPE": 1.66}
+    tab_object.write(f"Total Capital Cost: ${total_storage_needed * material_costs[material]}")
 
-    tab_object.write(f"Estimated tank cost: {tank_costs_gallon[material] * tank_size}")
-    install_cost = tab_object.number_input('Installation cost', value=6275)
-    pump_size = tab_object.number_input('Pump Size Needed (horsepower)', value=0.5)
-    pump_cost = tab_object.number_input('Pump Cost', value=599)
-    potable_resup = tab_object.number_input('Potable Re-Supply', value=0)
 
-    tab_object.write(
-        f"System base cost: {sum([tank_costs_gallon[material] * tank_size, install_cost, pump_cost, potable_resup])}")
+    tab_object.subheader("Maintenance Cost")
+    irim_select = tab_object.selectbox("Inspection, Reporting & Information Management", options=["Low", "Medium", "High"])
+    irim_value = {"Low": 135, "Medium": 130 * 2, "High": 340 * 12}[irim_select]
+    rwc_select = tab_object.selectbox("Roof Washing, Cleaning Inflow Filters", options=["Low", "Medium", "High"])
+    rwc_value = {"Low": 150, "Medium": 240 * 2, "High": 540 * 12}[rwc_select]
+    tid_select = tab_object.selectbox("Tank inspection and disinfection", options=["Low", "Medium", "High"])
+    tid_value = {"Low": 120 * 0.5, "Medium": 240 * 1, "High": 360 * 2}[tid_select]
+    ism_select = tab_object.selectbox("Intermittent System Maintenance (System flush, debris/sediment removal from tank)", options=["Low", "Medium", "High"])
+    ism_value = {"Low": 270 * (1/3), "Medium": 390 * (1/3), "High": 510 * (1/3)}[ism_select]
 
-    system_design_cost = tab_object.number_input('System Design Cost', value=1387)
-
-    tab_object.write(
-        f"Total facility cost: {sum([tank_costs_gallon[material] * tank_size, install_cost, pump_cost, potable_resup, system_design_cost])}")
-
+    tab_object.write(f"Total Maintenance Cost: ${sum([irim_value, rwc_value, tid_value, ism_value])}")
     return tab_object
