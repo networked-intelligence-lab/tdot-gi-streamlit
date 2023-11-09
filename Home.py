@@ -20,6 +20,10 @@ add_logo("media/logo.png", height=150)
 
 st.title('TDoT GI Home')
 st.subheader("Last updated: 11/09/2023")
+
+# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+# ■ Profiles                                                                                                           ■
+# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 st.header("Profile")
 profile_list = list(glob("profiles/*.json"))
 # move last selected profile to the start of the list
@@ -53,7 +57,18 @@ with st.expander("Delete profile"):
 st.write(f"Selected profile: {user_profile}")
 
 st.header("Configuration")
-num_cols = st.number_input("Select number of GI points of interest", min_value=1, max_value=3, value=1, step=1)
+
+# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+# ■ Locations                                                                                                          ■
+# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+if "locations" not in st.session_state:
+    st.session_state["locations"] = {}
+
+if "num_locations" not in st.session_state:
+    st.session_state["num_locations"] = 1
+
+
+num_cols = st.number_input("Select number of GI points of interest", min_value=1, max_value=3, value=st.session_state.num_locations, step=1)
 cols = st.columns(num_cols)
 loc = get_geolocation()
 for idx, col in enumerate(cols):
@@ -64,17 +79,19 @@ for idx, col in enumerate(cols):
 
     time.sleep(2)
     if loc:
-        loc_df = pd.DataFrame([[loc["coords"]["latitude"], loc["coords"]["longitude"]]], columns=["lat", "lon"])
+        # loc_df = pd.DataFrame([[loc["coords"]["latitude"], loc["coords"]["longitude"]]], columns=["lat", "lon"])
+        input_loc = [loc["coords"]["latitude"], loc["coords"]["longitude"]]
         loc_input = col.text_input("Enter latitude and longitude", value=f"{loc['coords']['latitude']}, {loc['coords']['longitude']}", key=f"loc_input{idx}")
     else:
         loc_input = col.text_input("Enter latitude and longitude", value="36.1627, -86.7816", key=f"loc_input{idx}")
-        loc_df = pd.DataFrame([[float(loc_input.split(",")[0]), float(loc_input.split(",")[1])]], columns=["lat", "lon"])
+        # loc_df = pd.DataFrame([[float(loc_input.split(",")[0]), float(loc_input.split(",")[1])]], columns=["lat", "lon"])
+        input_loc = [float(loc_input.split(",")[0]), float(loc_input.split(",")[1])]
     col.write("Enter latitude and longitude in the format: 36.1627, -86.7816")
-    # col.map(data=pd.DataFrame([[float(loc_input.split(',')[0].strip()), float(loc_input.split(',')[1].strip())]], columns=["lat", "lon"]))
+    st.session_state["locations"][f"Location {idx + 1}"] = input_loc
 
     with col:
         # Create a map object
-        m = folium.Map(location=[float(loc_input.split(',')[0].strip()), float(loc_input.split(',')[1].strip())], zoom_start=14)
+        m = folium.Map(location=input_loc, zoom_start=14)
 
         # Add the draw tool to the map
         draw = Draw(export=True)
