@@ -26,6 +26,19 @@ for index, row in categories_df.iterrows():
         category_dict[curr_category][category] = index
 
 
+def add_scenario():
+    new_scenario = f"Scenario {len(st.session_state.scenarios) + 1}"
+    st.session_state.scenarios.append(new_scenario)
+
+
+def remove_scenario():
+    # Prevent removing the last scenario if desired
+    if len(st.session_state.scenarios) > 1:
+        st.session_state.scenarios.remove(scenario)
+    else:
+        st.warning("You cannot remove the last scenario.")
+
+
 def determine_logic():
     """
     This function determines what GI options are available based on the user's input and maniuplates the category_dict/
@@ -91,6 +104,24 @@ def determine_logic():
 
 with col1:
     st.title('Determine GI')
+    if 'scenarios' not in st.session_state:
+        st.session_state.scenarios = ["Scenario 1"]
+
+    # Select box for displaying scenarios
+    scenario = st.selectbox('Select a scenario', st.session_state.scenarios)
+
+    add_col, remove_col = st.columns(2)
+    with add_col:
+        st.button('Add Scenario', on_click=add_scenario, use_container_width=True)
+
+    with remove_col:
+        st.button('Remove Scenario', on_click=remove_scenario, use_container_width=True)
+
+
+    # You can display the selected scenario or do further processing
+    st.write(f"You have selected: {scenario}")
+
+
     spreadsheet_t = st.tabs(["Tool Options"])
 
     for idx, col in enumerate(option_df.columns[2:]):
