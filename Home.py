@@ -15,6 +15,7 @@ st.set_page_config(layout="wide")
 add_logo("media/logo.png", height=150)
 
 st.title('TDoT GI Home')
+st.subheader("Last updated: 11/09/2023")
 st.header("Profile")
 profile_list = list(glob("profiles/*.json"))
 # move last selected profile to the start of the list
