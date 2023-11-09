@@ -61,46 +61,48 @@ st.header("Configuration")
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 # ■ Locations                                                                                                          ■
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+# Initialize session state
 if "locations" not in st.session_state:
     st.session_state["locations"] = {}
 
 if "num_locations" not in st.session_state:
     st.session_state["num_locations"] = 1
 
+# Get the number of locations from user input
+num_cols = st.number_input("Select number of GI points of interest", min_value=1, max_value=3, value=st.session_state["num_locations"], step=1)
+st.session_state["num_locations"] = num_cols  # Update session state with the current number of locations
 
-num_cols = st.number_input("Select number of GI points of interest", min_value=1, max_value=3, value=st.session_state.num_locations, step=1)
 cols = st.columns(num_cols)
 loc = get_geolocation()
-for idx, col in enumerate(cols):
-    if num_cols > 1:
-        col.header(f"Location {idx + 1}")
-    else:
-        col.header("Location")
 
+for idx, col in enumerate(cols):
+    col.header(f"Location {idx + 1}" if num_cols > 1 else "Location")
     time.sleep(2)
+
     if loc:
-        # loc_df = pd.DataFrame([[loc["coords"]["latitude"], loc["coords"]["longitude"]]], columns=["lat", "lon"])
-        input_loc = [loc["coords"]["latitude"], loc["coords"]["longitude"]]
-        loc_input = col.text_input("Enter latitude and longitude", value=f"{loc['coords']['latitude']}, {loc['coords']['longitude']}", key=f"loc_input{idx}")
+        # Use the geolocation if available
+        default_value = f"{loc['coords']['latitude']}, {loc['coords']['longitude']}"
     else:
-        loc_input = col.text_input("Enter latitude and longitude", value="36.1627, -86.7816", key=f"loc_input{idx}")
-        # loc_df = pd.DataFrame([[float(loc_input.split(",")[0]), float(loc_input.split(",")[1])]], columns=["lat", "lon"])
-        input_loc = [float(loc_input.split(",")[0]), float(loc_input.split(",")[1])]
+        # Use a default value if no geolocation is found
+        default_value = "36.1627, -86.7816"
+
+    # Get the location input from the user
+    loc_input = col.text_input("Enter latitude and longitude", value=default_value, key=f"loc_input{idx}")
+    input_loc = [float(coord.strip()) for coord in loc_input.split(',')]
+
     col.write("Enter latitude and longitude in the format: 36.1627, -86.7816")
     st.session_state["locations"][f"Location {idx + 1}"] = input_loc
 
     with col:
         # Create a map object
         m = folium.Map(location=input_loc, zoom_start=14)
-
         # Add the draw tool to the map
         draw = Draw(export=True)
         draw.add_to(m)
-
         # Display the map
         folium_static(m)
 
-        # You can also retrieve the drawn shapes as GeoJSON
-        draw_data = st.session_state.get('draw_data', {})
-        if draw_data:
-            st.json(draw_data)
+# Retrieve the drawn shapes as GeoJSON (assuming this part is handled elsewhere in the code)
+draw_data = st.session_state.get('draw_data', {})
+if draw_data:
+    st.json(draw_data)
