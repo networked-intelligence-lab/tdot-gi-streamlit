@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 from collections import defaultdict
-from helpers.helpers import filter_nested_dict, get_leaf_values, count_leaf_values, is_float
+from helpers.helpers import filter_nested_dict, get_leaf_values, count_leaf_values, is_float, get_location_name, limit_string
+
 
 col1, col2 = st.columns(2)
 
@@ -13,6 +14,8 @@ valid_headers = []
 col_to_option = {}
 curr_category = None
 dict_of_vals = {}
+
+
 
 for index, row in categories_df.iterrows():
     category = row["Unnamed: 0"]
@@ -121,9 +124,14 @@ with col1:
     # You can display the selected scenario or do further processing
     st.write(f"You have selected: {scenario}")
 
+    if "locations" not in st.session_state:
+        st.error("""Locations not found! Please go back to the home page, under *Configuration* and 
+        ensure that location is set.""")
+    else:
+        st.selectbox("Location", [f"1: {limit_string(get_location_name(v[0], v[1]), 40)} @ {v}" for v in st.session_state.locations.values()])
+
 
     spreadsheet_t = st.tabs(["Tool Options"])
-
     for idx, col in enumerate(option_df.columns[2:]):
         col_header = [v for v in option_df[col][:3] if str(v) != "nan"]
         headers = []
