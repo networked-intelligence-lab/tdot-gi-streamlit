@@ -10,6 +10,10 @@ import json
 import shutil
 from st_pages import show_pages_from_config, add_page_title
 import time
+from streamlit_folium import folium_static
+import folium
+from folium.plugins import Draw
+
 
 st.set_page_config(layout="wide")
 add_logo("media/logo.png", height=150)
@@ -66,4 +70,20 @@ for idx, col in enumerate(cols):
         loc_input = col.text_input("Enter latitude and longitude", value="36.1627, -86.7816", key=f"loc_input{idx}")
         loc_df = pd.DataFrame([[float(loc_input.split(",")[0]), float(loc_input.split(",")[1])]], columns=["lat", "lon"])
     col.write("Enter latitude and longitude in the format: 36.1627, -86.7816")
-    col.map(data=pd.DataFrame([[float(loc_input.split(',')[0].strip()), float(loc_input.split(',')[1].strip())]], columns=["lat", "lon"]))
+    # col.map(data=pd.DataFrame([[float(loc_input.split(',')[0].strip()), float(loc_input.split(',')[1].strip())]], columns=["lat", "lon"]))
+
+    with col:
+        # Create a map object
+        m = folium.Map(location=[float(loc_input.split(',')[0].strip()), float(loc_input.split(',')[1].strip())], zoom_start=14)
+
+        # Add the draw tool to the map
+        draw = Draw(export=True)
+        draw.add_to(m)
+
+        # Display the map
+        folium_static(m)
+
+        # You can also retrieve the drawn shapes as GeoJSON
+        draw_data = st.session_state.get('draw_data', {})
+        if draw_data:
+            st.json(draw_data)
