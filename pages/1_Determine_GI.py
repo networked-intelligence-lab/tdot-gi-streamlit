@@ -16,7 +16,6 @@ curr_category = None
 dict_of_vals = {}
 
 
-
 for index, row in categories_df.iterrows():
     category = row["Unnamed: 0"]
     subcategory = row["Subcategory"]
@@ -32,6 +31,62 @@ for index, row in categories_df.iterrows():
 def add_scenario():
     new_scenario = f"Scenario {len(st.session_state.scenarios) + 1}"
     st.session_state.scenarios.append(new_scenario)
+
+import re
+import pandas as pd
+
+def numeric_parser(value):
+    if pd.isnull(value):
+        return None
+    if isinstance(value, (int, float)):
+        return value  # Return numeric values as-is
+
+    value = str(value).strip()
+
+    # Check for "<number" pattern (e.g., "<1")
+    if value.startswith('<'):
+        try:
+            return [0, float(value[1:])]
+        except ValueError:
+            return None  # In case of invalid format
+
+    # Check for "Range xx-yy%" pattern (e.g., "Range 10-20%")
+    if value.lower().startswith('range'):
+        numbers = re.findall(r'\d+', value)
+        try:
+            return [float(numbers[0])/100, float(numbers[1])/100]
+        except (ValueError, IndexError):
+            return None  # In case of invalid format
+
+    # Check for ratio pattern (e.g., "3:1")
+    if ':' in value:
+        numbers = value.split(':')
+        try:
+            return float(numbers[0]) / float(numbers[1])
+        except (ValueError, ZeroDivisionError):
+            return None  # In case of invalid ratio
+
+    # Check for percentage pattern (e.g., "20%")
+    if value.endswith('%'):
+        try:
+            return float(value[:-1]) / 100
+        except ValueError:
+            return None  # In case of invalid percentage
+
+    # Check for range pattern (e.g., "xx - yy")
+    if '-' in value:
+        numbers = re.findall(r'\d+', value)
+        try:
+            return [float(num) for num in numbers]
+        except ValueError:
+            return None  # In case of invalid range
+
+    # Default case if no pattern matched
+    return None
+
+# Example usage with a DataFrame column
+# Replace 'column_name' with the actual name of the column
+# data['column_name'] = data['column_name'].apply(numeric_parser)
 
 
 def remove_scenario():
@@ -62,7 +117,7 @@ def determine_logic():
             option_session_key = option_header
         default_filters = [st.session_state[option_session_key] != ""]
         st.write(option_header)
-        if "Max" in option_header:
+        if "max" in option_header.lower():
             if _type == "Numeric":
                 try:
                     user_value = float(st.session_state[option_session_key])
@@ -186,7 +241,16 @@ with col1:
                 elif st.session_state[f"{col_name}_type"] == "Ratio":
                     st.selectbox(options_text, [o for o in options if any([":" in o, o == ''])], key=f"{col_name}_input@{_type}")
                 elif st.session_state[f"{col_name}_type"] == "Numeric":
-                    st.selectbox(options_text, [o for o in options if any([is_float(o), o == ''])], key=f"{col_name}_input@{_type}")
+                    numeric_options = [numeric_parser(o) for o in options if numeric_parser(o) is not None]
+                    min_val, max_val = min(numeric_options), max(numeric_options)
+                    if min_val == max_val:
+                        st.warning(f"Only one value: {min_val}")
+                        st.session_state[f"{col_name}_input@{_type}"] = min_val
+                    else:
+                        st.slider(options_text, min_value=min(numeric_options), max_value=max(numeric_options),
+                                  key=f"{col_name}_input@{_type}")
+                    # st.selectbox(options_text, , key=f"{col_name}_input@{_type}")
+                    print(numeric_options)
                 elif st.session_state[f"{col_name}_type"] == "Other":
                     st.selectbox(options_text,
                                  [o for o in options if not any(["Range" in o, "-" in o,

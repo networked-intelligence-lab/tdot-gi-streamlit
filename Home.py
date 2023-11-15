@@ -19,7 +19,7 @@ st.set_page_config(layout="wide")
 add_logo("media/logo.png", height=150)
 
 st.title('TDoT GI Home')
-st.subheader("Last updated: 11/09/2023")
+st.subheader("Last updated: 11/15/2023")
 
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 # ■ Profiles                                                                                                           ■
