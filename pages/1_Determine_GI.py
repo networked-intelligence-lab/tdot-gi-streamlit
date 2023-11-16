@@ -229,7 +229,7 @@ with col1:
         options.insert(0, "")
         options.sort()
         # print(col_name, types_of_options)
-        if len(types_of_options) > 2:
+        if len(types_of_options) > 1:
             type_col, opt_col = st.columns(2)
             # st.session_state[f"{col_name}_type"] = types_of_options[0]
             with type_col:
