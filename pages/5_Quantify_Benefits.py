@@ -9,6 +9,10 @@ from matplotlib import rcParams
 from matplotlib.pyplot import figure
 from streamlit_extras.app_logo import add_logo
 
+
+st.title("Quantify Benefits")
+st.write(st.session_state)
+
 add_logo("media/logo.png", height=150)
 
 df = pd.read_excel('data/social_criteria.xlsx')
