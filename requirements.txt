@@ -9,3 +9,4 @@ st-pages
 openpyxl
 seaborn
 pytz
+streamlit-folium
