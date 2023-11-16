@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from collections import defaultdict
-from helpers.helpers import filter_nested_dict, get_leaf_values, count_leaf_values, is_float, get_location_name, limit_string
+from helpers.helpers import filter_nested_dict, get_leaf_values, count_leaf_values, is_float, get_location_name, limit_string, find_max_value, find_min_value
 
 
 col1, col2 = st.columns(2)
@@ -118,7 +118,9 @@ def determine_logic():
         default_filters = [st.session_state[option_session_key] != ""]
         st.write(option_header)
         if "max" in option_header.lower():
-            if _type == "Numeric":
+            if _type == "Do not filter":
+                pass
+            elif _type == "Numeric":
                 try:
                     user_value = float(st.session_state[option_session_key])
                 except (ValueError, TypeError) as e:
@@ -211,7 +213,7 @@ with col1:
         st.write("".join(headers), unsafe_allow_html=True)
         options = list(set([str(v) for v in option_df[col][3:] if str(v) != "nan"]))
 
-        types_of_options = []
+        types_of_options = ["Do not filter"]
         for option in options:
             option = option.strip()
             if is_float(option):
@@ -227,7 +229,7 @@ with col1:
         options.insert(0, "")
         options.sort()
         # print(col_name, types_of_options)
-        if len(types_of_options) > 1:
+        if len(types_of_options) > 2:
             type_col, opt_col = st.columns(2)
             # st.session_state[f"{col_name}_type"] = types_of_options[0]
             with type_col:
@@ -236,18 +238,20 @@ with col1:
 
             with opt_col:
                 _type = st.session_state[f"{col_name}_type"]
-                if st.session_state[f"{col_name}_type"] == "Range":
+                if st.session_state[f"{col_name}_type"] == "Do not filter":
+                    st.session_state[f"{col_name}_input@{_type}"] = None
+                elif st.session_state[f"{col_name}_type"] == "Range":
                     st.selectbox("Range", [o for o in options if any(["Range" in o, "-" in o, o == ''])], key=f"{col_name}_input@{_type}")
                 elif st.session_state[f"{col_name}_type"] == "Ratio":
                     st.selectbox(options_text, [o for o in options if any([":" in o, o == ''])], key=f"{col_name}_input@{_type}")
                 elif st.session_state[f"{col_name}_type"] == "Numeric":
                     numeric_options = [numeric_parser(o) for o in options if numeric_parser(o) is not None]
-                    min_val, max_val = min(numeric_options), max(numeric_options)
+                    min_val, max_val = find_min_value(numeric_options), find_max_value(numeric_options)
                     if min_val == max_val:
                         st.warning(f"Only one value: {min_val}")
                         st.session_state[f"{col_name}_input@{_type}"] = min_val
                     else:
-                        st.slider(options_text, min_value=min(numeric_options), max_value=max(numeric_options),
+                        st.slider(options_text, min_value=float(find_min_value(numeric_options)), max_value=float(find_max_value(numeric_options)),
                                   key=f"{col_name}_input@{_type}")
                     # st.selectbox(options_text, , key=f"{col_name}_input@{_type}")
                     print(numeric_options)
