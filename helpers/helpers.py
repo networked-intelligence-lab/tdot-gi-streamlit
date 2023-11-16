@@ -61,4 +61,49 @@ def get_location_name(lat, lon):
     return address
 
 
+def find_min_value(lst):
+    if not lst:
+        return None  # Return None for an empty list
+
+    min_val = float('inf')  # Initialize min_val with positive infinity
+
+    for item in lst:
+        if isinstance(item, list):
+            # If the item is a list, recursively find the minimum within it
+            sublist_min = find_min_value(item)
+            if sublist_min is not None:
+                min_val = min(min_val, sublist_min)
+        elif isinstance(item, (int, float)):
+            # If the item is a numeric value, update min_val if it's smaller
+            min_val = min(min_val, item)
+
+    if min_val == float('inf'):
+        return None  # If no numeric values were found, return None
+    else:
+        return min_val
+
+
+def find_max_value(lst):
+    if not lst:
+        return None  # Return None for an empty list
+
+    max_val = float('-inf')  # Initialize min_val with positive infinity
+
+    for item in lst:
+        if isinstance(item, list):
+            # If the item is a list, recursively find the minimum within it
+            sublist_max = find_max_value(item)
+            if sublist_max is not None:
+                max_val = max(max_val, sublist_max)
+        elif isinstance(item, (int, float)):
+            # If the item is a numeric value, update min_val if it's smaller
+            max_val = max(max_val, item)
+
+    if max_val == float('-inf'):
+        return None  # If no numeric values were found, return None
+    else:
+        return max_val
+
+
+
 
