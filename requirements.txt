@@ -8,3 +8,4 @@ streamlit_js_eval
 st-pages
 openpyxl
 seaborn
+pytz
