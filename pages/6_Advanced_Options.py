@@ -1,6 +1,9 @@
 import streamlit as st
 from modules.helpers import subsubheader
+from streamlit_extras.app_logo import add_logo
 
+
+add_logo("media/logo.png", height=150)
 st.title('Advanced Options')
 
 with st.expander("Environmental Impact"):
