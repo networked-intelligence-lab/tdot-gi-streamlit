@@ -19,6 +19,10 @@ for major_category, minor_categories_list in determine_gi_output.items():
     st.multiselect(major_category, minor_categories_list, minor_categories_list)
 add_logo("media/logo.png", height=150)
 
+st.subheader("Determine Economic Impacts")
+st.text_input("Capital Cost", value=st.session_state["cisterns_capital_cost"])
+st.text_input("Maintenance Cost", value=st.session_state["cisterns_maintenance_cost"])
+
 df = pd.read_excel('data/social_criteria.xlsx')
 df = df.dropna()
 

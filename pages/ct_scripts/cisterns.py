@@ -1,3 +1,6 @@
+import streamlit as st
+
+
 def cisterns_tab(tab_object):
     """
 
@@ -14,6 +17,7 @@ def cisterns_tab(tab_object):
     total_storage_needed = tab_object.number_input("Total Storage Needed (gal)", value=precip_volume_gen)
     material_costs = {"Steel": 1.33, "Fiberglass": 2.51, "Concrete": 1.43, "HDPE": 1.66}
     tab_object.write(f"Total Capital Cost: ${total_storage_needed * material_costs[material]}")
+    st.session_state["cisterns_capital_cost"] = total_storage_needed * material_costs[material]
 
 
     tab_object.subheader("Maintenance Cost")
@@ -27,4 +31,5 @@ def cisterns_tab(tab_object):
     ism_value = {"Low": 270 * (1/3), "Medium": 390 * (1/3), "High": 510 * (1/3)}[ism_select]
 
     tab_object.write(f"Total Maintenance Cost: ${sum([irim_value, rwc_value, tid_value, ism_value])}")
+    st.session_state["cisterns_maintenance_cost"] = sum([irim_value, rwc_value, tid_value, ism_value])
     return tab_object
