@@ -60,7 +60,7 @@ def get_location_name(lat, lon):
     try:
         location = geolocator.reverse(f"{lat}, {lon}", exactly_one=True)
         address = location.address if location else None
-    except geopy.exc.GeocoderUnavailable:
+    except:
         address = "Geocoder unavailable"
     return address
 
