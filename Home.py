@@ -13,13 +13,28 @@ import time
 from streamlit_folium import folium_static
 import folium
 from folium.plugins import Draw
+from helpers.debug import get_last_commit_time
 
 
 st.set_page_config(layout="wide")
 add_logo("media/logo.png", height=150)
 
 st.title('TDoT GI Home')
-st.subheader("Last updated: 11/15/2023")
+st.subheader(f"Last updated: {get_last_commit_time('networked-intelligence-lab', 'tdot-gi-streamlit')}")
+with st.expander("Demo"):
+    case_study = st.selectbox("Select a case study", ["", "1 - Laura 11/15 ver."]).split(" - ")[0]
+
+    if case_study == "1":
+        st.subheader("Selected case study: Laura 11/15 ver.")
+        st.markdown("<h4>Site Requirements</h4>", unsafe_allow_html=True)
+#         st.markdown("""
+# - Site slope: 0.06
+# - Cross-sectional and side slope: 0.04
+# - Contributing drainage area: 0.5 acres
+# - % impervious: 0.1""")
+
+
+
 
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 # ■ Profiles                                                                                                           ■
