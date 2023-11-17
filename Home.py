@@ -13,14 +13,18 @@ import time
 from streamlit_folium import folium_static
 import folium
 from folium.plugins import Draw
-from helpers.debug import get_last_commit_time
+from helpers.debug import get_last_commit_time, get_total_commits
 
 
 st.set_page_config(layout="wide")
 add_logo("media/logo.png", height=150)
 
 st.title('TDoT GI Home')
-st.subheader(f"Last updated: {get_last_commit_time('networked-intelligence-lab', 'tdot-gi-streamlit')}")
+owner, repo = "networked-intelligence-lab", "tdot-gi-streamlit"
+
+# st.subheader(f"Last updated: {get_last_commit_time('networked-intelligence-lab', 'tdot-gi-streamlit')}")
+st.markdown(f"""**version 0.0.{get_total_commits(owner, repo)}
+<br><sup>Last updated: {get_last_commit_time('networked-intelligence-lab', 'tdot-gi-streamlit')}<sup>**""", unsafe_allow_html=True)
 with st.expander("Demo"):
     case_study = st.selectbox("Select a case study", ["", "1 - Laura 11/15 ver."]).split(" - ")[0]
 

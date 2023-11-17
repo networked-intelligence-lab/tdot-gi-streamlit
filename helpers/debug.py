@@ -26,3 +26,21 @@ def get_last_commit_time(owner, repo):
             return "No commits found"
     else:
         return f"Error: {response.status_code}"
+
+
+def get_total_commits(owner, repo):
+    url = f"https://api.github.com/repos/{owner}/{repo}/commits"
+    response = requests.get(url, {'per_page': 1})
+
+    if response.status_code == 200:
+        # Check if the 'last' link is available in the response headers
+        if 'last' in response.links:
+            last_page_url = response.links['last']['url']
+            last_page_num = int(last_page_url.split('=')[-1])
+            return last_page_num
+        else:
+            # If there's no 'last' link, it means there's only one page
+            return len(response.json())
+    else:
+        return f"Error: {response.status_code}"
+
