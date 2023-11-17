@@ -107,10 +107,10 @@ def determine_logic():
     """
     global category_dict, col2
     valid_options = get_leaf_values(category_dict)
-    # print(_type)
+    # 
     for option_header in options_dict.keys():
         _type = st.session_state[f"{option_header.replace('_input', '')}_type"]
-        print(_type)
+        
         if _type != '':
             option_session_key = f"{option_header}@{_type}"
         else:
@@ -141,6 +141,30 @@ def determine_logic():
                                     valid_options.remove(gi_index)
                                 except ValueError:
                                     pass
+            elif "min" in option_header.lower():
+                if _type == "Do not filter":
+                    pass
+                elif _type == "Numeric":
+                    try:
+                        user_value = float(st.session_state[option_session_key])
+                    except (ValueError, TypeError) as e:
+                        pass
+                    else:
+                        for gi_index, option_min in options_dict[option_header]["options"].items():
+                            try:
+                                option_min = float(option_min)
+                            except (ValueError, TypeError):
+                                try:
+                                    valid_options.remove(gi_index)
+                                except ValueError:
+                                    pass
+                            else:
+                                st.write(f"{user_value}, {option_min}")
+                                if all([user_value < option_min] + default_filters):
+                                    try:
+                                        valid_options.remove(gi_index)
+                                    except ValueError:
+                                        pass
             else:
                 for gi_index, option_max in options_dict[option_header]["options"].items():
                     if all([st.session_state[option_session_key] > option_max] + default_filters):
@@ -223,18 +247,18 @@ with col1:
             elif any(["Range" in option, '-' in option]):
                 types_of_options.append("Range")
             elif all([str(option) != 'nan', option != ""]):
-                print(option)
+                
                 types_of_options.append("Other")
         types_of_options = list(set(types_of_options))
         options.insert(0, "")
         options.sort()
-        # print(col_name, types_of_options)
+        # 
         if len(types_of_options) > 1:
             type_col, opt_col = st.columns(2)
             # st.session_state[f"{col_name}_type"] = types_of_options[0]
             with type_col:
                 types_of_options.sort()
-                dict_of_vals[f"{col_name}_type"] = st.selectbox("Type", types_of_options, key=f"{col_name}_type")
+                dict_of_vals[f"{col_name}_type"] = st.selectbox(options_text, types_of_options, key=f"{col_name}_type")
 
             with opt_col:
                 _type = st.session_state[f"{col_name}_type"]
@@ -243,7 +267,7 @@ with col1:
                 elif st.session_state[f"{col_name}_type"] == "Range":
                     st.selectbox("Range", [o for o in options if any(["Range" in o, "-" in o, o == ''])], key=f"{col_name}_input@{_type}")
                 elif st.session_state[f"{col_name}_type"] == "Ratio":
-                    st.selectbox(options_text, [o for o in options if any([":" in o, o == ''])], key=f"{col_name}_input@{_type}")
+                    st.selectbox(options_text, [o for o in options if any([":" in o, o == ''])], key=f"{col_name}_input@{_type}", label_visibility=False)
                 elif st.session_state[f"{col_name}_type"] == "Numeric":
                     numeric_options = [numeric_parser(o) for o in options if numeric_parser(o) is not None]
                     min_val, max_val = find_min_value(numeric_options), find_max_value(numeric_options)
@@ -252,9 +276,8 @@ with col1:
                         st.session_state[f"{col_name}_input@{_type}"] = min_val
                     else:
                         st.slider(options_text, min_value=float(find_min_value(numeric_options)), max_value=float(find_max_value(numeric_options)),
-                                  key=f"{col_name}_input@{_type}")
+                                  key=f"{col_name}_input@{_type}", label_visibility=False)
                     # st.selectbox(options_text, , key=f"{col_name}_input@{_type}")
-                    print(numeric_options)
                 elif st.session_state[f"{col_name}_type"] == "Other":
                     st.selectbox(options_text,
                                  [o for o in options if not any(["Range" in o, "-" in o,
