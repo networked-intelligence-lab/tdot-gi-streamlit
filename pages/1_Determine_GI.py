@@ -125,7 +125,8 @@ def determine_logic():
             option_session_key = option_header
         default_filters = [st.session_state[option_session_key] != ""]
         st.write(option_header)
-        if "max" in option_header.lower():
+
+        if any(["min" in option_header.lower(), "max" in option_header.lower()]):
             if _type == "Do not filter":
                 pass
             elif _type == "Numeric":
@@ -134,48 +135,36 @@ def determine_logic():
                 except (ValueError, TypeError) as e:
                     pass
                 else:
-                    for gi_index, option_max in options_dict[option_header]["options"].items():
+                    for gi_index, option_val in options_dict[option_header]["options"].items():
+                        if type(option_val) == list:
+                            if "min" in option_header.lower():
+                                option_val = option_val[0]
+                            elif "max" in option_header.lower():
+                                option_val = option_val[1]
                         try:
-                            option_max = float(option_max)
+                            option_val = float(option_val)
                         except (ValueError, TypeError):
                             try:
                                 valid_options.remove(gi_index)
                             except ValueError:
                                 pass
                         else:
-                            st.write(f"{user_value}, {option_max}")
-                            if all([user_value > option_max] + default_filters):
-                                try:
-                                    valid_options.remove(gi_index)
-                                except ValueError:
-                                    pass
-            elif "min" in option_header.lower():
-                if _type == "Do not filter":
-                    pass
-                elif _type == "Numeric":
-                    try:
-                        user_value = float(st.session_state[option_session_key])
-                    except (ValueError, TypeError) as e:
-                        pass
-                    else:
-                        for gi_index, option_min in options_dict[option_header]["options"].items():
-                            try:
-                                option_min = float(option_min)
-                            except (ValueError, TypeError):
-                                try:
-                                    valid_options.remove(gi_index)
-                                except ValueError:
-                                    pass
-                            else:
-                                st.write(f"{user_value}, {option_min}")
-                                if all([user_value < option_min] + default_filters):
+                            st.write(f"{user_value}, {option_val}")
+                            if "max" in option_header.lower():
+                                if all([user_value > option_val] + default_filters):
+                                    try:
+                                        valid_options.remove(gi_index)
+                                    except ValueError:
+                                        pass
+                            elif "min" in option_header.lower():
+                                if all([user_value < option_val] + default_filters):
                                     try:
                                         valid_options.remove(gi_index)
                                     except ValueError:
                                         pass
             else:
-                for gi_index, option_max in options_dict[option_header]["options"].items():
-                    if all([st.session_state[option_session_key] > option_max] + default_filters):
+                for gi_index, option_val in options_dict[option_header]["options"].items():
+                    if all([st.session_state[option_session_key] > option_val] + default_filters):
                         try:
                             valid_options.remove(gi_index)
                         except ValueError:
