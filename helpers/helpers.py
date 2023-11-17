@@ -1,3 +1,4 @@
+import geopy.exc
 import streamlit as st
 import json
 from geopy.geocoders import Photon
@@ -56,8 +57,11 @@ def limit_string(s, max_length):
 
 def get_location_name(lat, lon):
     # Reverse geocoding to get address
-    location = geolocator.reverse(f"{lat}, {lon}", exactly_one=True)
-    address = location.address if location else None
+    try:
+        location = geolocator.reverse(f"{lat}, {lon}", exactly_one=True)
+        address = location.address if location else None
+    except geopy.exc.GeocoderUnavailable:
+        address = "Geocoder unavailable"
     return address
 
 
