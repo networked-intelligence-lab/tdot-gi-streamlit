@@ -41,6 +41,12 @@ def numeric_parser(value):
     if isinstance(value, (int, float)):
         return value  # Return numeric values as-is
 
+    try:
+        value = float(value)
+        return value  # Return numeric values as-is
+    except ValueError:
+        pass
+
     value = str(value).strip()
 
     # Check for "<number" pattern (e.g., "<1")
@@ -67,7 +73,7 @@ def numeric_parser(value):
             return None  # In case of invalid ratio
 
     # Check for percentage pattern (e.g., "20%")
-    if value.endswith('%'):
+    if '%' in value:
         try:
             return float(value[:-1]) / 100
         except ValueError:
