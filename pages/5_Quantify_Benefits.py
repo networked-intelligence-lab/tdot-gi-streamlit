@@ -29,7 +29,7 @@ social = df.copy()
 
 for i in range(len(social.columns)):
     for j in range(len(social.iloc[:, i])):
-        # print(social.iloc[j,i].split()[0])
+        # [0])
         social.iloc[j, i] = str(social.iloc[j, i]).split()[0]
 
 options = {'a.': 9, 'b.': 6.34, 'c.': 3.67, 'd.': 1, 'e.': 0}
@@ -58,9 +58,9 @@ mat_env = np.zeros((2, 2))
 # # for i in range(len(social.columns)):
 # for i in range(len(social.iloc[0,:])):
 #     for j in range(len(mat)):
-#         # print(social.iloc[0,i], end = ' ')
+#         # 
 #         mat[j][i] = social.iloc[0,j]/social.iloc[0,i]
-#     # print(i, '\n')
+#     # 
 
 # mat_df = pd.DataFrame(mat)
 # # display(mat_df)
@@ -76,7 +76,7 @@ r32 = []
 for x in range(0, 93):
     for i in range(len(social.iloc[0, :])):
         for j in range(len(mat)):
-            # print(social.iloc[x,i], end = ' ')
+            # 
             mat[j][i] = social.iloc[x, j] / social.iloc[x, i]
 
     r10.append(mat[1][0])
@@ -91,7 +91,7 @@ e_r10 = []
 for x in range(0, 94):
     for i in range(len(env.iloc[0, :])):
         for j in range(len(mat_env)):
-            # print(social.iloc[x,i], end = ' ')
+            # 
             mat_env[j][i] = env.iloc[x, j] / env.iloc[x, i]
 
     e_r10.append(mat_env[1][0])
@@ -234,10 +234,10 @@ if st.button('Simulate', on_click=simulator(num_sims)):
 
     wts = wts.round(5)
 
-    # print(len(pd.unique(wts['wts_25'])))
-    # print(len(pd.unique(wts['wts_50'])))
-    # print(len(pd.unique(wts['wts_75'])))
-    # print(len(pd.unique(wts['wts_100'])))
+    # ))
+    # ))
+    # ))
+    # ))
 
     ## social overall plot
     st.header('Range of weights for all four alternatives')
@@ -388,10 +388,10 @@ if st.button('Simulate', on_click=simulator(num_sims)):
     rcParams['font.family'] = 'Arial'
 
     data = r10
-    # print("The data is-",data)
+    # 
     sorted_random_data = numpy.sort(data)
     p = 1. * numpy.arange(len(sorted_random_data)) / float(len(sorted_random_data) - 1)
-    # print("The CDF result is-",p)
+    # 
 
     fig = plt.figure()
     # fig.suptitle('CDF of R[1,0]')
@@ -410,10 +410,10 @@ if st.button('Simulate', on_click=simulator(num_sims)):
     rcParams['font.family'] = 'Arial'
 
     data = r20
-    # print("The data is-",data)
+    # 
     sorted_random_data = numpy.sort(data)
     p = 1. * numpy.arange(len(sorted_random_data)) / float(len(sorted_random_data) - 1)
-    # print("The CDF result is-",p)
+    # 
 
     fig = plt.figure()
     # fig.suptitle('CDF of data points')
@@ -430,10 +430,10 @@ if st.button('Simulate', on_click=simulator(num_sims)):
     rcParams['font.family'] = 'Arial'
 
     data = r31
-    # print("The data is-",data)
+    # 
     sorted_random_data = numpy.sort(data)
     p = 1. * numpy.arange(len(sorted_random_data)) / float(len(sorted_random_data) - 1)
-    # print("The CDF result is-",p)
+    # 
 
     fig = plt.figure()
     # fig.suptitle('CDF of data points')
