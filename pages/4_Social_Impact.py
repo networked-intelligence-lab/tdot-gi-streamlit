@@ -56,7 +56,10 @@ st.map(loc_df, latitude="lat", longitude="lon", size=20)
 st.header("Enhanced Property Value")
 median_prop_val = st.number_input("Median of the property value for that area and anticipated enhancement in value", value=0)
 num_properties = st.number_input("Approximate number of properties in the area", value=0)
-st.write(f"Total monetary gain: ${median_prop_val * num_properties}")
+enhanced_property_value = median_prop_val * num_properties
+if enhanced_property_value > 0:
+    st.session_state["social_benefits>enhanced_prop_val"] = enhanced_property_value
+st.write(f"Total monetary gain: ${enhanced_property_value}")
 
 st.header("Recreational Use")
 total_ant_veg_area = st.number_input("Total anticipated vegetation area", value=0)
