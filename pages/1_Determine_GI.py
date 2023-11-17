@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from collections import defaultdict
 from helpers.helpers import filter_nested_dict, get_leaf_values, count_leaf_values, is_float, get_location_name, limit_string, find_max_value, find_min_value
+import re
 from streamlit_extras.app_logo import add_logo
 
 
@@ -35,8 +36,6 @@ def add_scenario():
     new_scenario = f"Scenario {len(st.session_state.scenarios) + 1}"
     st.session_state.scenarios.append(new_scenario)
 
-import re
-import pandas as pd
 
 def numeric_parser(value):
     if pd.isnull(value):
@@ -188,10 +187,14 @@ def determine_logic():
     category_dict = filter_nested_dict(category_dict, valid_options)
     with col2:
         st.subheader(f"Possible Green Infrastructure ({count_leaf_values(category_dict)})")
+        filtered_gi_dict = {}
         for major_category in category_dict.keys():
             if len(category_dict[major_category]) > 0:
                 sub_dict = category_dict[major_category]
                 st.multiselect(major_category, [k for k in sub_dict.keys()], [k for k in sub_dict.keys()])
+                filtered_gi_dict[major_category] = [k for k in sub_dict.keys()]
+
+        st.session_state["determine_gi_output"] = filtered_gi_dict
     # st.write(category_dict)
 
 
@@ -276,7 +279,7 @@ with col1:
                 elif st.session_state[f"{col_name}_type"] == "Range":
                     st.selectbox("Range", [o for o in options if any(["Range" in o, "-" in o, o == ''])], key=f"{col_name}_input@{_type}")
                 elif st.session_state[f"{col_name}_type"] == "Ratio":
-                    st.selectbox(options_text, [o for o in options if any([":" in o, o == ''])], key=f"{col_name}_input@{_type}", label_visibility=False)
+                    st.selectbox(options_text, [o for o in options if any([":" in o, o == ''])], key=f"{col_name}_input@{_type}", label_visibility='hidden')
                 elif st.session_state[f"{col_name}_type"] == "Numeric":
                     numeric_options = [numeric_parser(o) for o in options if numeric_parser(o) is not None]
                     min_val, max_val = find_min_value(numeric_options), find_max_value(numeric_options)
@@ -285,7 +288,7 @@ with col1:
                         st.session_state[f"{col_name}_input@{_type}"] = min_val
                     else:
                         st.slider(options_text, min_value=float(find_min_value(numeric_options)), max_value=float(find_max_value(numeric_options)),
-                                  key=f"{col_name}_input@{_type}", label_visibility=False)
+                                  key=f"{col_name}_input@{_type}", value=float(find_min_value(numeric_options)), label_visibility='hidden')
                     # st.selectbox(options_text, , key=f"{col_name}_input@{_type}")
                 elif st.session_state[f"{col_name}_type"] == "Other":
                     st.selectbox(options_text,

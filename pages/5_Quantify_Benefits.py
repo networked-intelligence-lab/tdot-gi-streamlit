@@ -11,8 +11,12 @@ from streamlit_extras.app_logo import add_logo
 
 
 st.title("Quantify Benefits")
-st.write(st.session_state)
+# st.write(st.session_state)
 
+st.subheader("Determine Green Infrastructure")
+determine_gi_output = st.session_state["determine_gi_output"]
+for major_category, minor_categories_list in determine_gi_output.items():
+    st.multiselect(major_category, minor_categories_list, minor_categories_list)
 add_logo("media/logo.png", height=150)
 
 df = pd.read_excel('data/social_criteria.xlsx')
