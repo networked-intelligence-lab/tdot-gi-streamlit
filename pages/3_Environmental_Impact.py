@@ -30,14 +30,16 @@ st.header("Options")
 climate_zone = st.selectbox("Select STRATUM Climate Zone", list(climate_zones_data.keys()))
 
 # Input fields for tree numbers with multipliers
-st.session_state["num_small_trees"] = st.number_input("Number of Small Trees", value=st.session_state["num_small_trees"]) * climate_zones_data[climate_zone]["Annual Interception"]["Small Tree"]
-st.session_state["num_medium_trees"] = st.number_input("Number of Medium Trees", value=st.session_state["num_medium_trees"]) * climate_zones_data[climate_zone]["Annual Interception"]["Medium Tree"]
-st.session_state["num_large_trees"] = st.number_input("Number of Large Trees", value=st.session_state["num_large_trees"]) * climate_zones_data[climate_zone]["Annual Interception"]["Large Tree"]
+st.session_state["num_small_trees"] = st.number_input("Number of Small Trees", value=st.session_state["num_small_trees"])
+st.session_state["num_medium_trees"] = st.number_input("Number of Medium Trees", value=st.session_state["num_medium_trees"])
+st.session_state["num_large_trees"] = st.number_input("Number of Large Trees", value=st.session_state["num_large_trees"])
 
 # Reduced Stormwater Runoff Section
 st.header("Reduced Stormwater Runoff")
 st.subheader("Tree Plantation")
-q_tp = st.session_state["num_small_trees"] + st.session_state["num_medium_trees"] + st.session_state["num_large_trees"]
+q_tp = (st.session_state["num_small_trees"] * climate_zones_data[climate_zone]["Annual Interception"]["Small Tree"] +
+        st.session_state["num_medium_trees"] * climate_zones_data[climate_zone]["Annual Interception"]["Medium Tree"] +
+        st.session_state["num_large_trees"] * climate_zones_data[climate_zone]["Annual Interception"]["Large Tree"])
 st.write(f"Runoff amount reduced by tree plantation: {q_tp} gallons/year")
 st.session_state["q_tp"] = q_tp
 
