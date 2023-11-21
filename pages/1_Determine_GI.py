@@ -301,8 +301,9 @@ with col1:
                     else:
                         if st.session_state[f"{col_name}_input@{_type}"] is None:
                             st.session_state[f"{col_name}_input@{_type}"] = min_val
-                        sel_val = st.slider(options_text, min_value=float(find_min_value(numeric_options)), max_value=float(find_max_value(numeric_options)), key=f"_{col_name}_input@Numeric",
-                                            value=st.session_state[f"{col_name}_input@{_type}"], label_visibility='hidden')
+                        # sel_val = st.slider(options_text, min_value=float(find_min_value(numeric_options)), max_value=float(find_max_value(numeric_options)), key=f"_{col_name}_input@Numeric",
+                        #                     value=float(st.session_state[f"{col_name}_input@{_type}"]), label_visibility='hidden')
+                        sel_val = st.number_input(options_text, min_value=float(find_min_value(numeric_options)), max_value=float(find_max_value(numeric_options)), value=float(st.session_state[f"{col_name}_input@{_type}"]), key=f"_{col_name}_input@Numeric")
                     # st.selectbox(options_text, , key=f"{col_name}_input@{_type}")
 
                 elif st.session_state[f"{col_name}_type"] == "Other":
@@ -316,5 +317,4 @@ with col1:
             st.session_state[f"{col_name}_type"] = ''
             if col_name != '':
                 dict_of_vals[f"{col_name}_input"] = st.selectbox(options_text, options, key=f"_{col_name}_input")
-
 determine_logic()
