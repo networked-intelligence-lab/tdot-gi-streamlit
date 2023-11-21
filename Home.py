@@ -26,12 +26,6 @@ owner, repo = "networked-intelligence-lab", "tdot-gi-streamlit"
 # st.subheader(f"Last updated: {get_last_commit_time('networked-intelligence-lab', 'tdot-gi-streamlit')}")
 st.markdown(f"""**version 0.0.{get_total_commits(owner, repo)}
 <br><sup>Last updated: {get_last_commit_time('networked-intelligence-lab', 'tdot-gi-streamlit')}<sup>**""", unsafe_allow_html=True)
-with st.expander("Demo"):
-    case_study = st.selectbox("Select a case study", ["", "1 - Laura 11/15 ver."]).split(" - ")[0]
-
-    if case_study == "1":
-        st.subheader("Selected case study: Laura 11/15 ver.")
-        st.markdown("<h4>Site Requirements</h4>", unsafe_allow_html=True)
 #         st.markdown("""
 # - Site slope: 0.06
 # - Cross-sectional and side slope: 0.04
@@ -44,6 +38,11 @@ with st.expander("Demo"):
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 # ■ Profiles                                                                                                           ■
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+def save_session_state_to_file(filename):
+    session_state_dict = {k: v for k, v in st.session_state.items() if k != "user_profile"}
+    with open(filename, "w") as file:
+        json.dump(session_state_dict, file, indent=4)
+
 st.header("Profile")
 profile_list = list(glob("profiles/*.json"))
 # move last selected profile to the start of the list
@@ -56,15 +55,31 @@ except ValueError:
 
 user_profile = st.selectbox("Select a profile", profile_list, key="user_profile")
 update_registry(registry, "last_selected_profile", user_profile)
+
+# Load session state from file
+if st.button("Load Session State"):
+    with open(user_profile, "r") as file:
+        session_state_dict = json.load(file)
+        # Delete everything from session state except user_profile
+        for key in list(st.session_state.keys()):
+            if key != "user_profile":
+                del st.session_state[key]
+        st.session_state.update(session_state_dict)
+    st.experimental_rerun()
+
 with st.expander("Create new profile"):
     new_profile_name = st.text_input("Enter new profile name")
-    profile_template = st.selectbox("Select a profile template", glob("profiles/*.json"))
+    profile_template = st.selectbox("Select a profile template", ["New"] + list(glob("profiles/*.json")))
     if st.button("Create"):
-        with open(f"profiles/{new_profile_name}.json", "w") as f:
-            shutil.copyfile(profile_template, f"profiles/{new_profile_name}.json")
-        user_profile = f"profiles/{new_profile_name}.json"
-        update_registry(registry, "last_selected_profile", user_profile)
-        st.experimental_rerun()
+        if profile_template == "New":
+            with open(f"profiles/{new_profile_name}.json", "w") as f:
+                json.dump({"app": "ni-gitool"}, f, indent=4)
+        else:
+            with open(f"profiles/{new_profile_name}.json", "w") as f:
+                shutil.copyfile(profile_template, f"profiles/{new_profile_name}.json")
+            user_profile = f"profiles/{new_profile_name}.json"
+            update_registry(registry, "last_selected_profile", user_profile)
+            st.experimental_rerun()
 
 with st.expander("Delete profile"):
     selected_profile = st.selectbox("Select a profile to delete", profile_list)
@@ -75,6 +90,12 @@ with st.expander("Delete profile"):
         st.experimental_rerun()
 
 st.write(f"Selected profile: {user_profile}")
+# Function to save session state to a JSON file
+
+# Button to save session state
+if st.button("Save Session State"):
+    save_session_state_to_file(user_profile)
+    st.success("Session state saved to file")
 
 st.header("Configuration")
 
