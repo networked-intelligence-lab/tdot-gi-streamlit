@@ -16,7 +16,8 @@ from folium.plugins import Draw
 from helpers.debug import get_last_commit_time, get_total_commits
 
 
-st.set_page_config(layout="wide")
+st.set_page_config(layout="wide",
+                   page_title="TDoT GI Tool")
 add_logo("media/logo.png", height=150)
 
 st.title('TDoT GI Home')
