@@ -31,9 +31,9 @@ def bioretention_tab(tab_object):
     tab_object.write(f"Total Capital Cost: ${st.session_state['drainage_area'] * underdrain_cost}")
 
     tab_object.subheader("Maintenance Cost")
-    st.session_state['irim_select_br'] = tab_object.selectbox("Inspection, Reporting & Information Management", options=["Low", "Medium", "High"], index=["Low", "Medium", "High"].index(st.session_state['irim_select_br']), key="irim_br")
+    st.session_state['irim_select_br'] = tab_object.selectbox("Inspection, Reporting & Information Management", options=["Low", "Medium", "High"], index=["Low", "Medium", "High"].index(st.session_state['irim_select_br']), key="_irim_br")
     irim_value = {"Low": 60 * (1/3), "Medium": 130 * 0.5, "High": 570 * 1}[st.session_state['irim_select_br']]
-    st.session_state['vm_select_br'] = tab_object.selectbox("Vegetation Management with Trash & Minor Debris Removal", options=["Low", "Medium", "High"], index=["Low", "Medium", "High"].index(st.session_state['vm_select_br']))
+    st.session_state['vm_select_br'] = tab_object.selectbox("Vegetation Management with Trash & Minor Debris Removal", options=["Low", "Medium", "High"], index=["Low", "Medium", "High"].index(st.session_state['vm_select_br']), key="_vm_br")
     vm_value = {"Low": 60 * 1, "Medium": 124 * 2, "High": 270 * 3}[st.session_state['vm_select_br']]
     st.session_state['ts_select_br'] = tab_object.selectbox("Till Soil", options=["Low", "Medium", "High"], index=["Low", "Medium", "High"].index(st.session_state['ts_select_br']))
     ts_value = {"Low": 320 * 0.2, "Medium": 448 * 0.25, "High": 560 * 0.5}[st.session_state['ts_select_br']]
