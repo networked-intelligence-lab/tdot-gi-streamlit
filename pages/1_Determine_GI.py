@@ -123,8 +123,11 @@ def determine_logic():
             option_session_key = f"{option_header}@{_type}"
         else:
             option_session_key = option_header
-        default_filters = [st.session_state[option_session_key] != ""]
-        st.write(option_header)
+
+        try:
+            default_filters = [st.session_state[option_session_key] != ""]
+        except KeyError:
+            continue
 
         if any(["min" in option_header.lower(), "max" in option_header.lower()]):
             if _type == "Do not filter":
@@ -149,7 +152,6 @@ def determine_logic():
                             except ValueError:
                                 pass
                         else:
-                            st.write(f"{user_value}, {option_val}")
                             if "max" in option_header.lower():
                                 if all([user_value > option_val] + default_filters):
                                     try:
@@ -238,6 +240,10 @@ with col1:
         st.write("".join(headers), unsafe_allow_html=True)
         options = list(set([str(v) for v in option_df[col][3:] if str(v) != "nan"]))
 
+        # Start to write the session states for all inputs
+        if f"{col_name}_type" not in st.session_state:
+            st.session_state[f"{col_name}_type"] = 'Do not filter'
+
         types_of_options = ["Do not filter"]
         for option in options:
             option = option.strip()
@@ -259,36 +265,56 @@ with col1:
             # st.session_state[f"{col_name}_type"] = types_of_options[0]
             with type_col:
                 types_of_options.sort()
-                dict_of_vals[f"{col_name}_type"] = st.selectbox(options_text, types_of_options, key=f"{col_name}_type")
+                # if not st.session_state[f"{col_name}_type"]:
+                #     dict_of_vals[f"{col_name}_type"] = st.selectbox(options_text, types_of_options, key=f"{col_name}_type")
+                # else:
+                #     st.selectbox(options_text, types_of_options, key=f"{col_name}_type")
+
+                # Set the session state for the type of input
+                sel_type = st.selectbox(options_text, types_of_options,
+                                 index=types_of_options.index(st.session_state[f"{col_name}_type"]),
+                                        key=f"_{col_name}_type")
+                st.session_state[f"{col_name}_type"] = sel_type
+
+
+
+                # Initialize the session state for each input type
+                if f"{col_name}_input" not in st.session_state:
+                    for _type in types_of_options:
+                        st.session_state[f"{col_name}_input"] = True
+                        st.session_state[f"{col_name}_input@{_type}"] = None
 
             with opt_col:
                 _type = st.session_state[f"{col_name}_type"]
                 if st.session_state[f"{col_name}_type"] == "Do not filter":
-                    st.session_state[f"{col_name}_input@{_type}"] = None
+                    sel_val = None
                 elif st.session_state[f"{col_name}_type"] == "Range":
-                    st.selectbox("Range", [o for o in options if any(["Range" in o, "-" in o, o == ''])], key=f"{col_name}_input@{_type}")
+                    sel_val = st.selectbox("Range", [o for o in options if any(["Range" in o, "-" in o, o == ''])], key=f"_{col_name}_input@Range")
                 elif st.session_state[f"{col_name}_type"] == "Ratio":
-                    st.selectbox(options_text, [o for o in options if any([":" in o, o == ''])], key=f"{col_name}_input@{_type}", label_visibility='hidden')
+                    sel_val = st.selectbox(options_text, [o for o in options if any([":" in o, o == ''])], label_visibility='hidden', key=f"_{col_name}_input@Ratio")
                 elif st.session_state[f"{col_name}_type"] == "Numeric":
                     numeric_options = [numeric_parser(o) for o in options if numeric_parser(o) is not None]
                     min_val, max_val = find_min_value(numeric_options), find_max_value(numeric_options)
                     if min_val == max_val:
                         st.warning(f"Only one value: {min_val}")
-                        st.session_state[f"{col_name}_input@{_type}"] = min_val
+                        sel_val = min_val
                     else:
-                        st.slider(options_text, min_value=float(find_min_value(numeric_options)), max_value=float(find_max_value(numeric_options)),
-                                  key=f"{col_name}_input@{_type}", value=float(find_min_value(numeric_options)), label_visibility='hidden')
+                        if st.session_state[f"{col_name}_input@{_type}"] is None:
+                            st.session_state[f"{col_name}_input@{_type}"] = min_val
+                        sel_val = st.slider(options_text, min_value=float(find_min_value(numeric_options)), max_value=float(find_max_value(numeric_options)), key=f"_{col_name}_input@Numeric",
+                                            value=st.session_state[f"{col_name}_input@{_type}"], label_visibility='hidden')
                     # st.selectbox(options_text, , key=f"{col_name}_input@{_type}")
+
                 elif st.session_state[f"{col_name}_type"] == "Other":
                     st.selectbox(options_text,
                                  [o for o in options if not any(["Range" in o, "-" in o,
                                                                  ":" in o,
                                                                  o.isnumeric()])],
-                                 key=f"{col_name}_input@{_type}")
+                                 key=f"_{col_name}_input@{_type}")
+                st.session_state[f"{col_name}_input@{_type}"] = sel_val
         else:
             st.session_state[f"{col_name}_type"] = ''
             if col_name != '':
-                dict_of_vals[f"{col_name}_input"] = st.selectbox(options_text, options, key=f"{col_name}_input")
-    st.write(st.session_state)
+                dict_of_vals[f"{col_name}_input"] = st.selectbox(options_text, options, key=f"_{col_name}_input")
 
 determine_logic()
