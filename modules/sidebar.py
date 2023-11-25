@@ -18,19 +18,25 @@ def build_sidebar():
         except ValueError:
             pass
 
-        user_profile = st.selectbox("Select a profile", profile_list, key="user_profile")
-        update_registry(registry, "last_selected_profile", user_profile)
+        select_col, load_col, save_col = st.columns([0.7, 0.15, 0.15])
+        with select_col:
+            user_profile = st.selectbox("Select a profile", profile_list, key="user_profile", label_visibility="collapsed")
+            update_registry(registry, "last_selected_profile", user_profile)
 
-        # Load session state from file
-        if st.button("Load Session State"):
-            with open(user_profile, "r") as file:
-                session_state_dict = json.load(file)
-                # Delete everything from session state except user_profile
-                for key in list(st.session_state.keys()):
-                    if key != "user_profile":
-                        del st.session_state[key]
-                st.session_state.update(session_state_dict)
-            st.experimental_rerun()
+        with load_col:
+            if st.button("📁", use_container_width=True):
+                with open(user_profile, "r") as file:
+                    session_state_dict = json.load(file)
+                    # Delete everything from session state except user_profile
+                    for key in list(st.session_state.keys()):
+                        if key != "user_profile":
+                            del st.session_state[key]
+                    st.session_state.update(session_state_dict)
+                st.experimental_rerun()
+
+        with save_col:
+            if st.button("💾", use_container_width=True):
+                save_session_state_to_file(user_profile)
 
         with st.expander("Create new profile"):
             new_profile_name = st.text_input("Enter new profile name")
@@ -53,11 +59,3 @@ def build_sidebar():
                 profile_list = list(glob("profiles/*.json"))
                 registry["user_profile"] = glob("profiles/*.json")[0]
                 st.experimental_rerun()
-
-        st.write(f"Selected profile: {user_profile}")
-        # Function to save session state to a JSON file
-
-        # Button to save session state
-        if st.button("Save Session State"):
-            save_session_state_to_file(user_profile)
-            st.success("Session state saved to file")
