@@ -93,12 +93,15 @@ def build_sidebar():
 
         scenario = st.selectbox('Select a scenario', st.session_state.scenarios)
 
-        add_col, remove_col = st.columns(2)
-        with add_col:
-            st.button('Add Scenario', on_click=add_scenario, use_container_width=True)
+        create_scen_col, rename_scen_col, delete_scen_col = st.columns(3)
+        with create_scen_col:
+            st.button('➕', on_click=add_scenario, use_container_width=True, key="add_scenario", help="Add a new scenario")
 
-        with remove_col:
-            st.button('Remove Scenario', on_click=remove_scenario, use_container_width=True)
+        with rename_scen_col:
+            st.button('✏️', use_container_width=True, key="rename_scenario", help="Rename the selected scenario")
+
+        with delete_scen_col:
+            st.button('🗑️', on_click=remove_scenario, use_container_width=True, key="remove_scenario", help="Delete the selected scenario")
 
         if "locations" not in st.session_state:
             st.error("""Locations not found! Please go back to the home page, under *Configuration* and 
