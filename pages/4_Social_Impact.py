@@ -8,7 +8,11 @@ import json
 import geopy.distance
 import warnings
 from modules.sidebar import build_sidebar
-
+from streamlit_folium import folium_static
+import folium
+from folium.plugins import Draw
+import time
+from helpers.geometry import *
 build_sidebar()
 add_logo("media/logo.png", height=150)
 
@@ -43,6 +47,43 @@ if float(st.session_state["radius_input"]) == 0:
 
 # Nearby Parks Section
 st.subheader("Nearby Parks")
+
+# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+# ■ Locations                                                                                                          ■
+# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+# Initialize session state
+if "locations" not in st.session_state:
+    st.session_state["locations"] = {}
+
+if "num_locations" not in st.session_state:
+    st.session_state["num_locations"] = 1
+
+# Get the number of locations from user input
+time.sleep(2)
+
+if loc:
+    # Use the geolocation if available
+    default_value = f"{loc['coords']['latitude']}, {loc['coords']['longitude']}"
+else:
+    # Use a default value if no geolocation is found
+    default_value = "36.1627, -86.7816"
+
+input_loc = [float(coord.strip()) for coord in st.session_state["loc_input"].split(',')]
+st.session_state["locations"][f"Location"] = input_loc
+
+# Create a map object
+m = folium.Map(location=input_loc, zoom_start=14)
+# Add the draw tool to the map
+draw = Draw(export=True)
+draw.add_to(m)
+# Display the map
+folium_static(m)
+
+# Retrieve the drawn shapes as GeoJSON (assuming this part is handled elsewhere in the code)
+draw_data = st.session_state.get('draw_data', {})
+# if draw_data:
+#     st.json(draw_data)
+
 st.session_state["radius_input"] = st.slider("Radius (miles)", min_value=0.1, max_value=30.0, value=float(st.session_state["radius_input"]))
 gmaps = googlemaps.Client(key=tokens["gmaps"])
 user_loc = tuple(map(float, st.session_state["loc_input"].split(", ")))
@@ -51,18 +92,29 @@ nearby_result = gmaps.places_nearby(
     radius=st.session_state["radius_input"] * 1609.344,
     keyword="park")
 
-pp = pprint.PrettyPrinter(indent=1)
-parks_list = []
-loc_df_list = []
-for place_result in nearby_result["results"]:
-    place_loc = (place_result["geometry"]["location"]["lat"], place_result["geometry"]["location"]["lng"])
-    loc_df_list.append({"lat": place_loc[0], "lon": place_loc[1], "color": "#0000FF90"})
-    parks_list.append({"Distance Away (straight-line; in miles)": geopy.distance.distance(user_loc, place_loc).miles, "Park Name": place_result["name"]})
-loc_df = pd.DataFrame.from_dict(loc_df_list)
-parks_df = pd.DataFrame.from_dict(parks_list).sort_values(by="Distance Away (straight-line; in miles)", ascending=True)
-st.dataframe(parks_df, hide_index=True)
-st.header("User Location")
-st.map(loc_df, latitude="lat", longitude="lon", size=20)
+if draw_data:
+    # Extract polygon coordinates from draw_data
+    # This depends on how the data is structured in your draw_data
+    # For example, if it's a GeoJSON of a single polygon:
+    polygon_coords = draw_data['features'][0]['geometry']['coordinates'][0]
+
+    # Filter places within the polygon
+    filtered_places = filter_places_by_polygon(nearby_result["results"], polygon_coords)
+
+# pp = pprint.PrettyPrinter(indent=1)
+# parks_list = []
+# loc_df_list = []
+# for place_result in nearby_result["results"]:
+#     place_loc = (place_result["geometry"]["location"]["lat"], place_result["geometry"]["location"]["lng"])
+#     loc_df_list.append({"lat": place_loc[0], "lon": place_loc[1], "color": "#0000FF90"})
+#     parks_list.append({"Distance Away (straight-line; in miles)": geopy.distance.distance(user_loc, place_loc).miles, "Park Name": place_result["name"]})
+# loc_df = pd.DataFrame.from_dict(loc_df_list)
+# parks_df = pd.DataFrame.from_dict(parks_list).sort_values(by="Distance Away (straight-line; in miles)", ascending=True)
+# st.dataframe(parks_df, hide_index=True)
+# st.header("User Location")
+# st.map(loc_df, latitude="lat", longitude="lon", size=20)
+
+
 
 # Enhanced Property Value Section
 st.header("Enhanced Property Value")

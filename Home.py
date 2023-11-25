@@ -27,6 +27,15 @@ owner, repo = "networked-intelligence-lab", "tdot-gi-streamlit"
 # st.subheader(f"Last updated: {get_last_commit_time('networked-intelligence-lab', 'tdot-gi-streamlit')}")
 st.markdown(f"""**version 0.0.{get_total_commits(owner, repo)}
 <br><sup>Last updated: {get_last_commit_time('networked-intelligence-lab', 'tdot-gi-streamlit')}<sup>**""", unsafe_allow_html=True)
+
+st.markdown("""
+Welcome to the TDoT GI Tool! This tool is designed to help you explore the potential benefits of green infrastructure in your area.
+As a start, you may check out the "User Guide" page in the sidebar. As a summary, you may follow the pages in the sidebar in order:
+1. Determine GI to determine suitable GI types for your project/scenario
+2. Enter information in Economic, Environmental, and Social impact pages to see the benefits of each GI/scenario
+3. View the "Quantify Benefits" page to see the total benefits and comparison of each GI/scenario
+<br><br>
+""", unsafe_allow_html=True)
 #         st.markdown("""
 # - Site slope: 0.06
 # - Cross-sectional and side slope: 0.04
@@ -93,53 +102,21 @@ build_sidebar()
 #     save_session_state_to_file(user_profile)
 #     st.success("Session state saved to file")
 
-st.header("Configuration")
-
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 # ■ Locations                                                                                                          ■
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-# Initialize session state
-if "locations" not in st.session_state:
-    st.session_state["locations"] = {}
-
-if "num_locations" not in st.session_state:
-    st.session_state["num_locations"] = 1
-
-# Get the number of locations from user input
-num_cols = st.number_input("Select number of GI points of interest", min_value=1, max_value=3, value=st.session_state["num_locations"], step=1)
-st.session_state["num_locations"] = num_cols  # Update session state with the current number of locations
-
-cols = st.columns(num_cols)
+st.subheader("Browser Location")
 loc = get_geolocation()
+if loc:
+    loc_value = f"{loc['coords']['latitude']}, {loc['coords']['longitude']}"
+else:
+    st.warning("Location not found. You may not have allowed location permissions in your browser.")
+    loc_value = "36.1627, -86.7816"
 
-for idx, col in enumerate(cols):
-    col.header(f"Location {idx + 1}" if num_cols > 1 else "Location")
-    time.sleep(2)
+lat, lon = [float(c) for c in loc_value.split(", ")]
+data = pd.DataFrame({
+    'lat': [lat],
+    'lon': [lon]
+})
 
-    if loc:
-        # Use the geolocation if available
-        default_value = f"{loc['coords']['latitude']}, {loc['coords']['longitude']}"
-    else:
-        # Use a default value if no geolocation is found
-        default_value = "36.1627, -86.7816"
-
-    # Get the location input from the user
-    loc_input = col.text_input("Enter latitude and longitude", value=default_value, key=f"loc_input{idx}")
-    input_loc = [float(coord.strip()) for coord in loc_input.split(',')]
-
-    col.write("Enter latitude and longitude in the format: 36.1627, -86.7816")
-    st.session_state["locations"][f"Location {idx + 1}"] = input_loc
-
-    with col:
-        # Create a map object
-        m = folium.Map(location=input_loc, zoom_start=14)
-        # Add the draw tool to the map
-        draw = Draw(export=True)
-        draw.add_to(m)
-        # Display the map
-        folium_static(m)
-
-# Retrieve the drawn shapes as GeoJSON (assuming this part is handled elsewhere in the code)
-draw_data = st.session_state.get('draw_data', {})
-if draw_data:
-    st.json(draw_data)
+st.map(data)
