@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from collections import defaultdict
-from helpers.helpers import filter_nested_dict, get_leaf_values, count_leaf_values, is_float, get_location_name, limit_string, find_max_value, find_min_value
+from helpers.helpers import filter_nested_dict, get_leaf_values, count_leaf_values, is_float, find_max_value, find_min_value
 import re
 from streamlit_extras.app_logo import add_logo
 from modules.sidebar import build_sidebar
@@ -31,11 +31,6 @@ for index, row in categories_df.iterrows():
         category_dict[curr_category][subcategory] = index
     else:
         category_dict[curr_category][category] = index
-
-
-def add_scenario():
-    new_scenario = f"Scenario {len(st.session_state.scenarios) + 1}"
-    st.session_state.scenarios.append(new_scenario)
 
 
 def numeric_parser(value):
@@ -96,14 +91,6 @@ def numeric_parser(value):
 # Example usage with a DataFrame column
 # Replace 'column_name' with the actual name of the column
 # data['column_name'] = data['column_name'].apply(numeric_parser)
-
-
-def remove_scenario():
-    # Prevent removing the last scenario if desired
-    if len(st.session_state.scenarios) > 1:
-        st.session_state.scenarios.remove(scenario)
-    else:
-        st.warning("You cannot remove the last scenario.")
 
 
 def determine_logic():
@@ -192,29 +179,6 @@ def determine_logic():
 
 with col1:
     st.title('Determine GI')
-    if 'scenarios' not in st.session_state:
-        st.session_state.scenarios = ["Scenario 1"]
-
-    # Select box for displaying scenarios
-    scenario = st.selectbox('Select a scenario', st.session_state.scenarios)
-
-    add_col, remove_col = st.columns(2)
-    with add_col:
-        st.button('Add Scenario', on_click=add_scenario, use_container_width=True)
-
-    with remove_col:
-        st.button('Remove Scenario', on_click=remove_scenario, use_container_width=True)
-
-
-    # You can display the selected scenario or do further processing
-    st.write(f"You have selected: {scenario}")
-
-    if "locations" not in st.session_state:
-        st.error("""Locations not found! Please go back to the home page, under *Configuration* and 
-        ensure that location is set.""")
-    else:
-        st.selectbox("Location", [f"1: {limit_string(get_location_name(v[0], v[1]), 40)} @ {v}" for v in list(st.session_state.locations.values())[:st.session_state.num_locations]])
-
 
     spreadsheet_t = st.tabs(["Tool Options"])
     for idx, col in enumerate(option_df.columns[2:]):

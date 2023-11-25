@@ -3,8 +3,23 @@ import json
 from glob import glob
 import os
 import shutil
-from helpers.helpers import update_registry, save_session_state_to_file
+from helpers.helpers import update_registry, save_session_state_to_file, get_location_name, limit_string
 from registry.registry import *
+
+
+def add_scenario():
+    new_scenario = f"Scenario {len(st.session_state.scenarios) + 1}"
+    st.session_state.scenarios.append(new_scenario)
+
+
+def remove_scenario():
+    global scenario
+    # Prevent removing the last scenario if desired
+    if len(st.session_state.scenarios) > 1:
+        st.session_state.scenarios.remove(scenario)
+    else:
+        st.warning("You cannot remove the last scenario.")
+
 
 def build_sidebar():
     with st.sidebar:
@@ -58,4 +73,22 @@ def build_sidebar():
                 os.remove(selected_profile)
                 profile_list = list(glob("profiles/*.json"))
                 registry["user_profile"] = glob("profiles/*.json")[0]
-                st.experimental_rerun()
+                st.experimental_rerun()        with rename_col:
+        if 'scenarios' not in st.session_state:
+            st.session_state.scenarios = ["Scenario 1"]
+
+        scenario = st.selectbox('Select a scenario', st.session_state.scenarios)
+
+        add_col, remove_col = st.columns(2)
+        with add_col:
+            st.button('Add Scenario', on_click=add_scenario, use_container_width=True)
+
+        with remove_col:
+            st.button('Remove Scenario', on_click=remove_scenario, use_container_width=True)
+
+        if "locations" not in st.session_state:
+            st.error("""Locations not found! Please go back to the home page, under *Configuration* and 
+            ensure that location is set.""")
+        else:
+            st.selectbox("Location", [f"1: {limit_string(get_location_name(v[0], v[1]), 40)} @ {v}" for v in
+                                      list(st.session_state.locations.values())[:st.session_state.num_locations]])
