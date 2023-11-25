@@ -2,7 +2,9 @@ import requests
 from datetime import datetime
 import pytz
 
-def get_last_commit_time(owner, repo):
+
+def get_last_commit_time():
+    owner, repo = "networked-intelligence-lab", "tdot-gi-streamlit"
     url = f"https://api.github.com/repos/{owner}/{repo}/commits"
     response = requests.get(url)
 
@@ -28,7 +30,8 @@ def get_last_commit_time(owner, repo):
         return f"Error: {response.status_code}"
 
 
-def get_total_commits(owner, repo):
+def get_total_commits():
+    owner, repo = "networked-intelligence-lab", "tdot-gi-streamlit"
     url = f"https://api.github.com/repos/{owner}/{repo}/commits"
     response = requests.get(url, {'per_page': 1})
 
