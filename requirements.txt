@@ -10,3 +10,4 @@ openpyxl
 seaborn
 pytz
 streamlit-folium
+shapely
