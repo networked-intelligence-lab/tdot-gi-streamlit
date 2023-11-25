@@ -23,7 +23,7 @@ def remove_scenario():
 
 def build_sidebar():
     with st.sidebar:
-        st.subheader("Profile")
+        st.subheader("Profiles")
         profile_list = list(glob("profiles/*.json"))
         # move last selected profile to the start of the list
         last_selected_profile = registry["last_selected_profile"]
@@ -39,7 +39,7 @@ def build_sidebar():
 
         create_col, load_col, save_col, rename_col, delete_col = st.columns(5)
         with load_col:
-            if st.button("📁", use_container_width=True):
+            if st.button("📁", use_container_width=True, help="Load the selected profile"):
                 with open(user_profile, "r") as file:
                     session_state_dict = json.load(file)
                     # Delete everything from session state except user_profile
@@ -50,19 +50,19 @@ def build_sidebar():
                 st.experimental_rerun()
 
         with save_col:
-            if st.button("💾", use_container_width=True):
+            if st.button("💾", use_container_width=True, help="Save the current session state to the selected profile"):
                 save_session_state_to_file(user_profile)
 
         with rename_col:
-            if st.button("✏️", use_container_width=True):
+            if st.button("✏️", use_container_width=True, help="Rename the selected profile"):
                 pass
 
         with create_col:
-            if st.button("➕", use_container_width=True):
+            if st.button("➕", use_container_width=True, help="Create a new profile"):
                 pass
 
         with delete_col:
-            if st.button("🗑️", use_container_width=True):
+            if st.button("🗑️", use_container_width=True, help="Delete the selected profile"):
                 pass
 
         # with st.expander("Create new profile"):
