@@ -3,7 +3,7 @@ from streamlit_js_eval import streamlit_js_eval, get_geolocation
 from streamlit_extras.app_logo import add_logo
 import pandas as pd
 from glob import glob
-from helpers.helpers import update_registry
+from helpers.helpers import update_registry, limit_string, get_location_name
 from registry.registry import *
 import os
 import json
@@ -34,7 +34,6 @@ As a start, you may check out the "User Guide" page in the sidebar. As a summary
 1. Determine GI to determine suitable GI types for your project/scenario
 2. Enter information in Economic, Environmental, and Social impact pages to see the benefits of each GI/scenario
 3. View the "Quantify Benefits" page to see the total benefits and comparison of each GI/scenario
-<br><br>
 """, unsafe_allow_html=True)
 #         st.markdown("""
 # - Site slope: 0.06
@@ -105,12 +104,11 @@ build_sidebar()
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 # ■ Locations                                                                                                          ■
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-st.subheader("Browser Location")
 loc = get_geolocation()
 if loc:
     loc_value = f"{loc['coords']['latitude']}, {loc['coords']['longitude']}"
 else:
-    st.warning("Location not found. You may not have allowed location permissions in your browser.")
+    st.warning("Location not found. You may not have allowed location permissions in your browser; using default location instead.")
     loc_value = "36.1627, -86.7816"
 
 lat, lon = [float(c) for c in loc_value.split(", ")]
@@ -118,5 +116,5 @@ data = pd.DataFrame({
     'lat': [lat],
     'lon': [lon]
 })
-
+st.markdown(f"**Your location**: {get_location_name(lat, lon)} @ {loc_value}")
 st.map(data)
