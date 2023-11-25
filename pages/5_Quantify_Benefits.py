@@ -8,6 +8,10 @@ from matplotlib.ticker import StrMethodFormatter
 from matplotlib import rcParams
 from matplotlib.pyplot import figure
 from streamlit_extras.app_logo import add_logo
+from modules.sidebar import build_sidebar
+
+build_sidebar()
+add_logo("media/logo.png", height=150)
 
 
 st.title("Quantify Benefits")
@@ -17,7 +21,7 @@ st.subheader("Determine Green Infrastructure")
 determine_gi_output = st.session_state["determine_gi_output"]
 for major_category, minor_categories_list in determine_gi_output.items():
     st.multiselect(major_category, minor_categories_list, minor_categories_list)
-add_logo("media/logo.png", height=150)
+
 
 st.subheader("Determine Economic Impacts")
 st.text_input("Capital Cost", value=st.session_state["cisterns_capital_cost"])

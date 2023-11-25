@@ -109,5 +109,11 @@ def find_max_value(lst):
         return max_val
 
 
+def save_session_state_to_file(filename):
+    session_state_dict = {k: v for k, v in st.session_state.items() if k != "user_profile"}
+    with open(filename, "w") as file:
+        json.dump(session_state_dict, file, indent=4)
+
+
 
 

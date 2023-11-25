@@ -7,6 +7,10 @@ import pprint
 import json
 import geopy.distance
 import warnings
+from modules.sidebar import build_sidebar
+
+build_sidebar()
+add_logo("media/logo.png", height=150)
 
 # Suppress all warnings
 warnings.simplefilter("ignore")
@@ -14,7 +18,7 @@ warnings.simplefilter("ignore")
 # Use streamlit secrets for sensitive data like API keys
 tokens = st.secrets
 
-add_logo("media/logo.png", height=150)
+
 st.title("Social Impact")
 
 # Initialize session state variables for number inputs and location input

@@ -1,9 +1,12 @@
 import streamlit as st
 from streamlit_extras.app_logo import add_logo
 import json
+from modules.sidebar import build_sidebar
+
+build_sidebar()
+add_logo("media/logo.png", height=150)
 
 climate_zones_data = json.load(open("data/climate_tree.json"))
-add_logo("media/logo.png", height=150)
 
 # Initialize air pollutant session states
 if any([f"{pollutant}_acp" not in st.session_state for pollutant in climate_zones_data[list(climate_zones_data.keys())[0]]["Pollutant Uptake"].keys()]):

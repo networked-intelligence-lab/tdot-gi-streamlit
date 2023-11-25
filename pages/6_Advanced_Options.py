@@ -1,11 +1,12 @@
 import streamlit as st
 from modules.helpers import subsubheader
 from streamlit_extras.app_logo import add_logo
+from modules.sidebar import build_sidebar
 
-
+build_sidebar()
 add_logo("media/logo.png", height=150)
-st.title('Advanced Options')
 
+st.title('Advanced Options')
 with st.expander("Environmental Impact"):
     st.subheader("Reduced Air Pollutants")
     subsubheader(st, "Avoided Cost of Criteria Pollutants")

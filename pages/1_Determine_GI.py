@@ -4,8 +4,9 @@ from collections import defaultdict
 from helpers.helpers import filter_nested_dict, get_leaf_values, count_leaf_values, is_float, get_location_name, limit_string, find_max_value, find_min_value
 import re
 from streamlit_extras.app_logo import add_logo
+from modules.sidebar import build_sidebar
 
-
+build_sidebar()
 add_logo("media/logo.png", height=150)
 
 col1, col2 = st.columns(2)
