@@ -102,10 +102,3 @@ def build_sidebar():
 
         with delete_scen_col:
             st.button('🗑️', on_click=remove_scenario, use_container_width=True, key="remove_scenario", help="Delete the selected scenario")
-
-        if "locations" not in st.session_state:
-            st.error("""Locations not found! Please go back to the home page, under *Configuration* and 
-            ensure that location is set.""")
-        else:
-            st.selectbox("Location", [f"1: {limit_string(get_location_name(v[0], v[1]), 40)} @ {v}" for v in
-                                      list(st.session_state.locations.values())[:st.session_state.num_locations]])
