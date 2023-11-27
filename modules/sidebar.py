@@ -5,7 +5,15 @@ import os
 import shutil
 from helpers.helpers import update_registry, save_session_state_to_file, get_location_name, limit_string
 from registry.registry import *
+from helpers.session_state import scenario_change
+from streamlit_modal import Modal
 
+
+rename_modal = Modal(
+    "Rename profile",
+    key="rename_modal",
+    max_width=1024
+)
 
 def add_scenario():
     new_scenario = f"Scenario {len(st.session_state.scenarios) + 1}"
@@ -91,14 +99,59 @@ def build_sidebar():
         if 'scenarios' not in st.session_state:
             st.session_state.scenarios = ["Scenario 1"]
 
-        scenario = st.selectbox('Select a scenario', st.session_state.scenarios)
+        if "scenario_num" not in st.session_state:
+            scenario_num = 1
+            st.session_state.scenario_num = scenario_num
+            if f"Scenario {scenario_num}" not in st.session_state:
+                st.session_state[f"Scenario {scenario_num}"] = {}
+            st.session_state[f"Scenario {st.session_state.scenario_num}"]["scenario_name"] = "Scenario 1"
 
+
+        scenarios = [k for k in st.session_state.keys() if "Scenario " in k]
+        st.session_state["scenarios"] = scenarios
+
+        if "scenario_picker" not in st.session_state:
+            scen_picker = 0
+        else:
+            scen_picker = st.session_state["scenarios"].index(f"{st.session_state.scenario_picker}")
+
+        scenario = st.selectbox('Select a scenario', st.session_state["scenarios"], index=scen_picker,
+                                key="scenario_picker", label_visibility="collapsed", on_change=scenario_change)
+
+        st.markdown(f"Name: <b>{st.session_state['Scenario ' + str(st.session_state.scenario_num)]['scenario_name']}</b>", unsafe_allow_html=True)
         create_scen_col, rename_scen_col, delete_scen_col = st.columns(3)
         with create_scen_col:
-            st.button('➕', on_click=add_scenario, use_container_width=True, key="add_scenario", help="Add a new scenario")
+            scenario_len = len([key for key in st.session_state.keys() if "Scenario " in key])
+            if scenario_len >= 5:
+                st.button('Max', use_container_width=True, key="add_scenario", help="You cannot add more than 5 scenarios", disabled=True)
+            else:
+                for i in range(1, scenario_len + 1):
+                    if f"Scenario {i}" not in st.session_state:
+                        scenario_num = i
+                        break
+                else:
+                    scenario_num = scenario_len + 1
+
+                if st.button('➕', on_click=add_scenario, use_container_width=True, key="add_scenario", help="Add a new scenario"):
+                    st.session_state.scenario_num = scenario_num
+                    if f"Scenario {scenario_num}" not in st.session_state:
+                        st.session_state[f"Scenario {scenario_num}"] = {}
+                    st.session_state[f"Scenario {st.session_state.scenario_num}"]["scenario_name"] = f"Scenario {scenario_num}"
+                    st.experimental_rerun()
 
         with rename_scen_col:
-            st.button('✏️', use_container_width=True, key="rename_scenario", help="Rename the selected scenario")
+            if st.button('✏️', use_container_width=True, key="rename_scenario", help="Rename the selected scenario"):
+                rename_modal.open()
+
+            if rename_modal.is_open():
+                with rename_modal.container():
+                    new_scenario_name = st.text_input("Enter new scenario name", value=st.session_state[f"Scenario {st.session_state.scenario_num}"]["scenario_name"])
+                    if st.button("Rename"):
+                        st.session_state[f"Scenario {st.session_state.scenario_num}"]["scenario_name"] = new_scenario_name
+                        st.experimental_rerun()
+
 
         with delete_scen_col:
             st.button('🗑️', on_click=remove_scenario, use_container_width=True, key="remove_scenario", help="Delete the selected scenario")
+
+        st.write([key for key in st.session_state.keys() if "_scenario_" in key])
