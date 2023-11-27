@@ -1,8 +1,8 @@
 {
     "<h4>Stormwater Improvements</h4>Flooding reduction_type": "Do not filter",
     "cm_select_s": "Low",
-    "vm_select_br": "Low",
     "gi_element_surface_area": 36,
+    "vm_select_br": "Low",
     "<h4>Subgrade Requirements</h4><h5>Soil Infiltration Rate</h5>Minimum (in. per hour)_input@Other": null,
     "<h4>Environmental Benefits</h4>Total Suspended Solids (TSS) (Minimum required)Total Phosphorous (TP) (Minimum required)_input@Do not filter": null,
     "<h4>Contributing Drainage Area</h4>Maximum (acre) or ratio_input@Numeric": 4.0,
@@ -76,7 +76,7 @@
     "<h4>Setback Requirements</h4><h5>Set back from buildings</h5>Minimum (ft.)_type": "Do not filter",
     "num_large_trees": 3,
     "<h4>GI Infiltration Test Rate</h4>Minimum (in. per hour)_input@Do not filter": null,
-    "num_properties": 0,
+    "num_properties": 1000,
     "<h4>Subgrade Requirements</h4><h5>Soil Infiltration Rate</h5>Minimum (in. per hour)_input@Do not filter": null,
     "<h4>Cross-sectional & Side Slope Restrictions</h4>Maximum_input@Ratio": null,
     "<h4>Environmental Benefits</h4>Total Suspended Solids (TSS) (Minimum required)Total Nitrogen (TN) (Minimum required)_input@Do not filter": null,
@@ -100,7 +100,6 @@
     "<h4>Distance from Drinking Wells</h4>Minimum (ft.)_input@Do not filter": null,
     "lm_select_pp": "Low",
     "<h4>Contributing Drainage Area</h4>Maximum (acre) or ratioMinimum %  impervious area space reqd_input@Range": null,
-    "_wh_annual_precipitation": 53,
     "loc_input": "36.1627, -86.7816",
     "<h4>Environmental Benefits</h4>Total Suspended Solids (TSS) (Minimum required)Total Nitrogen (TN) (Minimum required)_type": "Numeric",
     "irim_select_pv": "Low",
@@ -136,7 +135,7 @@
     "num_small_trees": 1,
     "<h4>Subgrade Requirements</h4><h5>Soil Infiltration Rate</h5>Minimum (in. per hour)_type": "Numeric",
     "<h4>Cost Considerations</h4><h5>Installation Cost Range</h5>Low_type": "Do not filter",
-    "total_ant_veg_area": 0,
+    "total_ant_veg_area": 10,
     "<h4>Cost Considerations</h4><h5>Installation Cost Range</h5>Low_input": true,
     "<h4>Soil Groups </h4>Recommended Not Recommended_type": "Do not filter",
     "<h4>Stormwater Improvements</h4>Flooding reductionRain water Detention_input@Range": null,
@@ -163,15 +162,15 @@
     "<h4>Environmental Benefits</h4>Total Suspended Solids (TSS) (Minimum required)Metals (Minimum required)_input@Do not filter": null,
     "upg_select_pv": "Low",
     "<h4>Cost Considerations</h4><h5>Installation Cost Range</h5>LowHigh_input@Do not filter": null,
-    "median_prop_val": 0,
+    "median_prop_val": 100,
     "<h4>Maintenance Cost Range</h4>LowUnit_input@Other": null,
     "<h4>Environmental Benefits</h4>Total Suspended Solids (TSS) (Minimum required)_input@Range": null,
     "<h4>Setback Requirements</h4><h5>Set back from buildings</h5>Minimum (ft.)_input@Range": null,
     "<h4>Stormwater Improvements</h4>Flooding reductionGroundwater Recharge_input@Do not filter": null,
-    "<h4>Setback Requirements</h4><h5>Set back from buildings</h5>Minimum (ft.)_input@Other": null,
     "<h4>Stormwater Improvements</h4>Flooding reductionGroundwater Recharge_input@Range": null,
-    "<h4>Environmental Benefits</h4>Total Suspended Solids (TSS) (Minimum required)Total Nitrogen (TN) (Minimum required)_input": true,
+    "<h4>Setback Requirements</h4><h5>Set back from buildings</h5>Minimum (ft.)_input@Other": null,
     "<h4>Social Benefits</h4>Motorist and CommutersPublic Safety_type": "",
+    "<h4>Environmental Benefits</h4>Total Suspended Solids (TSS) (Minimum required)Total Nitrogen (TN) (Minimum required)_input": true,
     "<h4>Cross-sectional & Side Slope Restrictions</h4>Maximum_input@Do not filter": null,
     "<h4>Maintenance Cost Range</h4>LowUnit_input": true,
     "permeable_pavement_area": 15000,
@@ -191,6 +190,18 @@
         "PM10": 6.38
     },
     "<h4>GI</h4><h5>Lifespan</h5>Years_type": "Do not filter",
+    "getLocation()": {
+        "coords": {
+            "accuracy": 35,
+            "altitude": null,
+            "altitudeAccuracy": null,
+            "heading": null,
+            "latitude": 35.932924930374774,
+            "longitude": -79.02788053956523,
+            "speed": null
+        },
+        "timestamp": 722816908362
+    },
     "<h4>Stormwater Improvements</h4>Flooding reductionTemperature Reduction_input@Other": null,
     "<h4>Environmental Benefits</h4>Total Suspended Solids (TSS) (Minimum required)_type": "Numeric",
     "<h4>Environmental Benefits</h4>Total Suspended Solids (TSS) (Minimum required)Total Nitrogen (TN) (Minimum required)_input@Other": null,
@@ -209,6 +220,10 @@
         "Location 1": [
             35.93300454097469,
             -79.02764424943744
+        ],
+        "Location": [
+            36.1627,
+            -86.7816
         ]
     },
     "<h4>GI</h4><h5>Lifespan</h5>Years_input@Range": null,
@@ -227,7 +242,7 @@
     "<h4>Maintenance Cost Range</h4>LowHigh_input": true,
     "<h4>Contributing Drainage Area</h4>Maximum (acre) or ratio_input@Other": null,
     "<h4>Environmental Benefits</h4>Total Suspended Solids (TSS) (Minimum required)Total Nitrogen (TN) (Minimum required)_input@Numeric": 0.8,
-    "total_parklot_veg_area": 0,
+    "total_parklot_veg_area": 1000,
     "<h4>Stormwater Improvements</h4>Flooding reduction_input@Other": null,
     "<h4>Contributing Drainage Area</h4>Maximum (acre) or ratioMinimum %  impervious area space reqd_input@Ratio": null,
     "<h4>Stormwater Improvements</h4>Flooding reductionTemperature Reduction_input": true,
@@ -259,7 +274,7 @@
     "<h4>Environmental Benefits</h4>Total Suspended Solids (TSS) (Minimum required)_input@Numeric": 0.9,
     "<h4>Environmental Benefits</h4>Total Suspended Solids (TSS) (Minimum required)Metals (Minimum required)_input": true,
     "<h4>Soil Groups </h4>Recommended _input": true,
-    "total_green_roof": 0,
+    "total_green_roof": 100,
     "wh_annual_precipitation": 53,
     "<h4>Environmental Benefits</h4>Total Suspended Solids (TSS) (Minimum required)Total Phosphorous (TP) (Minimum required)_type": "Numeric",
     "<h4>Stormwater Improvements</h4>Flooding reductionRunoff Reduction Volume _input@Do not filter": null,
