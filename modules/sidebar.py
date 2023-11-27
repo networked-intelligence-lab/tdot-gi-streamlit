@@ -87,18 +87,18 @@ def build_sidebar():
         #         registry["user_profile"] = glob("profiles/*.json")[0]
         #         st.experimental_rerun()
 
-        st.subheader("Scenarios")
-        if 'scenarios' not in st.session_state:
-            st.session_state.scenarios = ["Scenario 1"]
-
-        scenario = st.selectbox('Select a scenario', st.session_state.scenarios)
-
-        create_scen_col, rename_scen_col, delete_scen_col = st.columns(3)
-        with create_scen_col:
-            st.button('➕', on_click=add_scenario, use_container_width=True, key="add_scenario", help="Add a new scenario")
-
-        with rename_scen_col:
-            st.button('✏️', use_container_width=True, key="rename_scenario", help="Rename the selected scenario")
-
-        with delete_scen_col:
-            st.button('🗑️', on_click=remove_scenario, use_container_width=True, key="remove_scenario", help="Delete the selected scenario")
+        # st.subheader("Scenarios")
+        # if 'scenarios' not in st.session_state:
+        #     st.session_state.scenarios = ["Scenario 1"]
+        #
+        # scenario = st.selectbox('Select a scenario', st.session_state.scenarios)
+        #
+        # create_scen_col, rename_scen_col, delete_scen_col = st.columns(3)
+        # with create_scen_col:
+        #     st.button('➕', on_click=add_scenario, use_container_width=True, key="add_scenario", help="Add a new scenario")
+        #
+        # with rename_scen_col:
+        #     st.button('✏️', use_container_width=True, key="rename_scenario", help="Rename the selected scenario")
+        #
+        # with delete_scen_col:
+        #     st.button('🗑️', on_click=remove_scenario, use_container_width=True, key="remove_scenario", help="Delete the selected scenario")
