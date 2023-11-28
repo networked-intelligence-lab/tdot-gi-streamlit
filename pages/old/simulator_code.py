@@ -7,14 +7,14 @@ from matplotlib.ticker import StrMethodFormatter
 from matplotlib import rcParams
 from matplotlib.pyplot import figure
 
-df = pd.read_excel('data/social_criteria.xlsx')
+df = pd.read_excel('../../data/social_criteria.xlsx')
 df = df.dropna()
 
-df2 = pd.read_excel('data/env_cri.xlsx', sheet_name="Form Responses 1")
+df2 = pd.read_excel('../../data/env_cri.xlsx', sheet_name="Form Responses 1")
 df2 = df2.dropna()
 
 df2 = df2.drop('energy', axis=1)
-level_one_cri = pd.read_excel('data/lvl1_cri_pairwise.xlsx')
+level_one_cri = pd.read_excel('../../data/lvl1_cri_pairwise.xlsx')
 level_one_cri = level_one_cri.iloc[:2, 1:3]
 
 social = df.copy()
