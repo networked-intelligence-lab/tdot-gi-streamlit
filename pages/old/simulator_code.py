@@ -79,7 +79,6 @@ for x in range(0, 93):
     r32.append(mat[3][2])
 
 e_r10 = []
-
 for x in range(0, 94):
     for i in range(len(env.iloc[0, :])):
         for j in range(len(mat_env)):
@@ -88,8 +87,8 @@ for x in range(0, 94):
 
     e_r10.append(mat_env[1][0])
 
-new_df = pd.read_excel('data/pairwise_mat_lvl2.xlsx', sheet_name='social')
-new_df_env = pd.read_excel('data/pairwise_mat_lvl2.xlsx', sheet_name='env')
+new_df = pd.read_excel('../../data/pairwise_mat_lvl2.xlsx', sheet_name='social')
+new_df_env = pd.read_excel('../../data/pairwise_mat_lvl2.xlsx', sheet_name='env')
 
 
 def prio_vec(A):
@@ -97,7 +96,6 @@ def prio_vec(A):
     p = e / e.sum()
 
     return p.real
-
 
 mat1 = np.ones((4, 4))
 mat2 = np.ones((4, 4))
@@ -146,9 +144,9 @@ for i in range(4):
         env_mat2[i][j] = new_df_env.iloc[i, 5] / new_df_env.iloc[j, 5]
 env_mat2 = env_mat2.round(4)
 
-# local_var_transposed = [prio_vec(mat1), prio_vec(mat2), prio_vec(mat3), prio_vec(mat4)]
-# local_var = [[local_var_transposed[j][i] for j in range(len(local_var_transposed))] for i in
-#              range(len(local_var_transposed[0]))]
+local_var_transposed = [prio_vec(mat1), prio_vec(mat2), prio_vec(mat3), prio_vec(mat4)]
+local_var = [[local_var_transposed[j][i] for j in range(len(local_var_transposed))] for i in
+             range(len(local_var_transposed[0]))]
 
 local_var_transposed_env = [prio_vec(env_mat1), prio_vec(env_mat2)]
 local_var_env = [[local_var_transposed_env[j][i] for j in range(len(local_var_transposed_env))] for i in
@@ -213,229 +211,228 @@ def simulator(n):
             wts_100.append(wts[3])
 
 
-num_sims = st.number_input('Enter the number of simulations', min_value=1, max_value=10000, value=100, step=1, key=None)
-if st.button('Simulate', on_click=simulator(num_sims)):
+simulator(5000)
 
-    column_names = ["wts_25", "wts_50", "wts_75", "wts_100"]
+column_names = ["wts_25", "wts_50", "wts_75", "wts_100"]
 
-    wts = pd.DataFrame(columns=column_names)
+wts = pd.DataFrame(columns=column_names)
 
-    wts['wts_25'] = wts_25
-    wts['wts_50'] = wts_50
-    wts['wts_75'] = wts_75
-    wts['wts_100'] = wts_100
+wts['wts_25'] = wts_25
+wts['wts_50'] = wts_50
+wts['wts_75'] = wts_75
+wts['wts_100'] = wts_100
 
-    wts = wts.round(5)
+wts = wts.round(5)
 
-    # ))
-    # ))
-    # ))
-    # ))
+# ))
+# ))
+# ))
+# ))
 
-    ## social overall plot
-    st.header('Range of weights for all four alternatives')
-    figure(figsize=(6.9, 3))
+## social overall plot
+st.header('Range of weights for all four alternatives')
+figure(figsize=(6.9, 3))
 
-    rcParams['font.family'] = 'Arial'
+rcParams['font.family'] = 'Arial'
 
-    plt.hist(x=wts['wts_25'], bins=len(pd.unique(wts['wts_25'])), color='black',
-             alpha=1)
-    plt.hist(x=wts['wts_50'], bins=len(pd.unique(wts['wts_50'])), color='brown',
-             alpha=1)
-    plt.hist(x=wts['wts_75'], bins=len(pd.unique(wts['wts_75'])), color='blue',
-             alpha=1)
-    plt.hist(x=wts['wts_100'], bins=len(pd.unique(wts['wts_100'])), color='green',
-             alpha=1)
-    plt.gcf().set_size_inches(7.5, 3)
+plt.hist(x=wts['wts_25'], bins=len(pd.unique(wts['wts_25'])), color='black',
+         alpha=1)
+plt.hist(x=wts['wts_50'], bins=len(pd.unique(wts['wts_50'])), color='brown',
+         alpha=1)
+plt.hist(x=wts['wts_75'], bins=len(pd.unique(wts['wts_75'])), color='blue',
+         alpha=1)
+plt.hist(x=wts['wts_100'], bins=len(pd.unique(wts['wts_100'])), color='green',
+         alpha=1)
+plt.gcf().set_size_inches(7.5, 3)
 
-    # plt.xticks(np.linspace(0.0, 0.45, 10), rotation = 0)
+# plt.xticks(np.linspace(0.0, 0.45, 10), rotation = 0)
 
 
-    plt.legend(['25% GI', '50% GI', '75% GI', '100% GI'], fontsize=7)
-    plt.xticks(fontsize=6)
-    plt.yticks(fontsize=6)
-    plt.ylabel('Density', fontsize=7)
-    plt.xlabel('Weight', fontsize=7)
+plt.legend(['25% GI', '50% GI', '75% GI', '100% GI'], fontsize=7)
+plt.xticks(fontsize=6)
+plt.yticks(fontsize=6)
+plt.ylabel('Density', fontsize=7)
+plt.xlabel('Weight', fontsize=7)
 
-    plt.gca().xaxis.set_major_formatter(StrMethodFormatter('{x:,.3f}'))
+plt.gca().xaxis.set_major_formatter(StrMethodFormatter('{x:,.3f}'))
 
-    txt = "(A). Range of weights for all four alternatives"
-    plt.figtext(0.5, -0.028, txt, wrap=True, horizontalalignment='center', fontsize=7)
+txt = "(A). Range of weights for all four alternatives"
+plt.figtext(0.5, -0.028, txt, wrap=True, horizontalalignment='center', fontsize=7)
 
-    plt.savefig('wts.png', dpi=300, bbox_inches="tight")
+plt.savefig('wts.png', dpi=300, bbox_inches="tight")
 
-    st.pyplot(plt)
+st.pyplot(plt)
 
-    plt.hist(x=wts['wts_25'], bins=len(pd.unique(wts['wts_25'])), color='black',
-             alpha=1)
+plt.hist(x=wts['wts_25'], bins=len(pd.unique(wts['wts_25'])), color='black',
+         alpha=1)
 
-    # plt.legend(['25% GI'])
-    plt.ylabel('Density', fontsize=7)
-    plt.xlabel('Weight', fontsize=7)
+# plt.legend(['25% GI'])
+plt.ylabel('Density', fontsize=7)
+plt.xlabel('Weight', fontsize=7)
 
-    from matplotlib.ticker import StrMethodFormatter
-    st.header('Range of weights for 25% GI')
-    plt.gca().xaxis.set_major_formatter(StrMethodFormatter('{x:,.3f}'))
+from matplotlib.ticker import StrMethodFormatter
+st.header('Range of weights for 25% GI')
+plt.gca().xaxis.set_major_formatter(StrMethodFormatter('{x:,.3f}'))
 
-    fig = plt.gcf()
-    fig.set_size_inches(3.25, 2.3)
+fig = plt.gcf()
+fig.set_size_inches(3.25, 2.3)
 
-    plt.xticks(fontsize=6)
-    plt.yticks(fontsize=6)
+plt.xticks(fontsize=6)
+plt.yticks(fontsize=6)
 
-    txt = "(B) 25% GI, 75% TI"
-    plt.figtext(0.54, -0.02, txt, wrap=True, horizontalalignment='center', fontsize=7)
+txt = "(B) 25% GI, 75% TI"
+plt.figtext(0.54, -0.02, txt, wrap=True, horizontalalignment='center', fontsize=7)
 
-    plt.tight_layout()
+plt.tight_layout()
 
-    plt.savefig('wts_25.png', dpi=300, bbox_inches="tight")
+plt.savefig('wts_25.png', dpi=300, bbox_inches="tight")
 
-    st.pyplot(plt)
+st.pyplot(plt)
 
-    st.header('Range of weights for 50% GI')
-    plt.hist(x=wts['wts_50'], bins=len(pd.unique(wts['wts_50'])), color='brown',
-             alpha=1)
+st.header('Range of weights for 50% GI')
+plt.hist(x=wts['wts_50'], bins=len(pd.unique(wts['wts_50'])), color='brown',
+         alpha=1)
 
-    # plt.legend(['50% GI'])
-    plt.ylabel('Density', fontsize=7)
-    plt.xlabel('Weight', fontsize=7)
+# plt.legend(['50% GI'])
+plt.ylabel('Density', fontsize=7)
+plt.xlabel('Weight', fontsize=7)
 
-    from matplotlib.ticker import StrMethodFormatter
+from matplotlib.ticker import StrMethodFormatter
 
-    plt.gca().xaxis.set_major_formatter(StrMethodFormatter('{x:,.3f}'))
+plt.gca().xaxis.set_major_formatter(StrMethodFormatter('{x:,.3f}'))
 
-    fig = plt.gcf()
-    fig.set_size_inches(3.25, 2.3)
+fig = plt.gcf()
+fig.set_size_inches(3.25, 2.3)
 
-    plt.xticks(fontsize=6)
-    plt.yticks(fontsize=6)
+plt.xticks(fontsize=6)
+plt.yticks(fontsize=6)
 
-    txt = "(C) 50% GI, 50% TI"
-    plt.figtext(0.54, -0.02, txt, wrap=True, horizontalalignment='center', fontsize=7)
+txt = "(C) 50% GI, 50% TI"
+plt.figtext(0.54, -0.02, txt, wrap=True, horizontalalignment='center', fontsize=7)
 
-    plt.tight_layout()
-    plt.savefig('wts_50.png', dpi=300, bbox_inches="tight")
+plt.tight_layout()
+plt.savefig('wts_50.png', dpi=300, bbox_inches="tight")
 
-    st.pyplot(plt)
+st.pyplot(plt)
 
-    st.header('Range of weights for 75% GI')
-    plt.hist(x=wts['wts_75'], bins=len(pd.unique(wts['wts_75'])), color='blue',
-             alpha=1)
+st.header('Range of weights for 75% GI')
+plt.hist(x=wts['wts_75'], bins=len(pd.unique(wts['wts_75'])), color='blue',
+         alpha=1)
 
-    # plt.legend(['75% GI'])
-    plt.ylabel('Density', fontsize=7)
-    plt.xlabel('Weight', fontsize=7)
+# plt.legend(['75% GI'])
+plt.ylabel('Density', fontsize=7)
+plt.xlabel('Weight', fontsize=7)
 
-    from matplotlib.ticker import StrMethodFormatter
+from matplotlib.ticker import StrMethodFormatter
 
-    plt.gca().xaxis.set_major_formatter(StrMethodFormatter('{x:,.3f}'))
+plt.gca().xaxis.set_major_formatter(StrMethodFormatter('{x:,.3f}'))
 
-    fig = plt.gcf()
-    fig.set_size_inches(3.25, 2.3)
+fig = plt.gcf()
+fig.set_size_inches(3.25, 2.3)
 
-    plt.xticks(fontsize=6)
-    plt.yticks(fontsize=6)
+plt.xticks(fontsize=6)
+plt.yticks(fontsize=6)
 
-    txt = "(D) 75% GI, 25% TI"
-    plt.figtext(0.54, -0.02, txt, wrap=True, horizontalalignment='center', fontsize=7)
+txt = "(D) 75% GI, 25% TI"
+plt.figtext(0.54, -0.02, txt, wrap=True, horizontalalignment='center', fontsize=7)
 
-    plt.tight_layout()
-    plt.savefig('wts_75.png', dpi=300, bbox_inches="tight")
+plt.tight_layout()
+plt.savefig('wts_75.png', dpi=300, bbox_inches="tight")
 
-    st.pyplot(plt)
+st.pyplot(plt)
 
-    st.header('Range of weights for 100% GI')
-    plt.hist(x=wts['wts_100'], bins=len(pd.unique(wts['wts_100'])), color='green',
-             alpha=1)
+st.header('Range of weights for 100% GI')
+plt.hist(x=wts['wts_100'], bins=len(pd.unique(wts['wts_100'])), color='green',
+         alpha=1)
 
-    # plt.legend(['100% GI'])
-    plt.ylabel('Density', fontsize=7)
-    plt.xlabel('Weight', fontsize=7)
+# plt.legend(['100% GI'])
+plt.ylabel('Density', fontsize=7)
+plt.xlabel('Weight', fontsize=7)
 
-    from matplotlib.ticker import StrMethodFormatter
+from matplotlib.ticker import StrMethodFormatter
 
-    plt.gca().xaxis.set_major_formatter(StrMethodFormatter('{x:,.3f}'))
+plt.gca().xaxis.set_major_formatter(StrMethodFormatter('{x:,.3f}'))
 
-    fig = plt.gcf()
-    fig.set_size_inches(3.25, 2.3)
+fig = plt.gcf()
+fig.set_size_inches(3.25, 2.3)
 
-    plt.xticks(fontsize=6)
-    plt.yticks(fontsize=6)
+plt.xticks(fontsize=6)
+plt.yticks(fontsize=6)
 
-    txt = "(E) 100% GI"
-    plt.figtext(0.54, -0.02, txt, wrap=True, horizontalalignment='center', fontsize=7)
-    plt.tight_layout()
-    plt.savefig('wts_100.png', dpi=300, bbox_inches="tight")
+txt = "(E) 100% GI"
+plt.figtext(0.54, -0.02, txt, wrap=True, horizontalalignment='center', fontsize=7)
+plt.tight_layout()
+plt.savefig('wts_100.png', dpi=300, bbox_inches="tight")
 
-    st.pyplot(plt)
+st.pyplot(plt)
 
-    from matplotlib import font_manager
+from matplotlib import font_manager
 
-    font_manager_inst = font_manager.fontManager
+font_manager_inst = font_manager.fontManager
 
-    import matplotlib.pyplot as plt
-    import numpy
+import matplotlib.pyplot as plt
+import numpy
 
-    from matplotlib import rcParams
+from matplotlib import rcParams
 
-    rcParams['font.family'] = 'Arial'
+rcParams['font.family'] = 'Arial'
 
-    data = r10
-    #
-    sorted_random_data = numpy.sort(data)
-    p = 1. * numpy.arange(len(sorted_random_data)) / float(len(sorted_random_data) - 1)
-    #
+data = r10
+#
+sorted_random_data = numpy.sort(data)
+p = 1. * numpy.arange(len(sorted_random_data)) / float(len(sorted_random_data) - 1)
+#
 
-    fig = plt.figure()
-    # fig.suptitle('CDF of R[1,0]')
-    ax2 = fig.add_subplot(111)
+fig = plt.figure()
+# fig.suptitle('CDF of R[1,0]')
+ax2 = fig.add_subplot(111)
 
-    ax2.plot(sorted_random_data, p)
-    ax2.set_xlabel("(A) " + '$c_2$/$c_1$', fontsize=22)
-    ax2.set_ylabel('Cumulative probabilty', fontsize=22)
-    plt.yticks(fontsize=20)
-    plt.xticks(fontsize=20)
-    plt.savefig("1.png", dpi=300, bbox_inches="tight")
-    st.header("CDF of $c_2$/$c_1$")
-    st.pyplot(plt)
+ax2.plot(sorted_random_data, p)
+ax2.set_xlabel("(A) " + '$c_2$/$c_1$', fontsize=22)
+ax2.set_ylabel('Cumulative probabilty', fontsize=22)
+plt.yticks(fontsize=20)
+plt.xticks(fontsize=20)
+plt.savefig("1.png", dpi=300, bbox_inches="tight")
+st.header("CDF of $c_2$/$c_1$")
+st.pyplot(plt)
 
 
-    rcParams['font.family'] = 'Arial'
+rcParams['font.family'] = 'Arial'
 
-    data = r20
-    #
-    sorted_random_data = numpy.sort(data)
-    p = 1. * numpy.arange(len(sorted_random_data)) / float(len(sorted_random_data) - 1)
-    #
+data = r20
+#
+sorted_random_data = numpy.sort(data)
+p = 1. * numpy.arange(len(sorted_random_data)) / float(len(sorted_random_data) - 1)
+#
 
-    fig = plt.figure()
-    # fig.suptitle('CDF of data points')
-    ax2 = fig.add_subplot(111)
-    ax2.plot(sorted_random_data, p)
-    ax2.set_xlabel("(B) " + '$c_3$/$c_1$', fontsize=22)
-    ax2.set_ylabel('Cumulative probabilty', fontsize=22)
-    plt.yticks(fontsize=20)
-    plt.xticks(fontsize=20)
-    plt.savefig("2.png", dpi=300, bbox_inches="tight")
-    st.header("CDF of $c_3$/$c_1$")
-    st.pyplot(plt)
+fig = plt.figure()
+# fig.suptitle('CDF of data points')
+ax2 = fig.add_subplot(111)
+ax2.plot(sorted_random_data, p)
+ax2.set_xlabel("(B) " + '$c_3$/$c_1$', fontsize=22)
+ax2.set_ylabel('Cumulative probabilty', fontsize=22)
+plt.yticks(fontsize=20)
+plt.xticks(fontsize=20)
+plt.savefig("2.png", dpi=300, bbox_inches="tight")
+st.header("CDF of $c_3$/$c_1$")
+st.pyplot(plt)
 
-    rcParams['font.family'] = 'Arial'
+rcParams['font.family'] = 'Arial'
 
-    data = r31
-    #
-    sorted_random_data = numpy.sort(data)
-    p = 1. * numpy.arange(len(sorted_random_data)) / float(len(sorted_random_data) - 1)
-    #
+data = r31
+#
+sorted_random_data = numpy.sort(data)
+p = 1. * numpy.arange(len(sorted_random_data)) / float(len(sorted_random_data) - 1)
+#
 
-    fig = plt.figure()
-    # fig.suptitle('CDF of data points')
-    ax2 = fig.add_subplot(111)
-    ax2.plot(sorted_random_data, p)
-    ax2.set_xlabel("(E) " + '$c_4$/$c_2$', fontsize=22)
-    ax2.set_ylabel('Cumulative probabilty', fontsize=22)
-    plt.yticks(fontsize=20)
-    plt.xticks(fontsize=20)
-    plt.savefig("5.png", dpi=300, bbox_inches="tight")
-    st.header("CDF of $c_4$/$c_2$")
-    st.pyplot(plt)
+fig = plt.figure()
+# fig.suptitle('CDF of data points')
+ax2 = fig.add_subplot(111)
+ax2.plot(sorted_random_data, p)
+ax2.set_xlabel("(E) " + '$c_4$/$c_2$', fontsize=22)
+ax2.set_ylabel('Cumulative probabilty', fontsize=22)
+plt.yticks(fontsize=20)
+plt.xticks(fontsize=20)
+plt.savefig("5.png", dpi=300, bbox_inches="tight")
+st.header("CDF of $c_4$/$c_2$")
+st.pyplot(plt)
