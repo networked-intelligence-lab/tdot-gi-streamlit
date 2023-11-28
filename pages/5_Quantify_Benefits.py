@@ -1,17 +1,15 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-import random
-from matplotlib.ticker import StrMethodFormatter
-from matplotlib import rcParams
-from matplotlib.pyplot import figure
 from streamlit_extras.app_logo import add_logo
-from modules.sidebar import build_sidebar
 from glob import glob
 import json
 from modules.simulations import handle_simulations
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.ticker import StrMethodFormatter
+from matplotlib import rcParams
+from matplotlib.pyplot import figure
+import random
 
 # build_sidebar()
 add_logo("media/logo.png", height=150)
@@ -25,12 +23,6 @@ select_profiles = st.multiselect("Select Profiles", profile_list, [])
 
 
 simulation_data_tab, raw_output_tab = st.tabs(["Simulation Data", "Raw Output"])
-with simulation_data_tab:
-    num_sims = st.number_input('Enter the number of simulations', min_value=1, max_value=10000, value=5000, step=1,
-                               key=None)
-    if st.button("Simulate"):
-        handle_simulations({k: st.session_state[k] for k in st.session_state if k.startswith("_profile_")}, simulation_data_tab)
-
 with raw_output_tab:
     if select_profiles:
         cols = st.columns(len(select_profiles))
@@ -63,3 +55,9 @@ with raw_output_tab:
                 st.write("Total value of pollutant reduction ($):", st.session_state["tot_value_pol_reduc"])
                 st.write("40 Year Average of Energy Saved (kWh/tree per year):", st.session_state['k_es'])
                 st.write("Value of Energy Saved ($):", st.session_state['k_es'] * (11.88 / 100))
+
+with simulation_data_tab:
+    num_sims = st.number_input('Enter the number of simulations', min_value=1, max_value=10000, value=5000, step=1,
+                               key=None)
+    if st.button("Simulate"):
+        handle_simulations(select_profiles, simulation_data_tab)
