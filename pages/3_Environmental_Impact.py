@@ -20,7 +20,7 @@ input_keys = ["num_small_trees", "num_medium_trees", "num_large_trees",
               "precipitation", "element_area", "drainage_area",
               "pp_annual_precipitation", "permeable_pavement_area",
               "wh_annual_precipitation", "gi_element_surface_area",
-              "conversion_factor"]
+              "conversion_factor", "climate_zone"]
 
 for key in input_keys:
     if key not in st.session_state:
@@ -30,7 +30,9 @@ st.title("Environmental Impact")
 st.header("Options")
 
 # Selection of climate zone
-climate_zone = st.selectbox("Select STRATUM Climate Zone", list(climate_zones_data.keys()))
+climate_zones = list(climate_zones_data.keys())
+climate_zone = st.selectbox("Select STRATUM Climate Zone", climate_zones, index=st.session_state["climate_zone"])
+st.session_state["climate_zone"] = climate_zones.index(climate_zone)
 
 # Input fields for tree numbers with multipliers
 st.session_state["num_small_trees"] = st.number_input("Number of Small Trees", value=st.session_state["num_small_trees"])
