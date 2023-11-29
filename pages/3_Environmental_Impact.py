@@ -47,7 +47,7 @@ st.write(f"Runoff amount reduced by tree plantation: {q_tp} gallons/year")
 st.session_state["q_tp"] = q_tp
 
 st.subheader("Bioretention and Infiltration")
-st.session_state["precipitation"] = st.number_input("Precipitation (in)", value=st.session_state["precipitation"])
+st.session_state["precipitation"] = st.number_input("Annual Precipitation (in)", value=st.session_state["precipitation"], key="bi_annual_precipitation")
 st.session_state["element_area"] = st.number_input("Element Area (sq.ft.)", value=st.session_state["element_area"])
 st.session_state["drainage_area"] = st.number_input("Drainage Area (sq.ft.)", value=st.session_state["drainage_area"])
 q_bi = st.session_state["precipitation"] * (st.session_state["element_area"] + st.session_state["drainage_area"]) * 0.80 * 144 * 0.00433
@@ -75,7 +75,9 @@ st.session_state["q_t"] = q_t
 
 # Benefit Monetization Section
 st.subheader("Benefit Monetization")
-st.session_state["conversion_factor"] = st.number_input("Conversion Factor from 2009 to current USD", value=st.session_state["conversion_factor"])
+if "conversion_factor" not in st.session_state:
+    st.session_state["conversion_factor"] = 1.42
+st.session_state["conversion_factor"] = st.number_input("Conversion Factor from 2009 to current USD", value=float(st.session_state["conversion_factor"]))
 monetary_gain = q_t * 0.01 * st.session_state["conversion_factor"]
 st.write(f"Monetary Gain from Avoided Stormwater Treatment: {monetary_gain} USD/year")
 st.session_state["environmental_monetary_gain"] = monetary_gain
