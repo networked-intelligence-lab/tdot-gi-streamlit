@@ -34,7 +34,7 @@ def perm_pavements_tab(tab_object):
     st.session_state['paver_low_high_pp'] = tab_object.selectbox("Cost Estimate", options=["Low", "High"], index=["Low", "High"].index(st.session_state['paver_low_high_pp']))
     perm_pavements_capital_cost = st.session_state['surface_area_pp'] * paver_type_dict[st.session_state['paver_type_pp']][st.session_state['paver_low_high_pp']]
     tab_object.write(f"Total Capital Cost: ${perm_pavements_capital_cost}")
-    st.session_state['perm_pavements_capital_cost'] = perm_pavements_capital_cost
+    st.session_state['perm_pavements__capital_cost'] = perm_pavements_capital_cost
 
     tab_object.subheader("Maintenance Cost")
     st.session_state['irim_select_pp'] = tab_object.selectbox("Inspection, Reporting & Information Management", options=["Low", "Medium", "High"], index=["Low", "Medium", "High"].index(st.session_state['irim_select_pp']), key="irim_pp")
@@ -45,7 +45,7 @@ def perm_pavements_tab(tab_object):
     pps_value = {"Low": 160 * (1/3), "Medium": 80 * 1, "High": 80 * 12}[st.session_state['pps_select_pp']]
     perm_pavements_maintenance_cost = sum([irim_value, lm_value, pps_value])
     tab_object.write(f"Total Maintenance Cost: ${sum([irim_value, lm_value, pps_value])}")
-    st.session_state['perm_pavements_maintenance_cost'] = perm_pavements_maintenance_cost
+    st.session_state['perm_pavements__maintenance_cost'] = perm_pavements_maintenance_cost
 
 
     return tab_object

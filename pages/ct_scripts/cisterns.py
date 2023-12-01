@@ -33,8 +33,9 @@ def cisterns_tab(tab_object):
     st.session_state['material'] = tab_object.selectbox("Material", options=["Steel", "Fiberglass", "Concrete", "HDPE"], index=["Steel", "Fiberglass", "Concrete", "HDPE"].index(st.session_state['material']))
     st.session_state['total_storage_needed'] = tab_object.number_input("Total Storage Needed (gal)", value=max(precip_volume_gen, st.session_state['total_storage_needed']))
     material_costs = {"Steel": 1.33, "Fiberglass": 2.51, "Concrete": 1.43, "HDPE": 1.66}
-    tab_object.write(f"Total Capital Cost: ${st.session_state['total_storage_needed'] * material_costs[st.session_state['material']]}")
-    st.session_state["cisterns_capital_cost"] = st.session_state['total_storage_needed'] * material_costs[st.session_state['material']]
+    cisterns_capital_cost = st.session_state['total_storage_needed'] * material_costs[st.session_state['material']]
+    tab_object.write(f"Total Capital Cost: ${cisterns_capital_cost}")
+    st.session_state["cisterns__capital_cost"] = cisterns_capital_cost
 
     tab_object.subheader("Maintenance Cost")
     st.session_state['irim_select'] = tab_object.selectbox("Inspection, Reporting & Information Management", options=["Low", "Medium", "High"], index=["Low", "Medium", "High"].index(st.session_state['irim_select']))
@@ -46,6 +47,7 @@ def cisterns_tab(tab_object):
     st.session_state['ism_select'] = tab_object.selectbox("Intermittent System Maintenance (System flush, debris/sediment removal from tank)", options=["Low", "Medium", "High"], index=["Low", "Medium", "High"].index(st.session_state['ism_select']))
     ism_value = {"Low": 270 * (1/3), "Medium": 390 * (1/3), "High": 510 * (1/3)}[st.session_state['ism_select']]
 
-    tab_object.write(f"Total Maintenance Cost: ${sum([irim_value, rwc_value, tid_value, ism_value])}")
-    st.session_state["cisterns_maintenance_cost"] = sum([irim_value, rwc_value, tid_value, ism_value])
+    cisterns_maintenance_cost = sum([irim_value, rwc_value, tid_value, ism_value])
+    tab_object.write(f"Total Maintenance Cost: ${cisterns_maintenance_cost}")
+    st.session_state["cisterns__maintenance_cost"] = cisterns_maintenance_cost
     return tab_object

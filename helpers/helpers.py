@@ -127,7 +127,9 @@ def dict_equivalent(dict1, dict2, tolerance=1e-6, ignore_keys=[]):
 
 
 def save_session_state_to_file(filename):
-    session_state_dict = {k: v for k, v in st.session_state.items() if k != "user_profile"}
+    session_state_dict = {k: v for k, v in st.session_state.items() if "_profile" not in k}
+    for k, v in session_state_dict.items():
+        print(k, type(v))
     with open(filename, "w") as file:
         json.dump(session_state_dict, file, indent=4)
 

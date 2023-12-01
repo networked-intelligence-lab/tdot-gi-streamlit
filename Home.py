@@ -15,17 +15,16 @@ from streamlit_folium import folium_static
 import folium
 from folium.plugins import Draw
 from helpers.debug import get_last_commit_time, get_total_commits
-
-
 st.set_page_config(layout="wide",
-                   page_title="TDoT GI Tool")
-add_logo("media/logo.png", height=150)
+                       page_title="TDoT GI Tool")
 build_sidebar()
+add_logo("media/logo.png", height=150)
+
 
 st.title('TDoT GI Home')
 
-st.markdown(f"""**version 0.0.{get_total_commits()}
-<br><sup>Last updated: {get_last_commit_time()}<sup>**""", unsafe_allow_html=True)
+# st.markdown(f"""**version 0.0.{get_total_commits()}
+# <br><sup>Last updated: {get_last_commit_time()}<sup>**""", unsafe_allow_html=True)
 
 st.markdown("""
 Welcome to the TDoT GI Tool! This tool is designed to help you explore the potential benefits of green infrastructure in your area.

@@ -34,7 +34,7 @@ def icpv_tab(tab_object):
     num_vaults = max([1, impervious_area])
     construction_type_value = {"In Situ": 155827 * impervious_area, "Prefabricated": num_vaults * 10000}[st.session_state['construction_type_pv']]
     tab_object.write(f"Total Capital Cost: ${construction_type_value}")
-    st.session_state["icpv_capital_cost"] = construction_type_value
+    st.session_state["icpv__capital_cost"] = construction_type_value
 
     tab_object.subheader("Maintenance Cost")
     st.session_state['irim_select_pv'] = tab_object.selectbox("Inspection, Reporting & Information Management", options=["Low", "Medium", "High"], index=["Low", "Medium", "High"].index(st.session_state['irim_select_pv']), key="_irim_pv")
@@ -49,6 +49,6 @@ def icpv_tab(tab_object):
     upg_value = {"Low": 125 * 0.2, "Medium": 130 * 0.5, "High": 200 * 1}[st.session_state['upg_select_pv']]
     icpv_maintenance_cost = sum([irim_value, vm_value, vs_value, ucd_value, upg_value])
     tab_object.write(f"Total Maintenance Cost: ${icpv_maintenance_cost}")
-    st.session_state["icpv_maintenance_cost"] = icpv_maintenance_cost
+    st.session_state["icpv__maintenance_cost"] = icpv_maintenance_cost
 
     return tab_object

@@ -7,7 +7,6 @@ from helpers.helpers import update_registry, save_session_state_to_file, dict_eq
 from helpers.debug import print_dict_differences
 from registry.registry import *
 
-
 def add_scenario():
     new_scenario = f"Scenario {len(st.session_state.scenarios) + 1}"
     st.session_state.scenarios.append(new_scenario)
@@ -41,6 +40,7 @@ def build_sidebar():
 
 
         create_col, load_col, save_col, rename_col, delete_col = st.columns(5)
+        create_col, load_col, save_col, delete_col = st.columns(4)
         with load_col:
             if st.button("📁", use_container_width=True, help="Load the selected profile"):
                 with open(user_profile, "r") as file:
@@ -55,17 +55,22 @@ def build_sidebar():
         save_dict = {key: value for key, value in json.load(open(user_profile, "r")).items() if key != "user_profile"}
         current_session_state_dict = {key: value for key, value in st.session_state.items() if key != "user_profile"}
         with save_col:
-            if dict_equivalent(save_dict, current_session_state_dict):
-                if st.button("💾", use_container_width=True, help="Save the current session state to the selected profile", type="secondary"):
-                    save_session_state_to_file(user_profile)
+            debug = True
+            if user_profile == "profiles/Default.json" and not debug:
+                st.button("💾", use_container_width=True, help="You cannot save to the default profile", type="secondary", disabled=True)
             else:
-                if st.button("💾", use_container_width=True, help="You have unsaved changes. Save the current session state to the selected profile", type="secondary"):
-                    save_session_state_to_file(user_profile)
-                print_dict_differences(save_dict, current_session_state_dict)
+                if dict_equivalent(save_dict, current_session_state_dict):
+                    if st.button("💾", use_container_width=True, help="Save the current session state to the selected profile", type="secondary"):
+                        save_session_state_to_file(user_profile)
+                else:
+                    if st.button("💾", use_container_width=True, help="You have unsaved changes. Save the current session state to the selected profile", type="secondary"):
+                        save_session_state_to_file(user_profile)
+                    print_dict_differences(save_dict, current_session_state_dict)
 
-        with rename_col:
-            if st.button("✏️", use_container_width=True, help="Rename the selected profile"):
-                pass
+
+        # with rename_col:
+        #     if st.button("✏️", use_container_width=True, help="Rename the selected profile"):
+        #         pass
 
         if "create_expander" not in st.session_state:
             st.session_state.create_expander = False
@@ -80,17 +85,13 @@ def build_sidebar():
         if st.session_state.create_expander:
             with st.expander("Create new profile"):
                 new_profile_name = st.text_input("Enter new profile name")
-                profile_template = st.selectbox("Select a profile template", ["New"] + list(glob("profiles/*.json")))
+                profile_template = st.selectbox("Select a profile template", list(glob("profiles/*.json")))
                 if st.button("Create"):
-                    if profile_template == "New":
-                        with open(f"profiles/{new_profile_name}.json", "w") as f:
-                            json.dump({"app": "ni-gitool"}, f, indent=4)
-                    else:
-                        with open(f"profiles/{new_profile_name}.json", "w") as f:
-                            shutil.copyfile(profile_template, f"profiles/{new_profile_name}.json")
-                        user_profile = f"profiles/{new_profile_name}.json"
-                        update_registry(registry, "last_selected_profile", user_profile)
-                        st.experimental_rerun()
+                    with open(f"profiles/{new_profile_name}.json", "w") as f:
+                        shutil.copyfile(profile_template, f"profiles/{new_profile_name}.json")
+                    user_profile = f"profiles/{new_profile_name}.json"
+                    update_registry(registry, "last_selected_profile", user_profile)
+                    st.experimental_rerun()
 
         with delete_col:
             if user_profile != "profiles/Default.json":

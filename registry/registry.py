@@ -6,7 +6,7 @@ with open("registry/registry.json") as f:
 user_profile = registry["last_selected_profile"]
 try:
     data = json.load(open(user_profile))
-except FileNotFoundError:
+except (FileNotFoundError, json.decoder.JSONDecodeError):
     data = json.load(open("profiles/Default.json"))
     user_profile = "profiles/Default.json"
 

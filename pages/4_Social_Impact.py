@@ -27,11 +27,16 @@ st.title("Social Impact")
 
 # Initialize session state variables for number inputs and location input
 input_keys = ["loc_input", "radius_input", "median_prop_val", "num_properties",
-              "total_ant_veg_area", "total_parklot_veg_area", "total_green_roof"]
+              "total_ant_veg_area", "total_parklot_veg_area", "total_green_roof", "enhancement_in_val"]
 
 for key in input_keys:
     if key not in st.session_state:
-        st.session_state[key] = '' if key == 'loc_input' else 0
+        if key == 'loc_input':
+            st.session_state[key] = ''
+        elif key == "enhancement_in_val":
+            st.session_state[key] = 0.0
+        else:
+            st.session_state[key] = 0
 
 loc = get_geolocation()
 
@@ -119,13 +124,18 @@ if draw_data:
 # Enhanced Property Value Section
 st.header("Enhanced Property Value")
 st.session_state["median_prop_val"] = st.number_input("Median of the property value for that area and anticipated enhancement in value", value=st.session_state["median_prop_val"])
+st.session_state["enhancement_in_val"] = st.number_input("Anticipated enhancement in value", value=st.session_state["enhancement_in_val"])
 st.session_state["num_properties"] = st.number_input("Approximate number of properties in the area", value=st.session_state["num_properties"])
-enhanced_property_value = st.session_state["median_prop_val"] * st.session_state["num_properties"]
+enhanced_property_value = (st.session_state["median_prop_val"] * st.session_state["enhancement_in_val"]) * st.session_state["num_properties"]
 st.write(f"Total monetary gain: ${enhanced_property_value}")
+st.session_state["enhanced_property_value"] = enhanced_property_value
 
 # Recreational Use Section
 st.header("Recreational Use")
 st.session_state["total_ant_veg_area"] = st.number_input("Total anticipated vegetation area", value=st.session_state["total_ant_veg_area"])
 st.session_state["total_parklot_veg_area"] = st.number_input("Total anticipated parking lot area to be vegetated", value=st.session_state["total_parklot_veg_area"])
 st.session_state["total_green_roof"] = st.number_input("Total anticipated green roof area", value=st.session_state["total_green_roof"])
-st.write(f"Total anticipated vegetated area for recreational use: {st.session_state['total_ant_veg_area'] + st.session_state['total_parklot_veg_area'] + st.session_state['total_green_roof']} sq. ft.")
+anticipated_recreational_use = st.session_state["total_ant_veg_area"] + st.session_state["total_parklot_veg_area"] + st.session_state["total_green_roof"]
+st.write(f"Total anticipated vegetated area for recreational use: {anticipated_recreational_use} sq. ft.")
+st.session_state["anticipated_recreational_use"] = anticipated_recreational_use
+

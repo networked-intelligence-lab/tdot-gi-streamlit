@@ -7,6 +7,7 @@ from matplotlib import rcParams
 from matplotlib.pyplot import figure
 import random
 import json
+import streamlit.errors
 
 
 def handle_simulations(profiles, tab_object):
@@ -16,25 +17,45 @@ def handle_simulations(profiles, tab_object):
 
     econ_data = []
     env_data = []
-
+    current_session_state = st.session_state
     for idx, profile in enumerate(profiles):
         with open(profile, "r") as f:
-            st.session_state.update(json.load(f))
+            loaded_profile = json.load(f)
+            # st.session_state.update(json.load(f))
+
+            for key in list(st.session_state.keys()):
+                if key != "user_profile":
+                    del st.session_state[key]
+
+            st.session_state.update(loaded_profile)
             st.session_state[f"_profile_{idx}"] = st.session_state
 
-            capital_costs = sum([st.session_state[key] for key in st.session_state.keys() if "_capital_cost" in key])
-            maintenance_costs = sum([st.session_state[key] for key in st.session_state.keys() if "_maintenance_cost" in key])
+            capital_costs = sum([st.session_state[key] for key in st.session_state.keys() if "__capital_cost" in key])
+            maintenance_costs = sum([st.session_state[key] for key in st.session_state.keys() if "__maintenance_cost" in key])
 
             econ_data.append([capital_costs,
-                                maintenance_costs])
+                              maintenance_costs])
 
             env_data.append([st.session_state['environmental_monetary_gain'],
                              st.session_state["tot_value_pol_reduc"],
                              st.session_state['k_es'] * (11.88 / 100)])
 
+    for key in list(st.session_state.keys()):
+        if key != "user_profile":
+            del st.session_state[key]
+    st.session_state = current_session_state
 
+
+
+    small_number = 0.01
     econ_data = np.array(econ_data)
     env_data = np.array(env_data)
+    # econ_data[econ_data == 0] = small_number
+    # env_data[env_data == 0] = small_number
+
+    tab_object.write(econ_data)
+    tab_object.write(env_data)
+
 
     data_matrices = [econ_data, env_data]
 

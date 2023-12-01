@@ -28,7 +28,7 @@ def ed_basin_tab(tab_object):
     base_facility_cost_value = {"Low": 1000, "Medium": 3000, "High": 5000, "Very High": 15000}[st.session_state['base_facility_cost']]
     ed_basin_capital_cost = st.session_state['drainage_area_ed'] * base_facility_cost_value
     tab_object.write(f"Total Capital Cost: ${ed_basin_capital_cost}")
-    st.session_state["ed_basin_capital_cost"] = ed_basin_capital_cost
+    st.session_state["ed_basin__capital_cost"] = ed_basin_capital_cost
 
     tab_object.subheader("Maintenance Cost")
     st.session_state['irim_select_ed'] = tab_object.selectbox("Inspection, Reporting & Information Management", options=["Low", "Medium", "High"], index=["Low", "Medium", "High"].index(st.session_state['irim_select_ed']), key="irim_ed")
@@ -41,6 +41,6 @@ def ed_basin_tab(tab_object):
     ifm_value = {"Low": 250 * 1, "Medium": 1000 * 1, "High": 2800 * 1}[st.session_state['ifm_select_ed']]
     ed_basin_maintenance_cost = sum([irim_value, vm_value, vc_value, ifm_value])
     tab_object.write(f"Total Maintenance Cost: ${ed_basin_maintenance_cost}")
-    st.session_state["ed_basin_maintenance_cost"] = ed_basin_maintenance_cost
+    st.session_state["ed_basin__maintenance_cost"] = ed_basin_maintenance_cost
 
     return tab_object
