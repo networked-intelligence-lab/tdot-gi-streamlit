@@ -22,8 +22,11 @@ def handle_simulations(profiles, tab_object):
             st.session_state.update(json.load(f))
             st.session_state[f"_profile_{idx}"] = st.session_state
 
-            social_data.append([st.session_state["cisterns_capital_cost"],
-                                st.session_state["cisterns_maintenance_cost"]])
+            capital_costs = sum([st.session_state[key] for key in st.session_state.keys() if "_capital_cost" in key])
+            maintenance_costs = sum([st.session_state[key] for key in st.session_state.keys() if "_maintenance_cost" in key])
+
+            econ_data.append([capital_costs,
+                                maintenance_costs])
 
             env_data.append([st.session_state['environmental_monetary_gain'],
                              st.session_state["tot_value_pol_reduc"],
