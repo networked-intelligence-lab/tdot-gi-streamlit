@@ -55,7 +55,7 @@ def build_sidebar():
         save_dict = {key: value for key, value in json.load(open(user_profile, "r")).items() if key != "user_profile"}
         current_session_state_dict = {key: value for key, value in st.session_state.items() if key != "user_profile"}
         with save_col:
-            debug = True
+            debug = False
             if user_profile == "profiles/Default.json" and not debug:
                 st.button("💾", use_container_width=True, help="You cannot save to the default profile", type="secondary", disabled=True)
             else:
