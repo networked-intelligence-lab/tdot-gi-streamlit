@@ -160,8 +160,6 @@ def determine_logic():
                         except ValueError:
                             pass
 
-    # if st.session_state["<h4>Cross-sectional & Side Slope Restrictions</h4>_input"] == "Per Device":
-    #     category_dict = filter_nested_dict(category_dict, 25)
 
     category_dict = filter_nested_dict(category_dict, valid_options)
     with col2:

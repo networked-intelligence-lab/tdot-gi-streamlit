@@ -32,6 +32,10 @@ with raw_output_tab:
                 st.session_state[f"_profile_{idx}"] = st.session_state
 
             with cols[idx]:
+                st.header(f"{profile}")
+                capital_costs = sum(
+                    [st.session_state[key] for key in st.session_state.keys() if "__capital_cost" in key])
+                st.write(f"Capital Costs: {capital_costs}")
                 st.subheader("Determine Green Infrastructure")
                 determine_gi_output = st.session_state["determine_gi_output"]
                 for major_category, minor_categories_list in determine_gi_output.items():
@@ -39,8 +43,12 @@ with raw_output_tab:
                                    key=f"{major_category}_{idx}")
 
                 st.subheader("Determine Economic Impacts")
-                st.text_input("Capital Cost", value=st.session_state["cisterns_capital_cost"], key=f"capital_cost_{idx}")
-                st.text_input("Maintenance Cost", value=st.session_state["cisterns_maintenance_cost"],
+                capital_costs = sum(
+                    [st.session_state[key] for key in st.session_state.keys() if "__capital_cost" in key])
+                maintenance_costs = sum(
+                    [st.session_state[key] for key in st.session_state.keys() if "__maintenance_cost" in key])
+                st.text_input("Capital Cost", value=capital_costs, key=f"capital_cost_{idx}")
+                st.text_input("Maintenance Cost", value=maintenance_costs,
                               key=f"maintenance_cost_{idx}")
 
                 st.subheader("Environmental Impact")
