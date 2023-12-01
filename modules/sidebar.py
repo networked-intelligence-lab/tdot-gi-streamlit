@@ -3,7 +3,8 @@ import json
 from glob import glob
 import os
 import shutil
-from helpers.helpers import update_registry, save_session_state_to_file, get_location_name, limit_string
+from helpers.helpers import update_registry, save_session_state_to_file, get_location_name, limit_string, dict_equivalent
+from helpers.debug import print_dict_differences
 from registry.registry import *
 
 
@@ -19,6 +20,8 @@ def remove_scenario():
         st.session_state.scenarios.remove(scenario)
     else:
         st.warning("You cannot remove the last scenario.")
+
+
 
 
 def build_sidebar():
@@ -49,9 +52,16 @@ def build_sidebar():
                     st.session_state.update(session_state_dict)
                 st.experimental_rerun()
 
+        save_dict = {key: value for key, value in json.load(open(user_profile, "r")).items() if key != "user_profile"}
+        current_session_state_dict = {key: value for key, value in st.session_state.items() if key != "user_profile"}
         with save_col:
-            if st.button("💾", use_container_width=True, help="Save the current session state to the selected profile"):
-                save_session_state_to_file(user_profile)
+            if dict_equivalent(save_dict, current_session_state_dict):
+                if st.button("💾", use_container_width=True, help="Save the current session state to the selected profile", type="secondary"):
+                    save_session_state_to_file(user_profile)
+            else:
+                if st.button("💾", use_container_width=True, help="You have unsaved changes. Save the current session state to the selected profile", type="primary"):
+                    save_session_state_to_file(user_profile)
+                print_dict_differences(save_dict, current_session_state_dict)
 
         with rename_col:
             if st.button("✏️", use_container_width=True, help="Rename the selected profile"):
@@ -83,10 +93,13 @@ def build_sidebar():
                         st.experimental_rerun()
 
         with delete_col:
-            if st.button("🗑️", use_container_width=True, help="Delete the selected profile", type="secondary"):
-                os.remove(user_profile)
-                registry["user_profile"] = glob("profiles/*.json")[0]
-                st.experimental_rerun()
+            if user_profile != "profiles/Default.json":
+                if st.button("🗑️", use_container_width=True, help="Delete the selected profile"):
+                    os.remove(user_profile)
+                    registry["user_profile"] = glob("profiles/*.json")[0]
+                    st.experimental_rerun()
+            else:
+                st.button("🗑️", use_container_width=True, help="You cannot delete the default profile", disabled=True)
 
         # st.subheader("Scenarios")
         # if 'scenarios' not in st.session_state:

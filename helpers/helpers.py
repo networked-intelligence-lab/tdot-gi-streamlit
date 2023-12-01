@@ -109,6 +109,20 @@ def find_max_value(lst):
         return max_val
 
 
+def dict_equivalent(dict1, dict2, tolerance=1e-6):
+    if dict1.keys() != dict2.keys():
+        return False  # The dictionaries have different keys
+
+    for key in dict1:
+        if isinstance(dict1[key], float) and isinstance(dict2[key], float):
+            if not (abs(dict1[key] - dict2[key]) < tolerance):
+                return False  # Floating-point values differ more than the tolerance
+        elif dict1[key] != dict2[key]:
+            return False  # Non-floating-point values differ
+
+    return True
+
+
 def save_session_state_to_file(filename):
     session_state_dict = {k: v for k, v in st.session_state.items() if k != "user_profile"}
     with open(filename, "w") as file:

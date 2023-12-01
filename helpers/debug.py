@@ -47,3 +47,18 @@ def get_total_commits():
     else:
         return f"Error: {response.status_code}"
 
+
+def print_dict_differences(dict1, dict2):
+    # Check for keys present in dict1 but not in dict2
+    for key in dict1.keys():
+        if key not in dict2:
+            print(f"Key '{key}' found in dict1, but not in dict2.")
+        elif dict1[key] != dict2[key]:
+            print(f"Key '{key}' has different values: dict1[{key}] = {dict1[key]}, dict2[{key}] = {dict2[key]}.")
+
+    # Check for keys present in dict2 but not in dict1
+    for key in dict2.keys():
+        if key not in dict1:
+            print(f"Key '{key}' found in dict2, but not in dict1.")
+
+
