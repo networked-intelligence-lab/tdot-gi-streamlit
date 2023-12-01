@@ -14,7 +14,7 @@ def handle_simulations(profiles, tab_object):
     env_criteria = pd.read_excel('data/env_cri.xlsx', sheet_name="Form Responses 1").dropna()
     level_one_df = pd.read_excel('data/lvl1_cri_pairwise.xlsx')
 
-    social_data = []
+    econ_data = []
     env_data = []
 
     for idx, profile in enumerate(profiles):
@@ -30,10 +30,10 @@ def handle_simulations(profiles, tab_object):
                              st.session_state['k_es'] * (11.88 / 100)])
 
 
-    social_data = np.array(social_data)
+    econ_data = np.array(econ_data)
     env_data = np.array(env_data)
 
-    data_matrices = [social_data, env_data]
+    data_matrices = [econ_data, env_data]
 
     def map_letter_vals(cell_value):
         map_values = {'a': 9, 'b': 6.34, 'c': 3.67, 'd': 1, 'e': 0}
@@ -114,13 +114,11 @@ def handle_simulations(profiles, tab_object):
 
     wts_25 = []
     wts_50 = []
-    wts_75 = []
-    wts_100 = []
 
     level_one_cri = pd.read_excel('data/lvl1_cri_pairwise.xlsx')
     level_one_cri = level_one_cri.iloc[:2, 1:3]
 
-    def simulator(n, r_values, level_one_cri, local_var_combined, wts_25, wts_50, wts_75, wts_100):
+    def simulator(n, r_values, level_one_cri, local_var_combined, wts_25, wts_50):
         count = 0
         s_mat = np.ones((2, 2))
         e_mat = np.ones((3, 3))
@@ -168,18 +166,15 @@ def handle_simulations(profiles, tab_object):
 
         return count
 
-    simulator(5000, r_values, level_one_cri, local_var_combined, wts_25, wts_50, wts_75, wts_100)
+    simulator(5000, r_values, level_one_cri, local_var_combined, wts_25, wts_50)
 
     wts = pd.DataFrame(columns=profiles + profiles)
 
     wts['wts_25'] = wts_25
     wts['wts_50'] = wts_50
-    wts['wts_75'] = wts_25
-    wts['wts_100'] = wts_50
-
     wts = wts.round(5)
 
-    tab_object.header('Range of weights for all four alternatives')
+    tab_object.header('Range of weights for all selected profiles')
     figure(figsize=(6.9, 3))
 
     rcParams['font.family'] = 'Arial'
@@ -187,10 +182,6 @@ def handle_simulations(profiles, tab_object):
     plt.hist(x=wts['wts_25'], bins=len(pd.unique(wts['wts_25'])), color='black',
              alpha=1)
     plt.hist(x=wts['wts_50'], bins=len(pd.unique(wts['wts_50'])), color='brown',
-             alpha=1)
-    plt.hist(x=wts['wts_75'], bins=len(pd.unique(wts['wts_75'])), color='black',
-             alpha=1)
-    plt.hist(x=wts['wts_100'], bins=len(pd.unique(wts['wts_100'])), color='brown',
              alpha=1)
     plt.gcf().set_size_inches(7.5, 3)
 
@@ -204,7 +195,7 @@ def handle_simulations(profiles, tab_object):
 
     plt.gca().xaxis.set_major_formatter(StrMethodFormatter('{x:,.3f}'))
 
-    txt = "(A). Range of weights for all four alternatives"
+    txt = "(A) Range of weights for all selected profiles"
     plt.figtext(0.5, -0.028, txt, wrap=True, horizontalalignment='center', fontsize=7)
 
     tab_object.pyplot(plt)
