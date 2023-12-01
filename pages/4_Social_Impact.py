@@ -106,18 +106,18 @@ if draw_data:
     # Filter places within the polygon
     filtered_places = filter_places_by_polygon(nearby_result["results"], polygon_coords)
 
-# pp = pprint.PrettyPrinter(indent=1)
-# parks_list = []
-# loc_df_list = []
-# for place_result in nearby_result["results"]:
-#     place_loc = (place_result["geometry"]["location"]["lat"], place_result["geometry"]["location"]["lng"])
-#     loc_df_list.append({"lat": place_loc[0], "lon": place_loc[1], "color": "#0000FF90"})
-#     parks_list.append({"Distance Away (straight-line; in miles)": geopy.distance.distance(user_loc, place_loc).miles, "Park Name": place_result["name"]})
-# loc_df = pd.DataFrame.from_dict(loc_df_list)
-# parks_df = pd.DataFrame.from_dict(parks_list).sort_values(by="Distance Away (straight-line; in miles)", ascending=True)
-# st.dataframe(parks_df, hide_index=True)
-# st.header("User Location")
-# st.map(loc_df, latitude="lat", longitude="lon", size=20)
+pp = pprint.PrettyPrinter(indent=1)
+parks_list = []
+loc_df_list = []
+for place_result in nearby_result["results"]:
+    place_loc = (place_result["geometry"]["location"]["lat"], place_result["geometry"]["location"]["lng"])
+    loc_df_list.append({"lat": place_loc[0], "lon": place_loc[1], "color": "#0000FF90"})
+    parks_list.append({"Distance Away (straight-line; in miles)": geopy.distance.distance(user_loc, place_loc).miles, "Park Name": place_result["name"]})
+loc_df = pd.DataFrame.from_dict(loc_df_list)
+parks_df = pd.DataFrame.from_dict(parks_list).sort_values(by="Distance Away (straight-line; in miles)", ascending=True)
+st.dataframe(parks_df, hide_index=True)
+st.header("User Location")
+st.map(loc_df, latitude="lat", longitude="lon", size=20)
 
 
 
