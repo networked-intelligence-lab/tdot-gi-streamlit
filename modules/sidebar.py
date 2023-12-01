@@ -57,9 +57,30 @@ def build_sidebar():
             if st.button("✏️", use_container_width=True, help="Rename the selected profile"):
                 pass
 
+        if "create_expander" not in st.session_state:
+            st.session_state.create_expander = False
+
+        def toggle_create_expander():
+            st.session_state.create_expander = not st.session_state.create_expander
         with create_col:
-            if st.button("➕", use_container_width=True, help="Create a new profile"):
-                pass
+            if not st.session_state.create_expander:
+                st.button("➕", use_container_width=True, help="Create a new profile", type="secondary", on_click=toggle_create_expander)
+            else:
+                st.button("➕", use_container_width=True, help="Create a new profile", type="primary", on_click=toggle_create_expander)
+        if st.session_state.create_expander:
+            with st.expander("Create new profile"):
+                new_profile_name = st.text_input("Enter new profile name")
+                profile_template = st.selectbox("Select a profile template", ["New"] + list(glob("profiles/*.json")))
+                if st.button("Create"):
+                    if profile_template == "New":
+                        with open(f"profiles/{new_profile_name}.json", "w") as f:
+                            json.dump({"app": "ni-gitool"}, f, indent=4)
+                    else:
+                        with open(f"profiles/{new_profile_name}.json", "w") as f:
+                            shutil.copyfile(profile_template, f"profiles/{new_profile_name}.json")
+                        user_profile = f"profiles/{new_profile_name}.json"
+                        update_registry(registry, "last_selected_profile", user_profile)
+                        st.experimental_rerun()
 
         with delete_col:
             if st.button("🗑️", use_container_width=True, help="Delete the selected profile", type="secondary"):
