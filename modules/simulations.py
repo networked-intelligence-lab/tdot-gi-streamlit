@@ -53,10 +53,6 @@ def handle_simulations(profiles, tab_object):
     # econ_data[econ_data == 0] = small_number
     # env_data[env_data == 0] = small_number
 
-    tab_object.write(econ_data)
-    tab_object.write(env_data)
-
-
     data_matrices = [econ_data, env_data]
 
     def map_letter_vals(cell_value):
@@ -223,3 +219,7 @@ def handle_simulations(profiles, tab_object):
     plt.figtext(0.5, -0.028, txt, wrap=True, horizontalalignment='center', fontsize=7)
 
     tab_object.pyplot(plt)
+
+    st.subheader("Level 2 Criteria Values")
+    tab_object.write(econ_data)
+    tab_object.write(env_data)

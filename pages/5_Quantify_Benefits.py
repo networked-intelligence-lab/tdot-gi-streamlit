@@ -33,9 +33,6 @@ with raw_output_tab:
 
             with cols[idx]:
                 st.header(f"{profile}")
-                capital_costs = sum(
-                    [st.session_state[key] for key in st.session_state.keys() if "__capital_cost" in key])
-                st.write(f"Capital Costs: {capital_costs}")
                 st.subheader("Determine Green Infrastructure")
                 determine_gi_output = st.session_state["determine_gi_output"]
                 for major_category, minor_categories_list in determine_gi_output.items():
