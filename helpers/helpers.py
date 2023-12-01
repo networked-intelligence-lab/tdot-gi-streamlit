@@ -109,16 +109,19 @@ def find_max_value(lst):
         return max_val
 
 
-def dict_equivalent(dict1, dict2, tolerance=1e-6):
-    if dict1.keys() != dict2.keys():
-        return False  # The dictionaries have different keys
+def dict_equivalent(dict1, dict2, tolerance=1e-6, ignore_keys=[]):
+    for key in set(dict1.keys()).union(dict2.keys()):
+        if key in ignore_keys:
+            continue  # Skip the keys specified in the ignore_keys list
 
-    for key in dict1:
-        if isinstance(dict1[key], float) and isinstance(dict2[key], float):
-            if not (abs(dict1[key] - dict2[key]) < tolerance):
-                return False  # Floating-point values differ more than the tolerance
-        elif dict1[key] != dict2[key]:
-            return False  # Non-floating-point values differ
+        if key in dict1 and key in dict2:
+            if isinstance(dict1[key], float) and isinstance(dict2[key], float):
+                if not (abs(dict1[key] - dict2[key]) < tolerance):
+                    return False  # Floating-point values differ more than the tolerance
+            elif dict1[key] != dict2[key]:
+                return False  # Non-floating-point values differ
+        elif key in dict1 or key in dict2:
+            return False  # Key is missing in one of the dictionaries and it's not in ignore list
 
     return True
 

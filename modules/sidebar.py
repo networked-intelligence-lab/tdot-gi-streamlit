@@ -3,7 +3,7 @@ import json
 from glob import glob
 import os
 import shutil
-from helpers.helpers import update_registry, save_session_state_to_file, get_location_name, limit_string, dict_equivalent
+from helpers.helpers import update_registry, save_session_state_to_file, dict_equivalent
 from helpers.debug import print_dict_differences
 from registry.registry import *
 
@@ -59,7 +59,7 @@ def build_sidebar():
                 if st.button("💾", use_container_width=True, help="Save the current session state to the selected profile", type="secondary"):
                     save_session_state_to_file(user_profile)
             else:
-                if st.button("💾", use_container_width=True, help="You have unsaved changes. Save the current session state to the selected profile", type="primary"):
+                if st.button("💾", use_container_width=True, help="You have unsaved changes. Save the current session state to the selected profile", type="secondary"):
                     save_session_state_to_file(user_profile)
                 print_dict_differences(save_dict, current_session_state_dict)
 
