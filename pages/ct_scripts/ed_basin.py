@@ -9,17 +9,17 @@ def ed_basin_tab(tab_object):
     """
 
     # Initialize session state variables if they don't exist
-    if 'drainage_area_ed' not in st.session_state:
+    if 'ed_basin_drainage_area_ed' not in st.session_state:
         st.session_state['ed_basin_drainage_area_ed'] = 0
-    if 'base_facility_cost' not in st.session_state:
+    if 'ed_basin_base_facility_cost' not in st.session_state:
         st.session_state['ed_basin_base_facility_cost'] = "Low"
-    if 'irim_select_ed' not in st.session_state:
+    if 'ed_basin_irim_select_ed' not in st.session_state:
         st.session_state['ed_basin_irim_select_ed'] = "Low"
-    if 'vm_select_ed' not in st.session_state:
+    if 'ed_basin_vm_select_ed' not in st.session_state:
         st.session_state['ed_basin_vm_select_ed'] = "Low"
-    if 'vc_select_ed' not in st.session_state:
+    if 'ed_basin_vc_select_ed' not in st.session_state:
         st.session_state['ed_basin_vc_select_ed'] = "Low"
-    if 'ifm_select_ed' not in st.session_state:
+    if 'ed_basin_ifm_select_ed' not in st.session_state:
         st.session_state['ed_basin_ifm_select_ed'] = "Low"
 
     if 'use_ed_basin' not in st.session_state:

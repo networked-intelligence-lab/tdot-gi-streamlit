@@ -9,21 +9,21 @@ def cisterns_tab(tab_object):
     """
 
     # Initialize session state variables if they don't exist
-    if 'impervious_area' not in st.session_state:
+    if 'cisterns_impervious_area' not in st.session_state:
         st.session_state['cisterns_impervious_area'] = 0
-    if 'rainfall_event' not in st.session_state:
+    if 'cisterns_rainfall_event' not in st.session_state:
         st.session_state['cisterns_rainfall_event'] = 2
-    if 'material' not in st.session_state:
+    if 'cisterns_material' not in st.session_state:
         st.session_state['cisterns_material'] = "Steel"
-    if 'total_storage_needed' not in st.session_state:
+    if 'cisterns_total_storage_needed' not in st.session_state:
         st.session_state['cisterns_total_storage_needed'] = 0
-    if 'irim_select' not in st.session_state:
+    if 'cisterns_irim_select' not in st.session_state:
         st.session_state['cisterns_irim_select'] = "Low"
-    if 'rwc_select' not in st.session_state:
+    if 'cisterns_rwc_select' not in st.session_state:
         st.session_state['cisterns_rwc_select'] = "Low"
-    if 'tid_select' not in st.session_state:
+    if 'cisterns_tid_select' not in st.session_state:
         st.session_state['cisterns_tid_select'] = "Low"
-    if 'ism_select' not in st.session_state:
+    if 'cisterns_ism_select' not in st.session_state:
         st.session_state['cisterns_ism_select'] = "Low"
 
     if "use_cisterns" not in st.session_state:

@@ -9,19 +9,19 @@ def bioretention_tab(tab_object):
     """
 
     # Initialize session state variables if they don't exist
-    if 'drainage_area' not in st.session_state:
+    if 'bioretention_drainage_area' not in st.session_state:
         st.session_state['bioretention_drainage_area'] = 0
-    if 'underdrain' not in st.session_state:
+    if 'bioretention_underdrain' not in st.session_state:
         st.session_state['bioretention_underdrain'] = "Yes"
-    if 'irim_select_br' not in st.session_state:
+    if 'bioretention_irim_select_br' not in st.session_state:
         st.session_state['bioretention_irim_select_br'] = "Low"
-    if 'vm_select_br' not in st.session_state:
+    if 'bioretention_vm_select_br' not in st.session_state:
         st.session_state['bioretention_vm_select_br'] = "Low"
-    if 'ts_select_br' not in st.session_state:
+    if 'bioretention_ts_select_br' not in st.session_state:
         st.session_state['bioretention_ts_select_br'] = "Low"
-    if 'ucd_select_br' not in st.session_state:
+    if 'bioretention_ucd_select_br' not in st.session_state:
         st.session_state['bioretention_ucd_select_br'] = "Low"
-    if 'rm_select_br' not in st.session_state:
+    if 'bioretention_rm_select_br' not in st.session_state:
         st.session_state['bioretention_rm_select_br'] = "Low"
 
     if 'use_bioretention' not in st.session_state:

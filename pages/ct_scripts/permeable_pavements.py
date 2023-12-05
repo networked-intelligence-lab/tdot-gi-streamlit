@@ -9,17 +9,17 @@ def perm_pavements_tab(tab_object):
     """
 
     # Initialize session state variables if they don't exist
-    if 'surface_area_pp' not in st.session_state:
+    if 'pp_surface_area_pp' not in st.session_state:
         st.session_state['pp_surface_area_pp'] = 0.0
-    if 'paver_type_pp' not in st.session_state:
+    if 'pp_paver_type_pp' not in st.session_state:
         st.session_state['pp_paver_type_pp'] = "Asphalt"
-    if 'paver_low_high_pp' not in st.session_state:
+    if 'pp_paver_low_high_pp' not in st.session_state:
         st.session_state['pp_paver_low_high_pp'] = "Low"
-    if 'irim_select_pp' not in st.session_state:
+    if 'pp_irim_select_pp' not in st.session_state:
         st.session_state['pp_irim_select_pp'] = "Low"
-    if 'lm_select_pp' not in st.session_state:
+    if 'pp_lm_select_pp' not in st.session_state:
         st.session_state['pp_lm_select_pp'] = "Low"
-    if 'pps_select_pp' not in st.session_state:
+    if 'pp_pps_select_pp' not in st.session_state:
         st.session_state['pp_pps_select_pp'] = "Low"
 
     if 'use_pp' not in st.session_state:

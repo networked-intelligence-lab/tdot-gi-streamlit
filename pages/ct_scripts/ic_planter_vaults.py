@@ -9,21 +9,21 @@ def icpv_tab(tab_object):
     """
 
     # Initialize session state variables if they don't exist
-    if 'drainage_area_pv' not in st.session_state:
+    if 'ic_planter_drainage_area_pv' not in st.session_state:
         st.session_state['ic_planter_drainage_area_pv'] = 0.0
-    if 'impervious_area_percent_pv' not in st.session_state:
+    if 'ic_planter_impervious_area_percent_pv' not in st.session_state:
         st.session_state['ic_planter_impervious_area_percent_pv'] = 0.0
-    if 'construction_type_pv' not in st.session_state:
+    if 'ic_planter_construction_type_pv' not in st.session_state:
         st.session_state['ic_planter_construction_type_pv'] = "In Situ"
-    if 'irim_select_pv' not in st.session_state:
+    if 'ic_planter_irim_select_pv' not in st.session_state:
         st.session_state['ic_planter_irim_select_pv'] = "Low"
-    if 'vm_select_pv' not in st.session_state:
+    if 'ic_planter_vm_select_pv' not in st.session_state:
         st.session_state['ic_planter_vm_select_pv'] = "Low"
-    if 'vs_select_pv' not in st.session_state:
+    if 'ic_planter_vs_select_pv' not in st.session_state:
         st.session_state['ic_planter_vs_select_pv'] = "Low"
-    if 'ucd_select_pv' not in st.session_state:
+    if 'ic_planter_ucd_select_pv' not in st.session_state:
         st.session_state['ic_planter_ucd_select_pv'] = "Low"
-    if 'upg_select_pv' not in st.session_state:
+    if 'ic_planter_upg_select_pv' not in st.session_state:
         st.session_state['ic_planter_upg_select_pv'] = "Low"
 
     if 'use_ic' not in st.session_state:
