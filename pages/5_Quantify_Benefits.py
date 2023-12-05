@@ -62,10 +62,12 @@ with raw_output_tab:
                 st.write("Value of Energy Saved ($):", st.session_state['k_es'] * (11.88 / 100))
 
 with simulation_data_tab:
-    if len(select_profiles) >= 2:
+    if len(select_profiles) == 2:
         num_sims = st.number_input('Enter the number of simulations', min_value=1, max_value=10000, value=5000, step=1,
                                    key=None)
         if st.button("Simulate"):
             handle_simulations(select_profiles, simulation_data_tab)
+    elif len(select_profiles) > 2:
+        st.warning("For now, only two profiles at a time are supported to simulate their weights/outcomes. This will be changed in the future.")
     else:
         st.warning("Please select at least two profiles above to simulate their weights/outcomes.")
