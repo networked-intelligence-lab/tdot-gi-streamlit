@@ -31,8 +31,8 @@ def swales_tab(tab_object):
     if use:
         tab_object.subheader("Capital Cost")
         st.session_state['drainage_area_s'] = tab_object.number_input("Drainage Area (acre)", value=st.session_state['drainage_area_s'])
-        st.session_state['impervious_area_percent_s'] = tab_object.number_input("Impervious area (%)", value=st.session_state['impervious_area_percent_s'], step=1.0, key="imp_s") / 100
-        impervious_area = st.session_state['drainage_area_s'] * st.session_state['impervious_area_percent_s']
+        st.session_state['impervious_area_percent_s'] = tab_object.number_input("Impervious area (whole number %)", value=st.session_state['impervious_area_percent_s'], step=1.0, key="imp_s")
+        impervious_area = st.session_state['drainage_area_s'] * (st.session_state['impervious_area_percent_s'] / 100)
         st.session_state['base_cost_level_s'] = tab_object.selectbox("Base Cost Level", options=["Low", "Medium", "High", "Very High"], index=["Low", "Medium", "High", "Very High"].index(st.session_state['base_cost_level_s']))
         base_cost_value = {"Low": 1000, "Medium": 3000, "High": 5000, "Very High": 15000}[st.session_state['base_cost_level_s']]
         swales_capital_cost = impervious_area * base_cost_value
